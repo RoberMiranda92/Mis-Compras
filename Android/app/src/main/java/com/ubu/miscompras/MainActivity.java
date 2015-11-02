@@ -12,9 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Animation rotate_forward,rotate_backward;
+    private FloatingActionButton fab;
+    private boolean isButtonClick=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +29,16 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        rotate_forward= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+
+        
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                isButtonClick=!isButtonClick;
+                openButtonSelector();
             }
         });
 
@@ -40,6 +50,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void openButtonSelector() {
+        if(isButtonClick)
+            fab.startAnimation(rotate_backward);
+        else
+            fab.startAnimation(rotate_forward);
     }
 
     @Override

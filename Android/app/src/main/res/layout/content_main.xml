@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.ubu.miscompras.MainActivity"
     tools:showIn="@layout/app_bar_main"
-    >
+    android:background="@color/windowsBackground">
 
     <TextView
         android:layout_width="wrap_content"
