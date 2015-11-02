@@ -2,7 +2,6 @@ package com.ubu.miscompras;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,9 +17,13 @@ import android.view.animation.AnimationUtils;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Animation rotate_forward,rotate_backward;
-    private FloatingActionButton fab;
-    private boolean isButtonClick=false;
+    private Animation rotate_forward, rotate_backward;
+    private FloatingActionButton addTicket_Button;
+    private boolean isButtonClick = false;
+    private FloatingActionButton addCamera_Button;
+    private FloatingActionButton addImage_Button;
+    private Animation fab_open;
+    private Animation fab_close;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +32,20 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        rotate_forward= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        rotate_backward=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        addTicket_Button = (FloatingActionButton) findViewById(R.id.FloattingButton_addTicket);
+        addCamera_Button = (FloatingActionButton) findViewById(R.id.FloattingButton_addCamera);
+        addImage_Button = (FloatingActionButton) findViewById(R.id.FloattingButton_addImage);
 
-        
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+
+
+        addTicket_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isButtonClick=!isButtonClick;
                 openButtonSelector();
             }
         });
@@ -53,10 +61,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openButtonSelector() {
-        if(isButtonClick)
-            fab.startAnimation(rotate_backward);
-        else
-            fab.startAnimation(rotate_forward);
+        if (!isButtonClick) {
+            addTicket_Button.startAnimation(rotate_forward);
+            addImage_Button.startAnimation(fab_open);
+            addCamera_Button.startAnimation(fab_open);
+            isButtonClick=true;
+
+        } else {
+            addTicket_Button.startAnimation(rotate_backward);
+            addImage_Button.startAnimation(fab_close);
+            addCamera_Button.startAnimation(fab_close);
+            isButtonClick=false;
+
+        }
     }
 
     @Override
