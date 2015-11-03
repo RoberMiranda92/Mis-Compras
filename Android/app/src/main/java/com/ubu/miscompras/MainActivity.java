@@ -1,6 +1,10 @@
 package com.ubu.miscompras;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
+
+import com.ubu.miscompras.comunication.WebService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,6 +31,9 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton addImage_Button;
     private Animation fab_open;
     private Animation fab_close;
+
+    private final int LOAD_IMAGE_GALLERY = 1;
+    private final int LOAD_IMAGE_CAMERA = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +51,29 @@ public class MainActivity extends AppCompatActivity
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
 
-
-
-        addTicket_Button.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener clickListener= new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                openButtonSelector();
-            }
-        });
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.FloattingButton_addTicket:
+                        openButtonSelector();
+                        break;
+                    case R.id.FloattingButton_addCamera:
+                        openCameraIntent();
+                        break;
+                    case R.id.FloattingButton_addImage:
+                        openGalleryIntent();
+                        break;
+
+                }
+                }
+            };
+
+
+
+        addTicket_Button.setOnClickListener(clickListener);
+        addImage_Button.setOnClickListener(clickListener);
+        addCamera_Button.setOnClickListener(clickListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,18 +85,19 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+
     private void openButtonSelector() {
         if (!isButtonClick) {
             addTicket_Button.startAnimation(rotate_forward);
             addImage_Button.startAnimation(fab_open);
             addCamera_Button.startAnimation(fab_open);
-            isButtonClick=true;
+            isButtonClick = true;
 
         } else {
             addTicket_Button.startAnimation(rotate_backward);
             addImage_Button.startAnimation(fab_close);
             addCamera_Button.startAnimation(fab_close);
-            isButtonClick=false;
+            isButtonClick = false;
 
         }
     }
@@ -131,5 +157,51 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void openGalleryIntent() {
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, LOAD_IMAGE_GALLERY);
+
+    }
+    private void openCameraIntent() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);//zero can be replaced with any action code
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LOAD_IMAGE_GALLERY:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getApplicationContext(), "OK GALLERY", Toast.LENGTH_SHORT).show();
+                    Uri uri = data.getData();
+                    String[] projection = { MediaStore.Images.Media.DATA };
+
+                    Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(projection[0]);
+                    String picturePath = cursor.getString(columnIndex); // returns null
+                    cursor.close();
+                    WebService tars = new WebService();
+                    tars.execute(picturePath);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error GALLERY", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case LOAD_IMAGE_CAMERA:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getApplicationContext(), "OK CAMERA", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error CAMERA", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
     }
 }
