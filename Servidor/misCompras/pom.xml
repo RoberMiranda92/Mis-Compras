@@ -12,8 +12,8 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.jersey>2.15</version.jersey>
     </properties>
-    
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -22,10 +22,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-servlet</artifactId>
-      <version>2.14</version>
-    </dependency>
+           <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-multipart</artifactId>
+            <version>1.9</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -6,11 +6,12 @@
 	 version="3.1">
     <servlet>
         <servlet-name>rest</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>com.ubu.miscompras.rest</param-value>
         </init-param>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>rest</servlet-name>
