@@ -197,6 +197,17 @@ public class MainActivity extends AppCompatActivity
             case LOAD_IMAGE_CAMERA:
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(getApplicationContext(), "OK CAMERA", Toast.LENGTH_SHORT).show();
+                    Uri uri = data.getData();
+                    String[] projection = { MediaStore.Images.Media.DATA };
+
+                    Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(projection[0]);
+                    String picturePath = cursor.getString(columnIndex); // returns null
+                    cursor.close();
+                    WebService tars = new WebService();
+                    tars.execute(picturePath);
                 } else {
                     Toast.makeText(getApplicationContext(), "Error CAMERA", Toast.LENGTH_SHORT).show();
                 }
