@@ -9,6 +9,7 @@ public class Producto {
     private String nombre;
     private Categoria categoria;
     private int Cantidad;
+    private double precio;
 
     public int getId() {
         return id;
