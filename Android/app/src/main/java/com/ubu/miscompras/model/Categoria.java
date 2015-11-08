@@ -1,17 +1,28 @@
 package com.ubu.miscompras.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.ArrayList;
 
 /**
  * Created by RobertoMiranda on 2/11/15.
  */
+@DatabaseTable(tableName = "Categoria")
 public class Categoria {
 
-
+    @DatabaseField(generatedId = true, columnName = "id")
     private int id;
-    private String Nombre;
-    private ArrayList<Producto> productos;
+    @DatabaseField(columnName = "nombre")
+    private String nombre;
 
+    public Categoria() {
+
+    }
+
+    public Categoria(String nombre) {
+        this.nombre = nombre;
+    }
 
     public int getId() {
         return id;
@@ -22,18 +33,11 @@ public class Categoria {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
-    public ArrayList<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(ArrayList<Producto> productos) {
-        this.productos = productos;
-    }
 }

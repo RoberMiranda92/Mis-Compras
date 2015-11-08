@@ -1,11 +1,14 @@
-package com.ubu.miscompras;
+package com.ubu.miscompras.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +22,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+import com.ubu.miscompras.R;
 import com.ubu.miscompras.comunication.WebService;
+import com.ubu.miscompras.database.DataBaseHelper;
+import com.ubu.miscompras.model.Categoria;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -51,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
 
-        View.OnClickListener clickListener= new View.OnClickListener() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -66,9 +81,8 @@ public class MainActivity extends AppCompatActivity
                         break;
 
                 }
-                }
-            };
-
+            }
+        };
 
 
         addTicket_Button.setOnClickListener(clickListener);
@@ -83,6 +97,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
 
@@ -166,11 +181,11 @@ public class MainActivity extends AppCompatActivity
         startActivityForResult(galleryIntent, LOAD_IMAGE_GALLERY);
 
     }
+
     private void openCameraIntent() {
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);//zero can be replaced with any action code
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -180,7 +195,7 @@ public class MainActivity extends AppCompatActivity
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(getApplicationContext(), "OK GALLERY", Toast.LENGTH_SHORT).show();
                     Uri uri = data.getData();
-                    String[] projection = { MediaStore.Images.Media.DATA };
+                    String[] projection = {MediaStore.Images.Media.DATA};
 
                     Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
                     cursor.moveToFirst();
@@ -198,7 +213,7 @@ public class MainActivity extends AppCompatActivity
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(getApplicationContext(), "OK CAMERA", Toast.LENGTH_SHORT).show();
                     Uri uri = data.getData();
-                    String[] projection = { MediaStore.Images.Media.DATA };
+                    String[] projection = {MediaStore.Images.Media.DATA};
 
                     Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
                     cursor.moveToFirst();
@@ -213,6 +228,5 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
         }
-
     }
 }

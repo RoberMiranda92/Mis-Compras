@@ -1,15 +1,29 @@
 package com.ubu.miscompras.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * Created by RobertoMiranda on 2/11/15.
  */
+
+@DatabaseTable(tableName = "producto")
 public class Producto {
 
+    @DatabaseField(generatedId = true, columnName = "id")
     private int id;
+
+    @DatabaseField(columnName = "nombre")
     private String nombre;
-    private Categoria categoria;
-    private int Cantidad;
+
+    @DatabaseField(columnName = "cantidad")
+    private int cantidad;
+
+    @DatabaseField(columnName = "precio")
     private double precio;
+
+    @DatabaseField(foreign = true,columnName = "id_categoria")
+    private Categoria categoria;
 
     public int getId() {
         return id;
@@ -36,10 +50,18 @@ public class Producto {
     }
 
     public int getCantidad() {
-        return Cantidad;
+        return cantidad;
     }
 
     public void setCantidad(int cantidad) {
-        Cantidad = cantidad;
+        this.cantidad = cantidad;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }

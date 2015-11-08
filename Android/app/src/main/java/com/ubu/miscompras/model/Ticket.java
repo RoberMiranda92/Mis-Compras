@@ -1,17 +1,40 @@
 package com.ubu.miscompras.model;
 
+
+
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by RobertoMiranda on 2/11/15.
  */
+
+@DatabaseTable(tableName = "Ticket")
 public class Ticket {
 
+    @DatabaseField(generatedId = true)
     private int id;
+
+    @DatabaseField()
     private Date fechaCompra;
-    private String Establecimiento;
+
+    @DatabaseField()
+    private String establecimiento;
+
     private ArrayList<Producto> productos;
+
+    public Ticket() {
+
+    }
+
+    public Ticket(Date fechaCompra, String establecimiento, ArrayList<Producto> productos) {
+        this.fechaCompra = fechaCompra;
+        this.establecimiento = establecimiento;
+        this.productos = productos;
+    }
 
     public int getId() {
         return id;
@@ -30,11 +53,11 @@ public class Ticket {
     }
 
     public String getEstablecimiento() {
-        return Establecimiento;
+        return establecimiento;
     }
 
     public void setEstablecimiento(String establecimiento) {
-        Establecimiento = establecimiento;
+        establecimiento = establecimiento;
     }
 
     public ArrayList<Producto> getProductos() {
