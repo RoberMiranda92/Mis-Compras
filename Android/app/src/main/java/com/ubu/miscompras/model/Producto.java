@@ -10,6 +10,17 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "producto")
 public class Producto {
 
+    private Producto() {
+
+    }
+
+    public Producto(String nombre, int cantidad, double precio, Categoria categoria) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.categoria = categoria;
+    }
+
     @DatabaseField(generatedId = true, columnName = "id")
     private int id;
 
@@ -22,7 +33,7 @@ public class Producto {
     @DatabaseField(columnName = "precio")
     private double precio;
 
-    @DatabaseField(foreign = true,columnName = "id_categoria")
+    @DatabaseField(foreign = true, columnName = "id_categoria")
     private Categoria categoria;
 
     public int getId() {

@@ -2,12 +2,15 @@ package com.ubu.miscompras.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,18 +23,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
+
+import com.hookedonplay.decoviewlib.DecoView;
+import com.hookedonplay.decoviewlib.charts.SeriesItem;
+import com.hookedonplay.decoviewlib.events.DecoEvent;
 import com.j256.ormlite.dao.Dao;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.comunication.WebService;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Ticket;
+import com.ubu.miscompras.model.TicketProducto;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -97,6 +105,48 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        initData();
+
+
+        DecoView decoView = (DecoView) findViewById(R.id.dynamicArcView);
+
+        SeriesItem seriesItem = new SeriesItem.Builder(Color.parseColor("#FFFFFF"))
+                .setRange(0, 100, 0)
+                .build();
+
+        int backIndex = decoView.addSeries(seriesItem);
+
+        final SeriesItem seriesItem2 = new SeriesItem.Builder(getResources().getColor(R.color.colorAccent))
+                .setRange(0, 100, 0)
+                .build();
+
+
+        int series1Index = decoView.addSeries(seriesItem2);
+
+        final TextView textPercentage = (TextView) findViewById(R.id.textPercentage);
+        seriesItem2.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
+            @Override
+            public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
+                float percentFilled = ((currentPosition - seriesItem2.getMinValue()) / (seriesItem2.getMaxValue() - seriesItem2.getMinValue()));
+                textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
+            }
+
+            @Override
+            public void onSeriesItemDisplayProgress(float percentComplete) {
+
+            }
+        });
+
+        decoView.addEvent(new DecoEvent.Builder(100)
+                .setIndex(backIndex)
+                .build());
+
+        decoView.addEvent(new DecoEvent.Builder(30)
+                .setIndex(series1Index)
+                .setDelay(2000)
+                .build());
 
     }
 
@@ -228,5 +278,63 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
         }
+    }
+
+
+    private void initData() {
+
+        DataBaseHelper helper = new DataBaseHelper(this);
+
+        //InsertarCategorias
+
+        try {
+            Dao<Categoria, Integer> categoriaDAO = helper.getCategoriaDAO();
+            Dao<Producto, Integer> productoDAO = helper.getProductoDAO();
+            Dao<Ticket, Integer> ticketDAO = helper.getTicketDAO();
+            Dao<TicketProducto, Integer> ticketProductoDAO = helper.getTicketProductoDAO();
+
+
+            categoriaDAO.create(new Categoria("Fruta"));
+            categoriaDAO.create(new Categoria("Verdura"));
+            categoriaDAO.create(new Categoria("Lacteos"));
+
+            List<Categoria> categorias = categoriaDAO.queryForAll();
+
+            productoDAO.create(new Producto("Naranja", 4, 0.98, categoriaDAO.queryForId(1)));
+            productoDAO.create(new Producto("Manzana", 4, 0.98, categoriaDAO.queryForId(1)));
+
+            productoDAO.create(new Producto("Lechuga", 4, 0.98, categoriaDAO.queryForId(2)));
+            productoDAO.create(new Producto("Judias", 4, 0.98, categoriaDAO.queryForId(2)));
+
+            productoDAO.create(new Producto("Leche Entera", 4, 0.98, categoriaDAO.queryForId(3)));
+            productoDAO.create(new Producto("Leche Desnatada", 4, 0.98, categoriaDAO.queryForId(3)));
+
+
+            List<Producto> productos = productoDAO.queryForAll();
+
+
+            ticketDAO.create(new Ticket(new Date(), "Mercadona", productos));
+
+            List<Ticket> tickets = ticketDAO.queryForAll();
+
+            for (Producto p : productos)
+                ticketProductoDAO.create(new TicketProducto(ticketDAO.queryForId(1), p));
+
+            List<TicketProducto> list = ticketProductoDAO.queryForAll();
+
+            for (TicketProducto tp : list) {
+                ticketDAO.refresh(tp.getTicket());
+                productoDAO.refresh(tp.getProducto());
+                categoriaDAO.refresh(tp.getProducto().getCategoria());
+            }
+
+
+            Log.d("Producto", "producto");
+
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

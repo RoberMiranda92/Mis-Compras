@@ -1,19 +1,23 @@
 #
-# generated on 2015/11/06 08:23:42
+# generated on 2015/11/08 11:48:14
 #
 # --table-start--
 dataClass=com.ubu.miscompras.model.Ticket
-tableName=Ticket
+tableName=ticket
 # --table-fields-start--
 # --field-start--
 fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=fechaCompra
+fieldName=fecha_compra
+columnName=fecha_compra
+dataPersister=DATE_STRING
+format=yyyy/MM/dd HH:mm:ss
 # --field-end--
 # --field-start--
 fieldName=establecimiento
+columnName=establecimiento
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -49,7 +53,7 @@ foreign=true
 #################################
 # --table-start--
 dataClass=com.ubu.miscompras.model.Categoria
-tableName=Categoria
+tableName=categoria
 # --table-fields-start--
 # --field-start--
 fieldName=id

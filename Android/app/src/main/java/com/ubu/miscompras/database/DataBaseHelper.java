@@ -39,7 +39,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     public DataBaseHelper(Context context) {
 
-        super(context, DATABASENAME, null, DATABASE_VERSION, R.raw.ormlite_config);
+        super(context, DATABASENAME, null, DATABASE_VERSION);
     }
 
     @Override

@@ -8,15 +8,17 @@ import java.util.ArrayList;
 /**
  * Created by RobertoMiranda on 2/11/15.
  */
-@DatabaseTable(tableName = "Categoria")
+@DatabaseTable(tableName = "categoria")
 public class Categoria {
 
     @DatabaseField(generatedId = true, columnName = "id")
     private int id;
+
     @DatabaseField(columnName = "nombre")
     private String nombre;
 
-    public Categoria() {
+
+    private Categoria(){
 
     }
 

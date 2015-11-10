@@ -9,6 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "ticketproducto")
 public class TicketProducto {
 
+
     @DatabaseField(generatedId = true, columnName = "id")
     private int id;
 
@@ -17,6 +18,16 @@ public class TicketProducto {
 
     @DatabaseField(foreign = true, columnName = "id_producto")
     private Producto producto;
+
+
+    public TicketProducto(Ticket ticket, Producto producto) {
+        this.ticket = ticket;
+        this.producto = producto;
+    }
+
+    public TicketProducto() {
+
+    }
 
     public int getId() {
         return id;

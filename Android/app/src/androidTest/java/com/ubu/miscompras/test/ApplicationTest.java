@@ -1,4 +1,4 @@
-package com.ubu.miscompras;
+package com.ubu.miscompras.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
