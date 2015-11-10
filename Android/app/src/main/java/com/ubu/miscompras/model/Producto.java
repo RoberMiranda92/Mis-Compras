@@ -33,7 +33,7 @@ public class Producto {
     @DatabaseField(columnName = "precio")
     private double precio;
 
-    @DatabaseField(foreign = true, columnName = "id_categoria")
+    @DatabaseField(foreign = true, columnName = "id_categoria", foreignAutoCreate = true, foreignAutoRefresh = true)
     private Categoria categoria;
 
     public int getId() {
@@ -74,5 +74,33 @@ public class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Producto)) return false;
+        Producto otherMyClass = (Producto) other;
+
+        if (!otherMyClass.getNombre().equals(this.getNombre())) {
+            return false;
+        }
+        if (!otherMyClass.getNombre().equals(this.getNombre())) {
+            return false;
+        }
+        if (otherMyClass.getCantidad() != this.getCantidad()) {
+            return false;
+        }
+        if (otherMyClass.getPrecio() != this.getPrecio()) {
+            return false;
+        }
+        if (!otherMyClass.getCategoria().equals(this.getCategoria())) {
+            return false;
+        }
+        if (otherMyClass.getCantidad() != this.getCantidad()) {
+            return false;
+        }
+        return true;
     }
 }

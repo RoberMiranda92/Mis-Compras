@@ -10,13 +10,16 @@ import com.j256.ormlite.table.DatabaseTable;
 public class TicketProducto {
 
 
+    public static final String TICKET_ID_FIELD_NAME = "id_ticket";
+    public static final String PRODUCTO_ID_FIELD_NAME = "id_producto";
+
     @DatabaseField(generatedId = true, columnName = "id")
     private int id;
 
-    @DatabaseField(foreign = true, columnName = "id_ticket")
+    @DatabaseField(foreign = true, columnName = TICKET_ID_FIELD_NAME, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Ticket ticket;
 
-    @DatabaseField(foreign = true, columnName = "id_producto")
+    @DatabaseField(foreign = true, columnName = PRODUCTO_ID_FIELD_NAME, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Producto producto;
 
 

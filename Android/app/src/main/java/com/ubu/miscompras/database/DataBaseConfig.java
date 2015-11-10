@@ -23,7 +23,7 @@ public class DataBaseConfig extends OrmLiteConfigUtil {
 
         String currDirectory = "user.dir";
 
-        String configPath = "/res/raw/ormlite_config.txt";
+        String configPath = "/src/main/res/raw/ormlite_config.txt";
 
         /**
          * Gets the project root directory

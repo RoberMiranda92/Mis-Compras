@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initData() {
 
-        DataBaseHelper helper = new DataBaseHelper(this);
+        /*DataBaseHelper helper = new DataBaseHelper(this);
 
         //InsertarCategorias
 
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity
 
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }

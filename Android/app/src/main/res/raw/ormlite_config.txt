@@ -1,5 +1,5 @@
 #
-# generated on 2015/11/08 11:48:14
+# generated on 2015/11/10 08:56:20
 #
 # --table-start--
 dataClass=com.ubu.miscompras.model.Ticket
@@ -7,6 +7,7 @@ tableName=ticket
 # --table-fields-start--
 # --field-start--
 fieldName=id
+columnName=id
 generatedId=true
 # --field-end--
 # --field-start--
@@ -47,6 +48,8 @@ columnName=precio
 fieldName=categoria
 columnName=id_categoria
 foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -63,6 +66,13 @@ generatedId=true
 # --field-start--
 fieldName=nombre
 columnName=nombre
+canBeNull=false
+unique=true
+# --field-end--
+# --field-start--
+fieldName=productos
+foreignCollection=true
+foreignCollectionEager=true
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -80,11 +90,15 @@ generatedId=true
 fieldName=ticket
 columnName=id_ticket
 foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=producto
 columnName=id_producto
 foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
 # --field-end--
 # --table-fields-end--
 # --table-end--

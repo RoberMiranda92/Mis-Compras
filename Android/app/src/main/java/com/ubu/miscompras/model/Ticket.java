@@ -14,7 +14,8 @@ import java.util.List;
 @DatabaseTable(tableName = "ticket")
 public class Ticket {
 
-    @DatabaseField(generatedId = true)
+    public static final String ID_FIELD_NAME = "id";
+    @DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
     private int id;
 
     @DatabaseField(columnName = "fecha_compra", dataType = DataType.DATE_STRING,
@@ -30,10 +31,9 @@ public class Ticket {
 
     }
 
-    public Ticket(Date fecha_compra, String establecimiento, List<Producto> productos) {
+    public Ticket(Date fecha_compra, String establecimiento) {
         this.fecha_compra = fecha_compra;
         this.establecimiento = establecimiento;
-        this.productos = productos;
     }
 
     public int getId() {
@@ -69,5 +69,22 @@ public class Ticket {
 
     public void setFecha_compra(Date fecha_compra) {
         this.fecha_compra = fecha_compra;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Ticket)) return false;
+        Ticket otherMyClass = (Ticket) other;
+
+        if (!otherMyClass.getFecha_compra().equals(this.getFecha_compra()))
+            return false;
+
+        if (!otherMyClass.getEstablecimiento().equals(this.getEstablecimiento())) {
+            return false;
+        }
+
+        return true;
     }
 }
