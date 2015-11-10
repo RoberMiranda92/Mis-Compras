@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.ubu</groupId>
     <artifactId>misCompras</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>misCompras</name>
-
+    
+    
+    <repositories>
+    <repository>
+        <id>javaopencvbook</id>
+        <url>https://raw.github.com/JavaOpenCVBook/code/maven2/</url>
+    </repository>
+    </repositories>
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,8 +37,29 @@
             <artifactId>jersey-multipart</artifactId>
             <version>1.9</version>
         </dependency>
+        <dependency>
+            <groupId>gov.nih.imagej</groupId>
+            <artifactId>imagej</artifactId>
+            <version>1.47</version>
+        </dependency>
+        <dependency>
+    <groupId>org.javaopencvbook</groupId>
+    <artifactId>opencvjar</artifactId>
+    <version>3.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.javaopencvbook</groupId>
+    <artifactId>opencvjar-runtime</artifactId>
+    <version>3.0.0</version>
+    <classifier>natives-windows-x86</classifier>
+</dependency>
     </dependencies>
     <build>
+      <resources>
+          <resource>
+              <directory>/src/resources</directory>
+          </resource>
+      </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -78,8 +105,35 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>       
+            <plugin>
+    <artifactId>maven-resources-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy-appCtx</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>C:\Program Files\Java\jdk1.7.0_79\bin</outputDirectory>
+                <overwrite>true</overwrite>
+                <resources>
+                    <resource>
+                        <directory>/src/resources</directory>
+                        <includes>
+                            <include>opencv_java300.dll</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+         
         </plugins>
+        
+
     </build>
 
 </project>

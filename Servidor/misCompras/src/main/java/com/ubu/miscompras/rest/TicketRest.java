@@ -8,6 +8,9 @@ package com.ubu.miscompras.rest;
 import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
+import com.ubu.miscompras.images.ImageProcess;
+import ij.process.ImageProcessor;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -60,6 +63,8 @@ public class TicketRest {
         saveFile(fileInputStream, filePath);
         istream.close();
         String output = "File saved to server location using FormDataMultiPart : " + filePath;
+        ImageProcess i = new ImageProcess(filePath);
+        i.start();
         return Response.status(200).entity(output).build();
 
     }
