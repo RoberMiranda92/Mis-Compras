@@ -16,10 +16,10 @@ public class TicketProducto {
     @DatabaseField(generatedId = true, columnName = "id")
     private int id;
 
-    @DatabaseField(foreign = true, columnName = TICKET_ID_FIELD_NAME, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, columnName = TICKET_ID_FIELD_NAME, foreignAutoCreate = true, foreignAutoRefresh = true, canBeNull = false)
     private Ticket ticket;
 
-    @DatabaseField(foreign = true, columnName = PRODUCTO_ID_FIELD_NAME, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, columnName = PRODUCTO_ID_FIELD_NAME, foreignAutoCreate = true, foreignAutoRefresh = true,canBeNull = false)
     private Producto producto;
 
 

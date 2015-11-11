@@ -19,7 +19,7 @@ public class Ticket {
     private int id;
 
     @DatabaseField(columnName = "fecha_compra", dataType = DataType.DATE_STRING,
-            format = "yyyy/MM/dd HH:mm:ss")
+            format = "yyyy/MM/dd HH:mm:ss",canBeNull = false)
     private Date fecha_compra;
 
     @DatabaseField(columnName = "establecimiento")

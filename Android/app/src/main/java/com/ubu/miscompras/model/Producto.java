@@ -24,13 +24,13 @@ public class Producto {
     @DatabaseField(generatedId = true, columnName = "id")
     private int id;
 
-    @DatabaseField(columnName = "nombre")
+    @DatabaseField(columnName = "nombre", canBeNull = false)
     private String nombre;
 
-    @DatabaseField(columnName = "cantidad")
+    @DatabaseField(columnName = "cantidad", canBeNull = false, defaultValue = "1")
     private int cantidad;
 
-    @DatabaseField(columnName = "precio")
+    @DatabaseField(columnName = "precio", canBeNull = false, defaultValue = "0")
     private double precio;
 
     @DatabaseField(foreign = true, columnName = "id_categoria", foreignAutoCreate = true, foreignAutoRefresh = true)
