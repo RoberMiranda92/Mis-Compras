@@ -10,10 +10,10 @@
     
     
     <repositories>
-    <repository>
-        <id>javaopencvbook</id>
-        <url>https://raw.github.com/JavaOpenCVBook/code/maven2/</url>
-    </repository>
+        <repository>
+            <id>javaopencvbook</id>
+            <url>https://raw.github.com/JavaOpenCVBook/code/maven2/</url>
+        </repository>
     </repositories>
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -28,7 +28,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-           <groupId>com.sun.jersey</groupId>
+            <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
             <version>1.9</version>
         </dependency>
@@ -43,24 +43,54 @@
             <version>1.47</version>
         </dependency>
         <dependency>
-    <groupId>org.javaopencvbook</groupId>
-    <artifactId>opencvjar</artifactId>
-    <version>3.0.0</version>
-</dependency>
-<dependency>
-    <groupId>org.javaopencvbook</groupId>
-    <artifactId>opencvjar-runtime</artifactId>
-    <version>3.0.0</version>
-    <classifier>natives-windows-x86</classifier>
-</dependency>
+            <groupId>org.javaopencvbook</groupId>
+            <artifactId>opencvjar</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javaopencvbook</groupId>
+            <artifactId>opencvjar-runtime</artifactId>
+            <version>3.0.0</version>
+            <classifier>natives-windows-x86</classifier>
+        </dependency>
     </dependencies>
     <build>
-      <resources>
-          <resource>
-              <directory>/src/resources</directory>
-          </resource>
-      </resources>
+        <resources>
+            <resource>
+                <directory>/src/resources</directory>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <workingDirectory>target</workingDirectory>
+                    <argLine>-Djava.library.path=${basedir}/src/main</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>unpack-dependecies</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>org.javaopencvbook</includeGroupIds>
+                            <includeArtifactIds>opencvjar-runtime</includeArtifactIds>
+                            <outputDirectory>
+                                ${basedir}/src/main/resources
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -81,59 +111,6 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${endorsed.dir}</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax</groupId>
-                                    <artifactId>javaee-endorsed-api</artifactId>
-                                    <version>7.0</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>       
-            <plugin>
-    <artifactId>maven-resources-plugin</artifactId>
-    <executions>
-        <execution>
-            <id>copy-appCtx</id>
-            <phase>generate-resources</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-                <outputDirectory>C:\Program Files\Java\jdk1.7.0_79\bin</outputDirectory>
-                <overwrite>true</overwrite>
-                <resources>
-                    <resource>
-                        <directory>/src/resources</directory>
-                        <includes>
-                            <include>opencv_java300.dll</include>
-                        </includes>
-                    </resource>
-                </resources>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
-         
-        </plugins>
-        
-
+        </plugins>       
     </build>
-
 </project>

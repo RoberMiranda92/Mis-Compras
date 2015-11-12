@@ -51,8 +51,8 @@ public class TicketRest {
     @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(@FormDataParam("file") FormDataBodyPart body, @FormDataParam("file") InputStream istream) throws IOException {
-
+    public Response uploadFile(@FormDataParam("file") FormDataBodyPart body, @FormDataParam("file") InputStream istream) throws IOException {   
+        System.out.print(System.getProperty("java.library.path"));
         FormDataBodyPart filePart = body;
         ContentDisposition headerOfFilePart = filePart.getContentDisposition();
         InputStream fileInputStream = istream;
