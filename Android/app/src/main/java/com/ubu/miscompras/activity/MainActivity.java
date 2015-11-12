@@ -1,17 +1,16 @@
 package com.ubu.miscompras.activity;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,21 +29,16 @@ import android.widget.Toast;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
-import com.j256.ormlite.dao.Dao;
+import com.soundcloud.android.crop.Crop;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.comunication.WebService;
-import com.ubu.miscompras.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.Producto;
-import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.model.TicketProducto;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
 
     private Animation rotate_forward, rotate_backward;
     private FloatingActionButton addTicket_Button;
@@ -56,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 
     private final int LOAD_IMAGE_GALLERY = 1;
     private final int LOAD_IMAGE_CAMERA = 2;
+    private static final int CROP_PIC = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,6 +214,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -241,43 +237,53 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+            case Crop.REQUEST_CROP:
+                if (resultCode == RESULT_OK) {
+                    Uri uri=Crop.getOutput(data);
+                    startUpload(uri);
+                }
             case LOAD_IMAGE_GALLERY:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getApplicationContext(), "OK GALLERY", Toast.LENGTH_SHORT).show();
                     Uri uri = data.getData();
-                    String[] projection = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(projection[0]);
-                    String picturePath = cursor.getString(columnIndex); // returns null
-                    cursor.close();
-                    WebService tars = new WebService();
-                    tars.execute(picturePath);
+                    Toast.makeText(getApplicationContext(), "OK GALLERY", Toast.LENGTH_SHORT).show();
+                    performCrop(uri);
                 } else {
                     Toast.makeText(getApplicationContext(), "Error GALLERY", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case LOAD_IMAGE_CAMERA:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getApplicationContext(), "OK CAMERA", Toast.LENGTH_SHORT).show();
                     Uri uri = data.getData();
-                    String[] projection = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(projection[0]);
-                    String picturePath = cursor.getString(columnIndex); // returns null
-                    cursor.close();
-                    WebService tars = new WebService();
-                    tars.execute(picturePath);
+                    Toast.makeText(getApplicationContext(), "OK CAMERA", Toast.LENGTH_SHORT).show();
+                    performCrop(uri);
                 } else {
                     Toast.makeText(getApplicationContext(), "Error CAMERA", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
+    }
+
+    private void startUpload(Uri uri) {
+
+        String picturePath = uri.getPath();
+        /**String[] projection = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(projection[0]);
+        String picturePath = cursor.getString(columnIndex); // returns null
+        cursor.close();*/
+        WebService tars = new WebService();
+        tars.execute(picturePath);
+    }
+
+    /**
+     * this function does the crop operation.
+     */
+    private void performCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped.jpg"));
+        Crop.of(source, destination).asSquare().start(this);
     }
 
 
