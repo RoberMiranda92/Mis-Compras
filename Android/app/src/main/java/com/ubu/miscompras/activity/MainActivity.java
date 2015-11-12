@@ -236,44 +236,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Uri uri = data.getData();
         switch (requestCode) {
-            case Crop.REQUEST_CROP:
-                if (resultCode == RESULT_OK) {
-                    Uri uri=Crop.getOutput(data);
+            case CROP_PIC:
+                if (resultCode == RESULT_OK)
                     startUpload(uri);
-                }
+                break;
             case LOAD_IMAGE_GALLERY:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
-                    Toast.makeText(getApplicationContext(), "OK GALLERY", Toast.LENGTH_SHORT).show();
+                if (resultCode == RESULT_OK)
                     performCrop(uri);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error GALLERY", Toast.LENGTH_SHORT).show();
-                }
                 break;
             case LOAD_IMAGE_CAMERA:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
-                    Toast.makeText(getApplicationContext(), "OK CAMERA", Toast.LENGTH_SHORT).show();
+                if (resultCode == RESULT_OK)
                     performCrop(uri);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error CAMERA", Toast.LENGTH_SHORT).show();
-                }
                 break;
+
         }
     }
 
     private void startUpload(Uri uri) {
 
         String picturePath = uri.getPath();
-        /**String[] projection = {MediaStore.Images.Media.DATA};
-
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        cursor.moveToFirst();
-
-        int columnIndex = cursor.getColumnIndex(projection[0]);
-        String picturePath = cursor.getString(columnIndex); // returns null
-        cursor.close();*/
         WebService tars = new WebService();
         tars.execute(picturePath);
     }
@@ -282,8 +265,10 @@ public class MainActivity extends AppCompatActivity
      * this function does the crop operation.
      */
     private void performCrop(Uri source) {
-        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped.jpg"));
-        Crop.of(source, destination).asSquare().start(this);
+        Intent intent = new Intent();
+        intent.setClass(this, CropActivity.class);
+        intent.setData(source);
+        startActivityForResult(intent, CROP_PIC);
     }
 
 
