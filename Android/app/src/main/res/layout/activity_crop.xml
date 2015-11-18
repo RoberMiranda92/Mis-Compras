@@ -24,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="2dp">
 
         <Button
             android:id="@+id/button_cancelar"
@@ -34,6 +35,11 @@
             android:background="@color/colorAccent"
             android:text="Cancelar"
             android:textColor="#FFFFFF" />
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/windowsBackground" />
 
         <Button
             android:id="@+id/button_recortar"

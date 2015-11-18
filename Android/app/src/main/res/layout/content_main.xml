@@ -14,19 +14,9 @@
     tools:showIn="@layout/app_bar_main">
 
 
-    <com.hookedonplay.decoviewlib.DecoView
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/dynamicArcView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        custom:dv_lineWidth="10dp"/>
-    <TextView
-        android:layout_alignEnd="@+id/dynamicArcView"
-        android:layout_alignBottom="@+id/dynamicArcView"
-        android:id="@+id/textPercentage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"/>
+    <ImageView
+        android:id="@+id/imageView_recortada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

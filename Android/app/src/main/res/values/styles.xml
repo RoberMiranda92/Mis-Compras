@@ -1,11 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:datePickerDialogTheme">@style/MyDatePickerDialogTheme</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,4 +18,39 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyAlertDialog" parent="android:Theme.Material.Dialog">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/windowsBackground</item>
+        <item name="textColorAlertDialogListItem">#FFFFFF</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+    </style>
+
+    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:datePickerDialogTheme">@style/MyDatePickerStyle</item>
+        <item name="android:buttonBarButtonStyle">@style/MyButtonBarButtonStyle</item>
+        <item name="android:buttonBarStyle">@style/MyButtonBarStyle</item>
+        <item name="android:windowBackground">@color/windowsBackground</item>
+
+    </style>
+
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/colorAccent</item>
+        <item name="android:calendarTextColor">#FFFFFF</item>
+        <item name="android:background">@color/windowsBackground</item>
+    </style>
+
+    <style name="MyButtonBarStyle" parent="@android:style/Widget.Material.Light.ButtonBar">
+        <item name="android:background">@color/windowsBackground</item>
+    </style>
+
+    <style name="MyButtonBarButtonStyle" parent="@android:style/Widget.Material.Light.Button.Borderless.Colored">
+        <item name="android:background">@color/windowsBackground</item>
+    </style>
+
+    <style name="MyCustomSpinner" parent="AppTheme">
+        <item name="colorControlNormal">@color/colorAccent</item>
+    </style>
 </resources>
+

@@ -28,7 +28,7 @@ import java.io.InputStream;
 public class CropActivity extends Activity {
 
 
-    private static final int MAX_IMAGE_DIMENSION = 720;
+    private static final int MAX_IMAGE_DIMENSION = 9096;
     private CropImageView cropImageView;
     private static final int SIZE_DEFAULT = 2048;
     private static final int SIZE_LIMIT = 4096;

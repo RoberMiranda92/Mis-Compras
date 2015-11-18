@@ -1,18 +1,9 @@
 package com.ubu.miscompras.activity;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,77 +11,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.hookedonplay.decoviewlib.DecoView;
-import com.hookedonplay.decoviewlib.charts.SeriesItem;
-import com.hookedonplay.decoviewlib.events.DecoEvent;
-import com.soundcloud.android.crop.Crop;
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.comunication.WebService;
+import com.ubu.miscompras.fragment.MainFragment;
+import com.ubu.miscompras.fragment.ProductosFragment;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    private Animation rotate_forward, rotate_backward;
-    private FloatingActionButton addTicket_Button;
-    private boolean isButtonClick = false;
-    private FloatingActionButton addCamera_Button;
-    private FloatingActionButton addImage_Button;
-    private Animation fab_open;
-    private Animation fab_close;
-
-    private final int LOAD_IMAGE_GALLERY = 1;
-    private final int LOAD_IMAGE_CAMERA = 2;
-    private static final int CROP_PIC = 3;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        addTicket_Button = (FloatingActionButton) findViewById(R.id.FloattingButton_addTicket);
-        addCamera_Button = (FloatingActionButton) findViewById(R.id.FloattingButton_addCamera);
-        addImage_Button = (FloatingActionButton) findViewById(R.id.FloattingButton_addImage);
-
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.FloattingButton_addTicket:
-                        openButtonSelector();
-                        break;
-                    case R.id.FloattingButton_addCamera:
-                        openCameraIntent();
-                        break;
-                    case R.id.FloattingButton_addImage:
-                        openGalleryIntent();
-                        break;
-
-                }
-            }
-        };
-
-
-        addTicket_Button.setOnClickListener(clickListener);
-        addImage_Button.setOnClickListener(clickListener);
-        addCamera_Button.setOnClickListener(clickListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -100,67 +43,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.summary);
 
-
-        initData();
-
-
-        DecoView decoView = (DecoView) findViewById(R.id.dynamicArcView);
-
-        SeriesItem seriesItem = new SeriesItem.Builder(Color.parseColor("#FFFFFF"))
-                .setRange(0, 100, 0)
-                .build();
-
-        int backIndex = decoView.addSeries(seriesItem);
-
-        final SeriesItem seriesItem2 = new SeriesItem.Builder(getResources().getColor(R.color.colorAccent))
-                .setRange(0, 100, 0)
-                .build();
-
-
-        int series1Index = decoView.addSeries(seriesItem2);
-
-        final TextView textPercentage = (TextView) findViewById(R.id.textPercentage);
-        seriesItem2.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
-            @Override
-            public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
-                float percentFilled = ((currentPosition - seriesItem2.getMinValue()) / (seriesItem2.getMaxValue() - seriesItem2.getMinValue()));
-                textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
-            }
-
-            @Override
-            public void onSeriesItemDisplayProgress(float percentComplete) {
-
-            }
-        });
-
-        decoView.addEvent(new DecoEvent.Builder(100)
-                .setIndex(backIndex)
-                .build());
-
-        decoView.addEvent(new DecoEvent.Builder(30)
-                .setIndex(series1Index)
-                .setDelay(2000)
-                .build());
 
     }
 
-
-    private void openButtonSelector() {
-        if (!isButtonClick) {
-            addTicket_Button.startAnimation(rotate_forward);
-            addImage_Button.startAnimation(fab_open);
-            addCamera_Button.startAnimation(fab_open);
-            isButtonClick = true;
-
-        } else {
-            addTicket_Button.startAnimation(rotate_backward);
-            addImage_Button.startAnimation(fab_close);
-            addCamera_Button.startAnimation(fab_close);
-            isButtonClick = false;
-
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -200,19 +87,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        FragmentManager manager = getSupportFragmentManager();
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        switch (id) {
+            case R.id.summary:
+                fragment = new MainFragment();
+                break;
+            case R.id.products:
+                fragment = new ProductosFragment();
+                break;
+            default:
+                fragment = null;
+                Toast.makeText(this, "No implementado Aun", Toast.LENGTH_SHORT).show();
 
         }
+        if (fragment != null)
+            manager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -221,55 +111,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void openGalleryIntent() {
 
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, LOAD_IMAGE_GALLERY);
-
-    }
-
-    private void openCameraIntent() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);//zero can be replaced with any action code
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Uri uri = data.getData();
-        switch (requestCode) {
-            case CROP_PIC:
-                if (resultCode == RESULT_OK)
-                    startUpload(uri);
-                break;
-            case LOAD_IMAGE_GALLERY:
-                if (resultCode == RESULT_OK)
-                    performCrop(uri);
-                break;
-            case LOAD_IMAGE_CAMERA:
-                if (resultCode == RESULT_OK)
-                    performCrop(uri);
-                break;
-
-        }
-    }
-
-    private void startUpload(Uri uri) {
-
-        String picturePath = uri.getPath();
-        WebService tars = new WebService();
-        tars.execute(picturePath);
-    }
-
-    /**
-     * this function does the crop operation.
-     */
-    private void performCrop(Uri source) {
-        Intent intent = new Intent();
-        intent.setClass(this, CropActivity.class);
-        intent.setData(source);
-        startActivityForResult(intent, CROP_PIC);
-    }
 
 
     private void initData() {
