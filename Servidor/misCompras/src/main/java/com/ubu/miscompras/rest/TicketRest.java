@@ -9,6 +9,7 @@ import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 import com.ubu.miscompras.images.ImageProcess;
+import com.ubu.miscompras.utils.Utils;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -97,18 +98,50 @@ public class TicketRest {
     }
 
     private String htmlCode() {
-        
-        String code2= this.getClass().getProtectionDomain().getCodeSource().toString();
+
+        String code2 = this.getClass().getProtectionDomain().getCodeSource().toString();
         String code = "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "<body>\n"
                 + "\n"
-                + "\n"+"<h1>File saved to server location using FormDataMultiPart : " + file.getAbsolutePath() + "</h1>"
-                + "<h2>Spectacular Mountain</h2>\n"
-                + "<img src=\"/misCompras/images/" +file.getName()+ "\" alt=\"Mountain View\" style=\"width:304px;height:228px;\">\n"
-                + "<img src=\"/misCompras/images/" +file.getName()+ "\" alt=\"Mountain View\" style=\"width:304px;height:228px;\">\n"
-                + "\n"
-                + "</body>\n"
+                + "\n" + ""
+                + "<h1>File saved to server location using FormDataMultiPart : " + file.getAbsolutePath() + "</h1>"
+                + "<table>"
+                + "<tr>"
+                + "<td><h2>Imagen original.</h2></td>"
+                + "<td><h2>Imagen Gris.</h2></td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td><img src=\"/misCompras/images/" + file.getName()
+                + "\" alt=\"Mountain View\"></td>"
+                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_GRAY"
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td><h2>Imagen Binarizada.</h2></td>"
+                + "<td><h2>Recta Imagen.</h2></td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_BINARIZADA"
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_RECTA"
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"          
+                + "</tr>"
+                + "<tr>"
+                + "<td><h2>Deskewing.</h2></td>"
+                + "<td><h2>DILATE.</h2></td>"
+                + "<td><h2>Crop.</h2></td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DESKEWING"
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DILATE"
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+                 + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_CROP"
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+                + "</tr>"
+                + "</table>"
+                + "</body>"
                 + "</html>";
         return code;
     }
