@@ -168,10 +168,10 @@ public class ImageProcess {
                     + "_BINARIZADA2" + Utils.extension(imagenOriginal);
             Imgcodecs.imwrite(fileBinario, binaryImage);
 
-            Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(400, 3));
+            Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(binaryImage.width(), 3));
             Mat dilate = new Mat();
             Imgproc.dilate(binaryImage, dilate, element);
-            
+
             String fileDilate = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
                     + "_DILATE" + Utils.extension(imagenOriginal);
             Imgcodecs.imwrite(fileDilate, dilate);
