@@ -8,7 +8,8 @@ package com.ubu.miscompras.rest;
 import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
-import com.ubu.miscompras.images.ImageProcess;
+import com.ubu.miscompras.process.ImageProcess;
+import com.ubu.miscompras.process.ProductProcess;
 import com.ubu.miscompras.utils.Utils;
 import java.awt.Image;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,6 +36,7 @@ public class TicketRest {
 
     private static final String SERVER_UPLOAD_LOCATION_FOLDER = "\\Y:\\Desktop\\TrabajoFinaldeGrado\\Servidor\\misCompras\\target\\misCompras-1.0-SNAPSHOT\\images\\";
     private static File file;
+    private String textoFinal;
 
     @GET
     @Path("/test")
@@ -64,9 +67,11 @@ public class TicketRest {
         saveFile(fileInputStream, filePath);
         istream.close();
         file = new File(filePath);
-        String output = htmlCode();
         ImageProcess i = new ImageProcess(filePath);
-        i.start();
+        ArrayList<File> productos = i.getProductsFileFromImage();
+        ProductProcess p = new ProductProcess(productos);
+        textoFinal = p.getText();
+        String output = htmlCode();
         return Response.status(200).entity(output).build();
 
     }
@@ -103,9 +108,6 @@ public class TicketRest {
         String code = "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "<body>\n"
-                + "\n"
-                + "\n" + ""
-                + "<h1>File saved to server location using FormDataMultiPart : " + file.getAbsolutePath() + "</h1>"
                 + "<table>"
                 + "<tr>"
                 + "<td><h2>Imagen original.</h2></td>"
@@ -125,20 +127,26 @@ public class TicketRest {
                 + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_BINARIZADA"
                 + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
                 + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_RECTA"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"          
+                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
                 + "</tr>"
                 + "<tr>"
                 + "<td><h2>Deskewing.</h2></td>"
                 + "<td><h2>DILATE.</h2></td>"
-                + "<td><h2>Crop.</h2></td>"
                 + "</tr>"
                 + "<tr>"
                 + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DESKEWING"
                 + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
                 + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DILATE"
                 + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                 + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_CROP"
+                + "</tr>"
+                + "<tr>"
+                + "<td><h2>Crop.</h2></td>"
+                + "<td><h2>Salida.</h2></td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_CROP"
                 + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+                + "<td><p>" + textoFinal + "</p></td>"
                 + "</tr>"
                 + "</table>"
                 + "</body>"

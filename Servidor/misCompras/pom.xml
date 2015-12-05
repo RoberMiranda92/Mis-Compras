@@ -48,6 +48,13 @@
             <version>3.0.0</version>
             <classifier>natives-windows-x86</classifier>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/tess4j.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <resources>
