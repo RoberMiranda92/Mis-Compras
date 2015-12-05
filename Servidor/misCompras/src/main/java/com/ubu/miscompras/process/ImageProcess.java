@@ -84,7 +84,7 @@ public class ImageProcess {
             grayImage = suavizado(grayImage);
             Mat deskewImage = deskewingImage(grayImage);
             files = cropImage(deskewImage);
-            files = binarizaTion(files);
+            //files = binarizaTion(files);
             Collections.reverse(files);
             return files;
         } catch (IOException ex) {

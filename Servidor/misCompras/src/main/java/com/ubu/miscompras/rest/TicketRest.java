@@ -11,7 +11,6 @@ import com.sun.jersey.multipart.FormDataParam;
 import com.ubu.miscompras.process.ImageProcess;
 import com.ubu.miscompras.process.ProductProcess;
 import com.ubu.miscompras.utils.Utils;
-import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
