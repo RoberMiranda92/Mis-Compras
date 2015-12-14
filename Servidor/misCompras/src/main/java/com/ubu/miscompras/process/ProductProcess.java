@@ -5,12 +5,13 @@
  */
 package com.ubu.miscompras.process;
 
+import com.ubu.miscompras.exceptions.MisComprasException;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,77 +23,146 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 /**
+ * Esta clase se encarga de obtener el texto a partir de una lista de
+ * imÃƒÂ¡genes
  *
- * @author Roberto
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda PÃƒÂ©rez</a>
  */
 public class ProductProcess {
 
     private final Tesseract instance;
     private final ArrayList<File> files;
-    private Spelling corrector;
-    private String ruta = "\\\\Mac\\Home\\Desktop\\TrabajoFinaldeGrado\\Servidor\\misCompras\\src\\Diccionario.txt";
+    private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
+    private final String ruta = "diccionarios" + File.separator + "Diccionario.txt";
+    private final String csvFile = "diccionarios" + File.separator + "Ocurrencias.csv";
+    private String WINDOWS_SEPARATOR = "\\";
+    private String UNIX_SEPARATOR = "/";
 
+    /**
+     * Constructor de la clase que recibe como argumento una lista de
+     * imÃƒÂ¡genes para analizar el texto
+     *
+     * @param files lista de imÃƒÂ¡genes
+     */
     public ProductProcess(ArrayList<File> files) {
+
         this.files = files;
         instance = new Tesseract();
         instance.setDatapath(System.getProperty("TESSERACT_DATA_DIR"));
         instance.setPageSegMode(PSM_SINGLE_LINE);
         instance.setOcrEngineMode(OEM_TESSERACT_ONLY);
+        instance.setTessVariable("tessedit_char_blacklist", "`?:");
+        
+        File classPath = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+        String path = classPath.getAbsolutePath();
+
+        while (!path.endsWith("target")) {
+            int index;
+            index = path.lastIndexOf(File.separator);
+            path = path.substring(0, index);
+        }
 
         try {
-
-            File diccionario = new File(ruta);
+            File diccionario = new File(path + File.separator + ruta);
+            System.out.print(diccionario.getCanonicalPath());
             if (!diccionario.exists()) {
                 diccionario.createNewFile();
             }
-            corrector = new Spelling(diccionario.getAbsolutePath());
+
+            BufferedReader in = new BufferedReader(new FileReader(diccionario.getAbsolutePath()));
+            Pattern p = Pattern.compile("\\w+");
+            for (String temp = ""; temp != null; temp = in.readLine()) {
+                Matcher m = p.matcher(temp);
+                while (m.find()) {
+                    nWords.put((temp = m.group()), nWords.containsKey(temp) ? nWords.get(temp) + 1 : 1);
+                }
+            }
+            in.close();
         } catch (IOException ex) {
             Logger.getLogger(ImageProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public String getText() {
+    /**
+     * Este mÃƒÂ©todo devuelve el texto de una lista de archivos de imÃƒÂ¡gen.
+     *
+     * @return texto obtenido
+     * @throws MisComprasException Devuelve una excepciÃƒÂ³n si la lista es nula
+     * o vacia. o si hay algÃƒÂºn error al procesar el texto.
+     *
+     */
+    public String getText() throws MisComprasException {
 
         String result = "";
-
+        if (files == null || files.isEmpty()) {
+            throw new MisComprasException(MisComprasException.FICHEROS_PRODUCTOS_ERROR);
+        }
         try {
             for (File f : files) {
                 String lineaProducto = instance.doOCR(f);
+
                 result += getCorrectProdut(lineaProducto);
             }
             return result;
 
         } catch (TesseractException ex) {
-            Logger.getLogger(ImageProcess.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            throw new MisComprasException(MisComprasException.ERROR_TESSERACT);
         }
-
-        return null;
     }
 
-    private String getCorrectProdut(String lineaProducto) {
+    /**
+     * Este mÃƒÂ©todo devuelve el producto de una linea de producto correguido
+     *
+     * @param lineaProducto linea de producto
+     * @return producto de una linea de producto.
+     */
+    public String getCorrectProdut(String lineaProducto) {
         String result = "";
         String lineaProductoCorrecta = deleteUnnecessarySpaces(lineaProducto);
-        String producto = getProducto(lineaProductoCorrecta);
+        String producto = getProduct(lineaProductoCorrecta);
         int nSpaces = producto.length() - producto.replace(" ", "").length();;
         int i = 0;
         do {
             if (producto.contains(" ")) {
                 int indexEspacio = producto.indexOf(" ");
                 String word = producto.substring(0, indexEspacio);
-                String correction = corrector.correct(word);
+                String correction = correct(word);
                 result += correction + " ";
                 producto = producto.substring(indexEspacio + 1);
             } else {
-                result += corrector.correct(producto);
+                result += correct(producto);
             }
             i++;
         } while (i <= nSpaces);
-        result = getProductAmount(lineaProductoCorrecta) + " " + result + " " + getProductUnitPrice(lineaProductoCorrecta) + " " + getProductTotal(lineaProductoCorrecta) + "<br>";
+
+        String cantidad = getProductAmount(lineaProductoCorrecta);
+
+        String precioUnitario = getProductUnitPrice(lineaProductoCorrecta);
+        String total = getProductTotal(lineaProductoCorrecta);
+        boolean correct = isProductPricesCorrect(cantidad, precioUnitario, total);
+
+        if (!correct) {
+            cantidad = correctNumber(cantidad);
+            precioUnitario = correctNumber(precioUnitario);
+            total = correctNumber(total);
+        }
+
+        if (cantidad.length() > 1) {
+            cantidad = "" + cantidad.charAt(0);
+        }
+
+        result = cantidad + " " + result + " " + precioUnitario + " " + total;
 
         return result;
     }
 
+    /**
+     * Este metodo devuelve la catidad de productos de una linea de producto.
+     *
+     * @param lineaProducto linea deproducto
+     * @return cantidad de una linea de producto.
+     */
     private String getProductAmount(String lineaProducto) {
         int space = lineaProducto.indexOf(" ");
         String amount = "";
@@ -110,42 +180,49 @@ public class ProductProcess {
         if (amount.contains(";")) {
             amount = amount.replace(";", ".");
         }
+
         return amount;
     }
 
+    /**
+     * Este metodo devuelve el total de una linea de producto
+     *
+     * @param lineaProducto linea de producto
+     * @return total de la linea de producto.
+     */
     private String getProductTotal(String lineaProducto) {
         int space = lineaProducto.lastIndexOf(" ");
-        String precioTotal = lineaProducto.substring(space + 1, lineaProducto.length() - 1);
-        if (precioTotal.contains(",")) {
-            precioTotal = precioTotal.replace(",", ".");
+        String precioTotal = lineaProducto.substring(space + 1, lineaProducto.length());
+
+        if (!precioTotal.contains(".")) {
+            precioTotal = precioTotal.substring(0, 1) + "." + precioTotal.substring(1);
         }
-        if (precioTotal.contains(":")) {
-            precioTotal = precioTotal.replace(":", ".");
-        }
-        if (precioTotal.contains(";")) {
-            precioTotal = precioTotal.replace(";", ".");
-        }
+
         return precioTotal;
     }
 
+    /**
+     * Este metodo devuelve el precio unitario de una linea de producto.
+     *
+     * @param lineaProducto linea de producto
+     * @return precio del producto.
+     */
     private String getProductUnitPrice(String lineaProducto) {
         int space = lineaProducto.lastIndexOf(" ");
-        String temp = lineaProducto.substring(0, space);
-        space = temp.lastIndexOf(" ");
-        temp = temp.substring(space + 1, temp.length());
-        if (temp.contains(",")) {
-            temp = temp.replace(",", ".");
-        }
-        if (temp.contains(":")) {
-            temp = temp.replace(":", ".");
-        }
-        if (temp.contains(";")) {
-            temp = temp.replace(";", ".");
-        }
-        return temp;
+        String price = lineaProducto.substring(0, space);
+        space = price.lastIndexOf(" ");
+        price = price.substring(space + 1, price.length());
+
+        return price;
     }
 
-    private String getProducto(String lineaProducto) {
+    /**
+     * Este mÃƒÂ©todo devuelve el producto de una linea de producto.
+     *
+     * @param lineaProducto linea de producto
+     * @return producto de una linea de producto
+     */
+    private String getProduct(String lineaProducto) {
         int space = lineaProducto.indexOf(" ");
         String temp = lineaProducto.substring(space + 1);
         space = temp.lastIndexOf(" ");
@@ -162,186 +239,203 @@ public class ProductProcess {
         }
     }
 
+    /**
+     * Este metodo elimina los espacios inecesarios que pueden encontrarse entre
+     * los nÃƒÂºmeros de una linea de producto
+     *
+     *
+     * @param lineaProducto con espacios invÃƒÂ¡lidos
+     * @return linea de productos sin espacios invÃƒÂ¡lidos
+     */
     private String deleteUnnecessarySpaces(String lineaProducto) {
 
-        if (lineaProducto.contains(" . ")) {
-            lineaProducto = lineaProducto.replace(" . ", ".");
-        }
+        String[] characters = {".", ",", ":", ";",};
+        String remplaceCharacter = "";
+        for (int i = 0; i < characters.length; i++) {
 
-        if (lineaProducto.contains(" , ")) {
-            lineaProducto = lineaProducto.replace(" , ", ".");
-        }
+            remplaceCharacter += characters[i];
 
-        if (lineaProducto.contains(" ; ")) {
-            lineaProducto = lineaProducto.replace(" ; ", ".");
         }
-        if (lineaProducto.contains(" : ")) {
-            lineaProducto = lineaProducto.replace(" : ", ".");
-        }
-
-        if (lineaProducto.contains(". ")) {
-            lineaProducto = lineaProducto.replace(". ", ".");
-        }
-
-        if (lineaProducto.contains(", ")) {
-            lineaProducto = lineaProducto.replace(", ", ".");
-        }
-
-        if (lineaProducto.contains("; ")) {
-            lineaProducto = lineaProducto.replace("; ", ".");
-        }
-        if (lineaProducto.contains(": ")) {
-            lineaProducto = lineaProducto.replace(": ", ".");
-        }
-
-        if (lineaProducto.contains(" .")) {
-            lineaProducto = lineaProducto.replace(" .", ".");
-        }
-
-        if (lineaProducto.contains(" ,")) {
-            lineaProducto = lineaProducto.replace(" ,", ".");
-        }
-
-        if (lineaProducto.contains(" ;")) {
-            lineaProducto = lineaProducto.replace(" ;", ".");
-        }
-        if (lineaProducto.contains(" :")) {
-            lineaProducto = lineaProducto.replace(" :", ".");
-        }
+        String pattern = "(\\s*)([\\" + remplaceCharacter + "])(\\s*)";
+        lineaProducto = lineaProducto.replaceAll(pattern, ".");
 
         return lineaProducto;
     }
 
-    private class Spelling {
+    /**
+     * Este metodo remplaza las letras de un nÃƒÂºmero por su corresponiente
+     * valor del archivo csv facilitado.
+     *
+     * @param n nÃƒÂºmero a transormar
+     * @return nÃƒÂºmero transofrmado de letras a numerico.
+     */
+    private String correctNumber(String n) {
+        boolean isNumeric = true;
 
-        private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
+        String newNumero = n;
 
-        public Spelling(String file) throws IOException {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            Pattern p = Pattern.compile("\\w+");
-            for (String temp = ""; temp != null; temp = in.readLine()) {
-                Matcher m = p.matcher(temp);
-                while (m.find()) {
-                    nWords.put((temp = m.group()), nWords.containsKey(temp) ? nWords.get(temp) + 1 : 1);
+        try {
+            double numero = Double.parseDouble(n);
+            return n;
+        } catch (NumberFormatException ex) {
+            isNumeric = false;
+        }
+        if (!isNumeric) {
+            for (int i = 0; i < n.length(); i++) {
+                char character = n.charAt(i);
+                if (!Character.isDigit(character)) {
+                    ArrayList<String> ocurrences = getOcurrences(character);
+                    if (!ocurrences.isEmpty()) {
+                        newNumero = newNumero.replace("" + character, ocurrences.get(0));
+                    }
                 }
             }
-            in.close();
         }
 
-        public final String correct(String word) {
-            int maxDistance = Integer.MAX_VALUE;
-            ArrayList<String> posibilidades = new ArrayList<>();
-            String posible = word;
-            if (nWords.containsKey(word)) {
-                return word;
-            }
-            for (String s : nWords.keySet()) {
-                int distancia = computeLevenshteinDistance(word.toUpperCase(), s.toUpperCase());
-                if (distancia < maxDistance) {
-                    maxDistance = distancia;
-                    posible = s;
-                }
-            }
-            return posible.toUpperCase();
+        newNumero = newNumero.replace(".", "");
 
-        }
+        newNumero = newNumero.substring(0, 1) + "." + newNumero.substring(1);
 
-        /*
-         private final ArrayList<String> edits(String word) {
-         ArrayList<String> result = new ArrayList<String>();
-         for (int i = 0; i < word.length(); ++i) {
-         result.add(word.substring(0, i) + word.substring(i + 1));
-         }
-         for (int i = 0; i < word.length() - 1; ++i) {
-         result.add(word.substring(0, i) + word.substring(i + 1, i + 2) + word.substring(i, i + 1) + word.substring(i + 2));
-         }
-         for (int i = 0; i < word.length(); ++i) {
-         for (char c = 'A'; c <= 'Z'; ++c) {
-         result.add(word.substring(0, i) + String.valueOf(c) + word.substring(i + 1));
-         }
-         }
-         for (int i = 0; i <= word.length(); ++i) {
-         for (char c = 'A'; c <= 'Z'; ++c) {
-         result.add(word.substring(0, i) + String.valueOf(c) + word.substring(i));
-         }
-         }
-         return result;
-         }*/
-        /*public final String correct(String word) {
-         int maxDistance = Integer.MAX_VALUE;
-         ArrayList<String> posibilidades = new ArrayList<>();
-         if (nWords.containsKey(word)) {
-         return word;
-         }
-         ArrayList<String> list = edits(word);
-         HashMap<Integer, String> candidates = new HashMap<Integer, String>();
-         for (String s : list) {
-         int distancia = computeLevenshteinDistance(word, s);
-         if (distancia < maxDistance) {
-         maxDistance = distancia;
-         posibilidades.add(s);
-         }
-         if (nWords.containsKey(s)) {
-         candidates.put(nWords.get(s), s.toUpperCase());
-         }
-         }
+        return newNumero;
+    }
 
-         if (candidates.size()
-         > 0) {
-         return candidates.get(Collections.max(candidates.keySet()));
-         }
-         maxDistance=Integer.MAX_VALUE;
-         for (String s : list) {
-         for (String w : edits(s)) {
-         int distancia = computeLevenshteinDistance(word, w);
-         if (distancia < maxDistance) {
-         maxDistance = distancia;
-         posibilidades.add(w);
-         }
-         if (nWords.containsKey(w)) {
-         candidates.put(nWords.get(w), w);
-         }
-         }
-         }
+    /**
+     * Este metodo devuelve true si cantidad multiplicada por el precio unitario
+     * es igual al total, si no devuelve falso.
+     *
+     * @param cantidad cantidad de un producto.
+     * @param precioUnidad precio unitario del producto.
+     * @param total coste total de el producto.
+     * @return true si cantidad*precioUnidad=total, si no false
+     */
+    private boolean isProductPricesCorrect(String cantidad, String precioUnidad, String total) {
 
-         return candidates.size()
-         > 0 ? candidates.get(Collections.max(candidates.keySet())) : word;
-         }
-         }*/
-        private int minimum(int a, int b, int c) {
-            if (a <= b && a <= c) {
-                return a;
-            }
-            if (b <= a && b <= c) {
-                return b;
-            }
-            return c;
-        }
+        try {
+            Double c = Double.parseDouble(cantidad);
+            Double pU = Double.parseDouble(precioUnidad);
+            Double t = Double.parseDouble(total);
 
-        public int computeLevenshteinDistance(String str1, String str2) {
-            return computeLevenshteinDistance(str1.toCharArray(),
-                    str2.toCharArray());
-        }
+            return c * pU == t;
 
-        private int computeLevenshteinDistance(char[] str1, char[] str2) {
-            int[][] distance = new int[str1.length + 1][str2.length + 1];
-
-            for (int i = 0; i <= str1.length; i++) {
-                distance[i][0] = i;
-            }
-            for (int j = 0; j <= str2.length; j++) {
-                distance[0][j] = j;
-            }
-            for (int i = 1; i <= str1.length; i++) {
-                for (int j = 1; j <= str2.length; j++) {
-                    distance[i][j] = minimum(distance[i - 1][j] + 1,
-                            distance[i][j - 1] + 1,
-                            distance[i - 1][j - 1]
-                            + ((str1[i - 1] == str2[j - 1]) ? 0 : 1));
-                }
-            }
-            return distance[str1.length][str2.length];
-
+        } catch (NumberFormatException ex) {
+            return false;
         }
     }
+
+    /**
+     * Este mÃƒÂ©todo devuelve las ocurrecias encontradas en el archivo csv para
+     * un caracter
+     *
+     * @param character caracter del que se desean las ocurrencias
+     * @return lista de ocurrencias
+     */
+    private ArrayList<String> getOcurrences(char character) {
+        ArrayList<String> ocurrences = new ArrayList<>();
+
+        BufferedReader br = null;
+        String row = "";
+        String cvsSplitBy = ",";
+
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((row = br.readLine()) != null) {
+                String[] line = row.split(cvsSplitBy);
+
+                if (line[0].charAt(0) == character) {
+                    for (int i = 1; i < line.length; i++) {
+                        ocurrences.add(line[i]);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ocurrences;
+    }
+
+    /**
+     * Este mÃƒÂ©todo sustituye una palabra por la palabra mas cercana segÃƒÂºn
+     * la distancia de levenshtein
+     *
+     * @param word palabra a sustituir
+     * @return palabra mas cercana
+     */
+    public final String correct(String word) {
+        int maxDistance = Integer.MAX_VALUE;
+        String posible = word;
+        if (nWords.containsKey(word)) {
+            return word;
+        }
+
+        for (String s : nWords.keySet()) {
+            int distancia = computeLevenshteinDistance(word.toUpperCase(), s.toUpperCase());
+            if (distancia < maxDistance) {
+                maxDistance = distancia;
+                posible = s;
+            }
+        }
+        return posible.toUpperCase();
+
+    }
+
+    private int minimum(int a, int b, int c) {
+        if (a <= b && a <= c) {
+            return a;
+        }
+        if (b <= a && b <= c) {
+            return b;
+        }
+        return c;
+    }
+
+    /**
+     * Este mÃƒÂ©todo devuelve la distancia de levenshtein entre 2 palÃƒÂ¡bras
+     *
+     * @param str1 palabra 1
+     * @param str2 palabra 2
+     * @return distancia
+     */
+    private int computeLevenshteinDistance(String str1, String str2) {
+        return computeLevenshteinDistance(str1.toCharArray(),
+                str2.toCharArray());
+    }
+
+    /**
+     * Este mÃƒÂ©todo devuelve la distancia de levenshtein entre 2 palÃƒÂ¡bras
+     *
+     * @param str1 palabra 1
+     * @param str2 palabra 2
+     * @return distancia
+     */
+    private int computeLevenshteinDistance(char[] str1, char[] str2) {
+        int[][] distance = new int[str1.length + 1][str2.length + 1];
+
+        for (int i = 0; i <= str1.length; i++) {
+            distance[i][0] = i;
+        }
+        for (int j = 0; j <= str2.length; j++) {
+            distance[0][j] = j;
+        }
+        for (int i = 1; i <= str1.length; i++) {
+            for (int j = 1; j <= str2.length; j++) {
+                distance[i][j] = minimum(distance[i - 1][j] + 1,
+                        distance[i][j - 1] + 1,
+                        distance[i - 1][j - 1]
+                        + ((str1[i - 1] == str2[j - 1]) ? 0 : 1));
+            }
+        }
+        return distance[str1.length][str2.length];
+
+    }
+
 }

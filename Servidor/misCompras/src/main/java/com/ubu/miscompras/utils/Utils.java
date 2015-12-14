@@ -1,31 +1,33 @@
 package com.ubu.miscompras.utils;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
+ * Clase de utilidades.
  *
- * @author Roberto
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public class Utils {
 
-    public static String extension(File file) {
+    /**
+     * Este método devuelve la extensión de un fichero.
+     *
+     * @param file fichero.
+     * @return extensión del fichero
+     */
+    public static String getFileExtension(File file) {
         int dot = file.getName().lastIndexOf(".");
         return file.getName().substring(dot);
     }
 
-    public static String filename(File file) {
+    /**
+     * Este método devuelve el nombre de un fichero sin extensión.
+     *
+     * @param file fichero.
+     * @return nombre del fichero.
+     */
+    public static String getFileName(File file) {
         int dot = file.getName().lastIndexOf(".");
         return file.getName().substring(0, dot);
     }
-    
-  
-    
 }

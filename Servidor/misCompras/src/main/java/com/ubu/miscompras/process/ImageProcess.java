@@ -52,22 +52,27 @@ import org.opencv.imgproc.Imgproc;
 public class ImageProcess {
 
     private final File imagenOriginal;
-    private String fileDesk;
     private ArrayList<File> files;
     private Mat original;
 
-    private ImageProcess(File imageFile) {
-        this.imagenOriginal = imageFile;
-        this.files = new ArrayList<>();
-
-    }
-
+    /**
+     * Constructor de la clase
+     *
+     * @param imagePath path del archivo que contiene la imágen para analizar.
+     */
     public ImageProcess(String imagePath) {
         this.files = new ArrayList<>();
         this.imagenOriginal = new File(imagePath);
 
     }
 
+    /**
+     * Devuelve una lista de archivos que contienen la imagen de cada linea de
+     * producto de una imagen de ticket.
+     *
+     *
+     * @return lista de archivos
+     */
     public ArrayList<File> getProductsFileFromImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         try {
@@ -84,7 +89,8 @@ public class ImageProcess {
             grayImage = suavizado(grayImage);
             Mat deskewImage = deskewingImage(grayImage);
             files = cropImage(deskewImage);
-            //files = binarizaTion(files);
+            files = binarizaTion(files);
+
             Collections.reverse(files);
             return files;
         } catch (IOException ex) {
@@ -94,7 +100,7 @@ public class ImageProcess {
     }
 
     /**
-     * Transforma una imagen en color a escala de grises.
+     * Este método transforma una imagen en color a escala de grises.
      *
      * @param src imagen en color.
      * @return imagen en escala de grises.
@@ -104,29 +110,34 @@ public class ImageProcess {
         Mat grayImage = new Mat(src.height(), src.width(), CvType.CV_8UC1);
         Imgproc.cvtColor(src, grayImage, Imgproc.COLOR_RGB2GRAY);
 
-        String output = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_GRAY" + Utils.extension(imagenOriginal);
-        Imgcodecs.imwrite(output, grayImage);
-
+        /* String output = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_GRAY" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(output, grayImage);*/
         return grayImage;
 
     }
 
+    /**
+     * Este método elimina ruido del archivo de imagen.
+     *
+     * @param src mat de la imagen
+     * @return mat de imagen suavizado.
+     */
     private Mat suavizado(Mat src) {
 
         Mat suavizado = new Mat();
         Imgproc.medianBlur(src, suavizado, 3);
 
-        String output = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_GRAY" + Utils.extension(imagenOriginal);
+        String output = imagenOriginal.getParent() + File.separator + Utils.getFileName(imagenOriginal)
+                + "_GRAY" + Utils.getFileExtension(imagenOriginal);
         Imgcodecs.imwrite(output, suavizado);
 
         return suavizado;
     }
 
     /**
-     * Dada una imagen es escala de grises, endereza la imagen los grados que
-     * esta esté inclinada
+     * Este método a partir de una imagen es escala de grises, endereza la
+     * imagen los grados que esta esté inclinada
      *
      * @param src imagen a enderezar en escala de grises
      * @return imagen correctamente enderezada.
@@ -137,27 +148,25 @@ public class ImageProcess {
 
         Imgproc.threshold(src, binaryImage, 0, 255, Imgproc.THRESH_BINARY_INV | Imgproc.THRESH_OTSU);
 
-        String fileBinario = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_BINARIZADA" + Utils.extension(imagenOriginal);
-        Imgcodecs.imwrite(fileBinario, binaryImage);
-
+        /*String fileBinario = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_BINARIZADA" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileBinario, binaryImage);*/
         double angle = getAnglefromMat(binaryImage);
 
-        
-            Point center = new Point(src.width() / 2, src.height() / 2);
-            Mat rotImage = Imgproc.getRotationMatrix2D(center, angle * 180 / Math.PI, 1);
-            double[] color = src.get(src.height() / 2,src.width() / 2);
-            Scalar s;
-            if(color!=null)
-                s= new Scalar(color[0], 0, 0);
-            else
-                s= new Scalar(255,0,0);
-            Imgproc.warpAffine(src, src, rotImage, src.size(), Imgproc.INTER_CUBIC, Core.BORDER_CONSTANT, s);
-        
-        fileDesk = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_DESKEWING" + Utils.extension(imagenOriginal);
-        Imgcodecs.imwrite(fileDesk, src);
+        Point center = new Point(src.width() / 2, src.height() / 2);
+        Mat rotImage = Imgproc.getRotationMatrix2D(center, angle * 180 / Math.PI, 1);
+        double[] color = src.get(src.height() / 2, src.width() / 2);
+        Scalar s;
+        if (color != null) {
+            s = new Scalar(color[0], 0, 0);
+        } else {
+            s = new Scalar(255, 0, 0);
+        }
+        Imgproc.warpAffine(src, src, rotImage, src.size(), Imgproc.INTER_CUBIC, Core.BORDER_CONSTANT, s);
 
+        /*fileDesk = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_DESKEWING" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileDesk, src);*/
         return src;
 
     }
@@ -169,7 +178,7 @@ public class ImageProcess {
      * @param src Mat de imagen binarizada.
      * @return angulo de inclinación.
      */
-    public double getAnglefromMat(Mat src) {
+    private double getAnglefromMat(Mat src) {
 
         double angle = 0;
         Size size = src.size();
@@ -196,11 +205,12 @@ public class ImageProcess {
         if (angle != 0) {
             angle /= lines.cols();
         }
-        
-         String fileTemp = imagenOriginal.getParent() + File.separator +
-         Utils.filename(imagenOriginal) + "_RECTA" +
-         Utils.extension(imagenOriginal); Imgcodecs.imwrite(fileTemp, original);
-         
+
+        String fileTemp = imagenOriginal.getParent() + File.separator
+                + Utils.getFileName(imagenOriginal) + "_RECTA"
+                + Utils.getFileExtension(imagenOriginal);
+        Imgcodecs.imwrite(fileTemp, original);
+
         return angle;
     }
 
@@ -221,17 +231,16 @@ public class ImageProcess {
 
         Mat binaryImage = binaryImageOriginal.clone();
 
-        String fileBinario = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_BINARIZADA2" + Utils.extension(imagenOriginal);
-        Imgcodecs.imwrite(fileBinario, binaryImage);
-
+        /*String fileBinario = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_BINARIZADA2" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileBinario, binaryImage);*/
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(binaryImage.width(), 1));
         Mat dilate = new Mat();
         Imgproc.dilate(binaryImage, dilate, element);
 
-        String fileDilate = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_DILATE" + Utils.extension(imagenOriginal);
-        Imgcodecs.imwrite(fileDilate, dilate);
+        /*String fileDilate = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_DILATE" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileDilate, dilate);*/
         Mat mask = Mat.zeros(binaryImage.size(), CvType.CV_8UC1);
 
         List<MatOfPoint> contours = new ArrayList<>();
@@ -253,7 +262,7 @@ public class ImageProcess {
             double r = (double) Core.countNonZero(maskROI)
                     / (rect.width * rect.height);
 
-            if (r > .60 && (rect.height > 15 && rect.width >= (2*binaryImage.width())/3)) {
+            if (r > .60 && (rect.height > 25 && rect.width >= (2 * binaryImage.width()) / 3)) {
 
                 Imgproc.rectangle(binaryImageOriginal, new Point(rect.x, rect.y),
                         new Point(rect.x + rect.width, rect.y + rect.height),
@@ -261,17 +270,16 @@ public class ImageProcess {
                 Mat cropped = src.submat(rect);
 
                 Imgproc.threshold(cropped, cropped, 0, 255, Imgproc.THRESH_BINARY_INV | Imgproc.THRESH_OTSU);
-                String filesCrop = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                        + "_CROP" + "_" + i + Utils.extension(imagenOriginal);
+                String filesCrop = imagenOriginal.getParent() + File.separator + Utils.getFileName(imagenOriginal)
+                        + "_CROP" + "_" + i + Utils.getFileExtension(imagenOriginal);
                 Imgcodecs.imwrite(filesCrop, cropped);
                 productos.add(new File(filesCrop));
             }
         }
 
-        String fileCrop = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                + "_CROP" + Utils.extension(imagenOriginal);
-        Imgcodecs.imwrite(fileCrop, binaryImageOriginal);
-
+        /*String fileCrop = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_CROP" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileCrop, binaryImageOriginal);*/
         return productos;
     }
 
@@ -301,8 +309,8 @@ public class ImageProcess {
                 Imgproc.dilate(src, dilate, element1);
                 //Imgproc.morphologyEx(binaryAdaptative, erodeAndDilate, Imgproc.MORPH_OPEN, element1);
 
-                String fileDilate = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                        + "_DILATE2_" + files.indexOf(f) + Utils.extension(imagenOriginal);
+                String fileDilate = imagenOriginal.getParent() + File.separator + Utils.getFileName(imagenOriginal)
+                        + "_DILATE2_" + files.indexOf(f) + Utils.getFileExtension(imagenOriginal);
                 Imgcodecs.imwrite(fileDilate, dilate);
 
                 double erode_size = 3;
@@ -311,8 +319,8 @@ public class ImageProcess {
                 Imgproc.erode(dilate, erode, element2);
                 //Imgproc.morphologyEx(binaryAdaptative, erodeAndDilate, Imgproc.MORPH_OPEN, element1);
 
-                String fileErode = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
-                        + "_ERODE_" + files.indexOf(f) + Utils.extension(imagenOriginal);
+                String fileErode = imagenOriginal.getParent() + File.separator + Utils.getFileName(imagenOriginal)
+                        + "_ERODE_" + files.indexOf(f) + Utils.getFileExtension(imagenOriginal);
 
                 Imgcodecs.imwrite(fileErode, erode);
 

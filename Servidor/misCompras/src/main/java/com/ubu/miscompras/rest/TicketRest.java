@@ -8,9 +8,10 @@ package com.ubu.miscompras.rest;
 import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
+import com.ubu.miscompras.contract.ProductContract;
+import com.ubu.miscompras.exceptions.MisComprasException;
 import com.ubu.miscompras.process.ImageProcess;
 import com.ubu.miscompras.process.ProductProcess;
-import com.ubu.miscompras.utils.Utils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,9 +35,8 @@ import javax.ws.rs.core.Response;
 public class TicketRest {
 
     private static final String SERVER_UPLOAD_LOCATION_FOLDER = "\\Y:\\Desktop\\TrabajoFinaldeGrado\\Servidor\\misCompras\\target\\misCompras-1.0-SNAPSHOT\\images\\";
-    private static File file;
     private String textoFinal;
-
+    
     @GET
     @Path("/test")
     @Produces(MediaType.TEXT_PLAIN)
@@ -45,7 +45,8 @@ public class TicketRest {
     }
 
     /**
-     * metodo Post que guarda la imagen en el servidor.
+     * Este metodo Post que guarda la imagen en el servidor y obtiene sus
+     * productos empaquetandolo en un JSON.
      *
      * @param body
      * @param istream
@@ -62,16 +63,31 @@ public class TicketRest {
 
         String filePath = SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
 
-        //Guarda el fichero en el Servidor.
         saveFile(fileInputStream, filePath);
         istream.close();
-        file = new File(filePath);
-        ImageProcess i = new ImageProcess(filePath);
-        ArrayList<File> productos = i.getProductsFileFromImage();
+
+        ImageProcess image = new ImageProcess(filePath);
+        ArrayList<File> productos = image.getProductsFileFromImage();
+        
         ProductProcess p = new ProductProcess(productos);
-        textoFinal = p.getText();
-        String output = htmlCode();
-        return Response.status(200).entity(output).build();
+        StringBuilder response = new StringBuilder();
+        try {
+            textoFinal = p.getText();
+            String[] splitProducts = textoFinal.split("\n\n");
+            response.append("{");
+            for (int i = 0; i < splitProducts.length; i++) {
+                response.append("\"producto" + i + "\":");
+                response.append(ProductContract.buildJSON(splitProducts[i]));
+                if (i != splitProducts.length - 1) {
+                    response.append(",");
+                }
+            }
+            response.append("}");
+            return Response.status(Response.Status.OK).entity(response.toString()).build();
+
+        } catch (MisComprasException ex) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
 
     }
 
@@ -101,55 +117,55 @@ public class TicketRest {
         }
     }
 
-    private String htmlCode() {
+    /*private String htmlCode() {
 
-        String code2 = this.getClass().getProtectionDomain().getCodeSource().toString();
-        String code = "<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "<body>\n"
-                + "<table>"
-                + "<tr>"
-                + "<td><h2>Imagen original.</h2></td>"
-                + "<td><h2>Imagen Gris.</h2></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><img src=\"/misCompras/images/" + file.getName()
-                + "\" alt=\"Mountain View\"></td>"
-                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_GRAY"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><h2>Imagen Binarizada.</h2></td>"
-                + "<td><h2>Recta Imagen.</h2></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_BINARIZADA"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_RECTA"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><h2>Deskewing.</h2></td>"
-                + "<td><h2>DILATE.</h2></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DESKEWING"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DILATE"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><h2>Crop.</h2></td>"
-                + "<td><h2>Salida.</h2></td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_CROP"
-                + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-                + "<td><p>" + textoFinal + "</p></td>"
-                + "</tr>"
-                + "</table>"
-                + "</body>"
-                + "</html>";
-        return code;
-    }
+     String code2 = this.getClass().getProtectionDomain().getCodeSource().toString();
+     String code = "<!DOCTYPE html>\n"
+     + "<html>\n"
+     + "<body>\n"
+     + "<table>"
+     + "<tr>"
+     + "<td><h2>Imagen original.</h2></td>"
+     + "<td><h2>Imagen Gris.</h2></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><img src=\"/misCompras/images/" + file.getName()
+     + "\" alt=\"Mountain View\"></td>"
+     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_GRAY"
+     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><h2>Imagen Binarizada.</h2></td>"
+     + "<td><h2>Recta Imagen.</h2></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_BINARIZADA"
+     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_RECTA"
+     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><h2>Deskewing.</h2></td>"
+     + "<td><h2>DILATE.</h2></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DESKEWING"
+     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DILATE"
+     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><h2>Crop.</h2></td>"
+     + "<td><h2>Salida.</h2></td>"
+     + "</tr>"
+     + "<tr>"
+     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_CROP"
+     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
+     + "<td><p>" + textoFinal + "</p></td>"
+     + "</tr>"
+     + "</table>"
+     + "</body>"
+     + "</html>";
+     return code;
+     }*/
 }
