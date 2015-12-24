@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="CategoryItems">
+        <item>Bebidas Alcohólicas</item>
+        <item>Refrescos</item>
+        <item>Comida rapida</item>
+        <item>Ensaladas</item>
+        <item>Carnes</item>
+        <item>Pescados</item>
+        <item>Pasta</item>
+        <item>Platos Calientes</item>
+        <item>Raciones</item>
+        <item>Postres</item>
+        <item>Platos Combinados</item>
+        <item>Otros</item>
+    </string-array>
+
+
+    <string-array name="filterDialogItems">
+        <item>Fechas</item>
+        <item>Precio Unitario</item>
+        <item>Categoría</item>
+    </string-array>
+
+</resources>

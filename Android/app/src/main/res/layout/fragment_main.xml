@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/windowsBackground"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.MainActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView_recortada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textoJson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView_recortada"
+        android:textColor="@color/textColorPrimary" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FloattingButton_addCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/FloattingButton_addImage"
+        android:layout_alignStart="@+id/FloattingButton_addImage"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_bottom_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:src="@drawable/ic_photo_camera_white_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="10dp"
+        app:pressedTranslationZ="12dp"
+        app:rippleColor="@color/colorAccentHint" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FloattingButton_addImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/FloattingButton_addTicket"
+        android:layout_alignStart="@+id/FloattingButton_addTicket"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_bottom_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:src="@drawable/ic_photo_white_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="10dp"
+        app:pressedTranslationZ="12dp"
+        app:rippleColor="@color/colorAccentHint" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FloattingButton_addTicket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_24dp"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="10dp"
+        app:rippleColor="@color/colorAccentHint" />
+
+</RelativeLayout>

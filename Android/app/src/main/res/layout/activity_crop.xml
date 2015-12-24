@@ -34,6 +34,7 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:text="Cancelar"
+            android:textColorHint="@color/colorPrimaryDark"
             android:textColor="#FFFFFF" />
 
         <View
@@ -42,6 +43,7 @@
             android:background="@color/windowsBackground" />
 
         <Button
+            android:textColorHint="@color/colorPrimaryDark"
             android:id="@+id/button_recortar"
             android:layout_width="0dp"
             android:layout_height="match_parent"

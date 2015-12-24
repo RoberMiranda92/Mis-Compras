@@ -1,29 +1,28 @@
 package com.ubu.miscompras.fragment;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.activity.CropActivity;
-import com.ubu.miscompras.comunication.WebService;
+import com.ubu.miscompras.activity.AddProductsActivity;
+import com.ubu.miscompras.presenter.MainFragmentPresenter;
 
 /**
  * Created by RobertoMiranda on 17/11/15.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements View.OnClickListener {
 
     private Animation rotate_forward, rotate_backward;
     private FloatingActionButton addTicket_Button;
@@ -33,15 +32,22 @@ public class MainFragment extends Fragment {
     private Animation fab_open;
     private Animation fab_close;
 
-    private final int LOAD_IMAGE_GALLERY = 1;
-    private final int LOAD_IMAGE_CAMERA = 2;
-    private static final int CROP_PIC = 3;
+    public final int LOAD_IMAGE_GALLERY = 1;
+    public final int LOAD_IMAGE_CAMERA = 2;
+    public static final int CROP_PIC = 3;
     private ImageView imageView;
+    private TextView editText;
+
+    private MainFragmentPresenter presenter;
+    private ProgressDialog barProgressDialog;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View mView = inflater.inflate(R.layout.app_bar_main, container, false);
+        presenter = new MainFragmentPresenter(this);
+
+        View mView = inflater.inflate(R.layout.fragment_main, container, false);
 
         imageView = (ImageView) mView.findViewById(R.id.imageView_recortada);
 
@@ -55,34 +61,18 @@ public class MainFragment extends Fragment {
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.FloattingButton_addTicket:
-                        openButtonSelector();
-                        break;
-                    case R.id.FloattingButton_addCamera:
-                        openCameraIntent();
-                        break;
-                    case R.id.FloattingButton_addImage:
-                        openGalleryIntent();
-                        break;
 
-                }
-            }
-        };
+        addTicket_Button.setOnClickListener(this);
+        addImage_Button.setOnClickListener(this);
+        addCamera_Button.setOnClickListener(this);
 
-
-        addTicket_Button.setOnClickListener(clickListener);
-        addImage_Button.setOnClickListener(clickListener);
-        addCamera_Button.setOnClickListener(clickListener);
+        editText = (TextView) mView.findViewById(R.id.textoJson);
         return mView;
 
     }
 
 
-    private void openButtonSelector() {
+    public void openButtonSelector() {
         if (!isButtonClick) {
             addTicket_Button.startAnimation(rotate_forward);
             addImage_Button.startAnimation(fab_open);
@@ -98,54 +88,80 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void openGalleryIntent() {
-
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, LOAD_IMAGE_GALLERY);
-
-    }
-
-    private void openCameraIntent() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);//zero can be replaced with any action code
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK) {
-            Uri uri = data.getData();
-            switch (requestCode) {
-                case CROP_PIC:
-                    imageView.setImageURI(uri);
-                    //startUpload(uri);
-                    break;
-                case LOAD_IMAGE_GALLERY:
-                    performCrop(uri);
-                    break;
-                case LOAD_IMAGE_CAMERA:
-                    performCrop(uri);
-                    break;
-            }
-        } else {
-            Toast.makeText(getContext(), "Error al procesar imagen", Toast.LENGTH_SHORT).show();
+
+        switch (requestCode) {
+            case CROP_PIC:
+                if (resultCode == Activity.RESULT_OK)
+                    presenter.getProducts(data.getData());
+                break;
+            case LOAD_IMAGE_GALLERY:
+                if (resultCode == Activity.RESULT_OK)
+                    presenter.startCropActivity(data.getData());
+                break;
+            case LOAD_IMAGE_CAMERA:
+                if (resultCode == Activity.RESULT_OK)
+                    presenter.startCropActivity(data.getData());
         }
+
     }
 
-    private void startUpload(Uri uri) {
 
-        String picturePath = uri.getPath();
-        WebService tars = new WebService();
-        tars.execute(picturePath);
+    public void setText(String text) {
+        editText.setText(text);
+        Intent i = new Intent();
+        i.setClass(getActivity(), AddProductsActivity.class);
+        i.putExtra("productos", text);
+        startActivity(i);
     }
 
-    /**
-     * this function does the crop operation.
-     */
-    private void performCrop(Uri source) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), CropActivity.class);
-        intent.setData(source);
-        startActivityForResult(intent, CROP_PIC);
+    public void showError(String s) {
+        if (barProgressDialog != null && barProgressDialog.isShowing())
+            barProgressDialog.dismiss();
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showProgresBar() {
+        barProgressDialog = new ProgressDialog(getContext(), R.style.MyAlertDialog);
+        barProgressDialog.setTitle("Subiendo...");
+        barProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        barProgressDialog.setIndeterminate(false);
+        barProgressDialog.setMax(100);
+        barProgressDialog.setProgress(0);
+        barProgressDialog.show();
+
+
+    }
+
+    public void hideProgressBar() {
+        barProgressDialog.dismiss();
+
+    }
+
+    public void setProgressPercentage(Integer progres) {
+        barProgressDialog.setProgress(progres);
+    }
+
+
+    public void setProgressBarTitle(String progressBarText) {
+        barProgressDialog.setTitle(progressBarText);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.FloattingButton_addTicket:
+                openButtonSelector();
+                break;
+            case R.id.FloattingButton_addCamera:
+                presenter.startCameraIntent();
+                break;
+            case R.id.FloattingButton_addImage:
+                presenter.startGalleryIntent();
+                break;
+        }
     }
 }

@@ -1,21 +1,18 @@
 package com.ubu.miscompras.activity;
 
 import android.content.Intent;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.presenter.SplashActivityPresenter;
 import com.ubu.miscompras.utils.Constans;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by RobertoMiranda on 6/11/15.
@@ -23,22 +20,22 @@ import java.io.OutputStream;
 public class SplashActivity extends AppCompatActivity {
 
     private static final long DELAY_TIME = 300;
+    private static final String DATABASE_NAME = "db.sqlite";
     private static String DATABASE_PATH = "/data/data/" + Constans.PACKAGE_NAME + "/databases/";
-    private static String DATABASE_NAME = Constans.DATABASE_NAME;
+    private SplashActivityPresenter presenter;
+    //private static String DATABASE_NAME = Constans.DATABASE_NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        presenter = new SplashActivityPresenter(this);
 
-        boolean dbExist = checkDataBase();
 
-        if (!checkDataBase())
-            try {
-                copyDataBase();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (!checkDataBase()) {
+            String[] categories = getResources().getStringArray(R.array.CategoryItems);
+            presenter.insertCategories(new ArrayList<String>(Arrays.asList(categories)));
+        }
 
         startApp();
 
@@ -57,32 +54,6 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Copia el fichero sqlite de la carpeta assets a un directorio de la aplicación
-     *
-     * @throws IOException
-     */
-    private void copyDataBase() throws IOException {
-
-        InputStream myInput = this.getAssets().open(DATABASE_NAME);
-
-
-        String outFileName = DATABASE_PATH + DATABASE_NAME;
-
-
-        OutputStream myOutput = new FileOutputStream(outFileName);
-
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = myInput.read(buffer)) > 0) {
-            myOutput.write(buffer, 0, length);
-
-        }
-
-        myOutput.flush();
-        myOutput.close();
-        myInput.close();
-    }
 
     private boolean checkDataBase() {
         File path = new File(DATABASE_PATH);
@@ -93,6 +64,16 @@ public class SplashActivity extends AppCompatActivity {
         File databaseFile = new File(pathDB);
 
         return databaseFile.exists() ? true : false;
+    }
+
+    public void showError() {
+
+        Toast.makeText(this, getString(R.string.errorInsert), Toast.LENGTH_SHORT).show();
+    }
+
+    public void showMessage() {
+
+        Toast.makeText(this, getString(R.string.insertCorrect), Toast.LENGTH_SHORT).show();
     }
 }
 

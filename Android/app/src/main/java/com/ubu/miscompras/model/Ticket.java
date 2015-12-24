@@ -15,15 +15,13 @@ import java.util.List;
 public class Ticket {
 
     public static final String ID_FIELD_NAME = "id";
+    public static final String FECHA_FIELD_NAME = "fecha_compra";
     @DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
     private int id;
 
-    @DatabaseField(columnName = "fecha_compra", dataType = DataType.DATE_STRING,
-            format = "yyyy/MM/dd HH:mm:ss",canBeNull = false)
+    @DatabaseField(columnName = FECHA_FIELD_NAME, dataType = DataType.DATE_LONG, canBeNull = false)
     private Date fecha_compra;
 
-    @DatabaseField(columnName = "establecimiento")
-    private String establecimiento;
 
     private List<Producto> productos;
 
@@ -31,10 +29,10 @@ public class Ticket {
 
     }
 
-    public Ticket(Date fecha_compra, String establecimiento) {
+    public Ticket(Date fecha_compra) {
         this.fecha_compra = fecha_compra;
-        this.establecimiento = establecimiento;
     }
+
 
     public int getId() {
         return id;
@@ -44,14 +42,6 @@ public class Ticket {
         this.id = id;
     }
 
-
-    public String getEstablecimiento() {
-        return establecimiento;
-    }
-
-    public void setEstablecimiento(String establecimiento) {
-        establecimiento = establecimiento;
-    }
 
     public List<Producto> getProductos() {
 
@@ -81,9 +71,6 @@ public class Ticket {
         if (!otherMyClass.getFecha_compra().equals(this.getFecha_compra()))
             return false;
 
-        if (!otherMyClass.getEstablecimiento().equals(this.getEstablecimiento())) {
-            return false;
-        }
 
         return true;
     }

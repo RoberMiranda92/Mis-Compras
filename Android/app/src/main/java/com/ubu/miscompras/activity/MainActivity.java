@@ -1,5 +1,6 @@
 package com.ubu.miscompras.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,6 @@ import android.widget.Toast;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.fragment.MainFragment;
 import com.ubu.miscompras.fragment.ProductosFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +42,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.summary);
+        fragment = new MainFragment();
+        changeFragment(fragment);
 
 
     }
@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        FragmentManager manager = getSupportFragmentManager();
 
         switch (id) {
             case R.id.summary:
@@ -96,13 +95,16 @@ public class MainActivity extends AppCompatActivity
             case R.id.products:
                 fragment = new ProductosFragment();
                 break;
+            case R.id.config:
+
+                startSettingsActivity();
+                break;
             default:
                 fragment = null;
                 Toast.makeText(this, "No implementado Aun", Toast.LENGTH_SHORT).show();
 
         }
-        if (fragment != null)
-            manager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
+        changeFragment(fragment);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,8 +112,17 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void changeFragment(Fragment fragment) {
 
+        FragmentManager manager = getSupportFragmentManager();
+        if (fragment != null)
+            manager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
+    }
 
+    private void startSettingsActivity() {
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivity(i);
+    }
 
 
     private void initData() {

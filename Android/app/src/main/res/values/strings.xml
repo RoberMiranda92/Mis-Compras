@@ -1,19 +1,44 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Mis Compras</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Configuración</string>
+    <string name="title_activity_addProducts">Productos</string>
 
 
     <string name="summary">Resumen</string>
     <string name="products">Productos</string>
     <string name="historial">Historial</string>
+    <string name="tools">Configuración</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
     <!--Menus-->
     <string name="filters">Filtros</string>
+    <string name="format_cantidad"><xliff:g id="cantidad">%d</xliff:g>x<xliff:g id="nombre">%s</xliff:g></string>
+    <string name="format_total">Total: <xliff:g id="total">%.2f</xliff:g>€</string>
+    <string name="format_productPrice">Precio: <xliff:g id="precio">%.2f</xliff:g>€</string>
+    <string name="format_importe">Importe: <xliff:g id="importe">%.2f</xliff:g>€</string>
+
+    <string name="format_date"><xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
+
+
+    <string name="pref_ip_display_name">Dirección IP</string>
+    <string name="pref_ip_key">ip</string>
+    <string name="pref_ip_default">192.168.1.1</string>
+
+    <!--Errors-->
+
+    <string name="errorPrices">El precio máximo debe ser mayor que el precio mínimo</string>
+    <string name="filterDialogTitile">Selecione el Filtro</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="productsEmpty">No se encontraton Productos</string>
+    <string name="errorDates">La fecha de fin debe ser mayor que la fecha de inicio</string>
+    <string name="errorInsert">\"Error al insertar los datos\"</string>
+    <string name="insertCorrect">Actualización correcta</string>
 
 </resources>

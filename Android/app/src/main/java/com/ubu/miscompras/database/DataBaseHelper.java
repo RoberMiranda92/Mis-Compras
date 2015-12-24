@@ -42,7 +42,6 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     public DataBaseHelper(Context context) {
-
         super(context, DATABASENAME, null, DATABASE_VERSION);
     }
 
@@ -61,6 +60,14 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
 
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            db.execSQL("PRAGMA foreign_keys=ON;");
+        }
     }
 
     public Dao<Ticket, Integer> getTicketDAO() throws SQLException {
@@ -134,7 +141,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     }
     
     /*
-	 * Convenience methods to build and run our prepared queries.
+     * Convenience methods to build and run our prepared queries.
 	 */
 
     private PreparedQuery<Ticket> ticketsForProductoQuery = null;

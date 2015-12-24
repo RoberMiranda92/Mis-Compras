@@ -19,7 +19,9 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="6dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/AppTheme.Toolbar"
+            app:titleTextAppearance="@style/AppTheme.Toolbar.Title"/>
 
         <FrameLayout
             android:id="@+id/main_fragment_container"
@@ -33,6 +35,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:itemBackground="@drawable/drawe_item_background"
         app:headerLayout="@layout/nav_header_main"
         app:itemIconTint="@drawable/drawer_item"
         app:itemTextColor="@drawable/drawer_item"
