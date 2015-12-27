@@ -22,6 +22,9 @@
     <string name="format_total">Total: <xliff:g id="total">%.2f</xliff:g>€</string>
     <string name="format_productPrice">Precio: <xliff:g id="precio">%.2f</xliff:g>€</string>
     <string name="format_importe">Importe: <xliff:g id="importe">%.2f</xliff:g>€</string>
+    <string name="format_percentage"><xliff:g id="percentage">%.2f</xliff:g></string>
+    <string name="percent_sign">&#x0025;</string>
+    <string name="format_importeTotal"><xliff:g id="importe">%.2f</xliff:g>€</string>
 
     <string name="format_date"><xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
 

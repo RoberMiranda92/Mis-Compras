@@ -75,16 +75,19 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
     }
 
     @Override
-    public void loadComplete(List items) {
-
+    public void loadCompleteCategoria(List<Categoria> items) {
         if (!items.isEmpty()) {
-            Object o = items.get(0);
-            if (o instanceof Categoria) {
-                mView.setCategorias(items);
-            }
-            if (o instanceof TicketProducto) {
-                mView.setItems(items);
-            }
+            mView.setCategorias(items);
+        } else {
+            mView.showMessage(mView.getString(R.string.productsEmpty));
+        }
+
+    }
+
+    @Override
+    public void loadCompleteTicketProducto(List<TicketProducto> items) {
+        if (!items.isEmpty()) {
+            mView.setItems(items);
             mView.showList();
         } else {
             mView.hideList();

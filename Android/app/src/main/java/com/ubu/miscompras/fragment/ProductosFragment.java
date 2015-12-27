@@ -135,7 +135,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
 
         spinerCategorias = (Spinner) mView.findViewById(R.id.spinner_categorias);
-
         spinerCategorias.setOnItemSelectedListener(this);
 
 

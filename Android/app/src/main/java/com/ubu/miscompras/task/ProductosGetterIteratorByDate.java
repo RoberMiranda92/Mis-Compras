@@ -52,7 +52,7 @@ public class ProductosGetterIteratorByDate extends AsyncTask<Void, Void, List<Ti
     public void onPostExecute(List<TicketProducto> items) {
 
         if (items != null)
-            presenter.loadComplete(items);
+            presenter.loadCompleteTicketProducto(items);
         else
             presenter.showError();
 

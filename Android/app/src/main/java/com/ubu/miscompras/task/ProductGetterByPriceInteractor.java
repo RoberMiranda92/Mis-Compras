@@ -50,7 +50,7 @@ public class ProductGetterByPriceInteractor extends AsyncTask<Void, Void, List<T
     public void onPostExecute(List<TicketProducto> items) {
 
         if (items != null)
-            presenter.loadComplete(items);
+            presenter.loadCompleteTicketProducto(items);
         else
             presenter.showError();
 

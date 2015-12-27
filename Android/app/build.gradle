@@ -46,4 +46,5 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'org.apache.httpcomponents:httpmime:4.3.1'
     compile 'com.isseiaoki:simplecropview:1.0.11'
+    compile 'com.txusballesteros:FitChart:1.0'
 }

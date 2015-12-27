@@ -8,18 +8,72 @@
     android:fitsSystemWindows="true"
     tools:context=".activity.MainActivity">
 
-
-    <ImageView
-        android:id="@+id/imageView_recortada"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/textoJson"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/relativeLayout_spinner"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView_recortada"
-        android:textColor="@color/textColorPrimary" />
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:background="@drawable/spinner_border"
+        android:padding="3dip">
+
+        <Spinner
+            android:id="@+id/spinner_categorias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/MyCustomSpinner">
+
+        </Spinner>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:padding="15dp"
+        android:layout_below="@+id/relativeLayout_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.txusballesteros.widgets.FitChart
+            android:layout_gravity="center"
+            app:animationMode="overdraw"
+            android:id="@+id/fitChart"
+            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            app:valueStrokeColor="@color/colorAccent"
+            app:backStrokeColor="@color/lightBlue"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_Percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="200dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/textColorSecondary"
+                android:gravity="center"
+                android:text="0&#x0025;"/>
+
+            <TextView
+                android:id="@+id/textView_Total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="200dp"
+                android:textSize="15sp"
+                android:textColor="#757575"
+                android:gravity="center"
+                android:text="0.00€" />
+
+
+        </LinearLayout>
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/FloattingButton_addCamera"

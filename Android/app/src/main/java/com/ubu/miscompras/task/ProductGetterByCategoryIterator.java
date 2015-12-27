@@ -46,7 +46,7 @@ public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<
     public void onPostExecute(List<TicketProducto> items) {
 
         if (items != null)
-            presenter.loadComplete(items);
+            presenter.loadCompleteTicketProducto(items);
         else
             presenter.showError();
 

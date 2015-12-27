@@ -59,7 +59,12 @@ public class AddProductsPresenter implements MainPresenter, OnFinishedListener, 
     }
 
     @Override
-    public void loadComplete(List items) {
+    public void loadCompleteTicketProducto(List<TicketProducto> items) {
+
+    }
+
+    @Override
+    public void loadCompleteCategoria(List items) {
         mainView.setCategories(items);
     }
 

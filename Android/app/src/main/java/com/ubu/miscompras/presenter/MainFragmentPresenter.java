@@ -9,12 +9,19 @@ import android.provider.MediaStore;
 import com.ubu.miscompras.activity.AddProductsActivity;
 import com.ubu.miscompras.activity.CropActivity;
 import com.ubu.miscompras.fragment.MainFragment;
+import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.task.CategoryGetterInteractor;
 import com.ubu.miscompras.task.ComunicatorService;
+import com.ubu.miscompras.task.ProductGetterByCategoryIterator;
+import com.ubu.miscompras.task.TicketProductoGetterInteractor;
+
+import java.util.List;
 
 /**
  * Created by RobertoMiranda on 16/12/15.
  */
-public class MainFragmentPresenter {
+public class MainFragmentPresenter implements OnLoadComplete{
 
 
     private MainFragment mView;
@@ -29,6 +36,11 @@ public class MainFragmentPresenter {
         String picturePath = getRealPathFromURI(uri);
         ComunicatorService tars = new ComunicatorService(this);
         tars.execute(picturePath);
+    }
+
+    public void getCategorias() {
+        CategoryGetterInteractor task = new CategoryGetterInteractor(this);
+        task.execute();
     }
 
 
@@ -59,6 +71,22 @@ public class MainFragmentPresenter {
         return result;
     }
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void loadCompleteCategoria(List<Categoria> items) {
+        mView.setCategorias(items);
+    }
+
+
+    @Override
+    public void loadCompleteTicketProducto(List<TicketProducto> items) {
+        mView.setProductLines(items);
+    }
+
     public Context getContext() {
         return mView.getContext();
     }
@@ -67,23 +95,7 @@ public class MainFragmentPresenter {
         mView.hideProgressBar();
     }
 
-    public void startGalleryIntent() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        mView.startActivityForResult(galleryIntent, mView.LOAD_IMAGE_GALLERY);
 
-    }
-
-    public void startCameraIntent() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        mView.startActivityForResult(takePicture, mView.LOAD_IMAGE_CAMERA);
-    }
-
-    public void startCropActivity(Uri source) {
-        Intent intent = new Intent();
-        intent.setClass(mView.getActivity(), CropActivity.class);
-        intent.setData(source);
-        mView.startActivityForResult(intent, mView.CROP_PIC);
-    }
 
     public void showProgresBar() {
         mView.showProgresBar();
@@ -99,5 +111,19 @@ public class MainFragmentPresenter {
 
     public void showErrorMensage(String s) {
         mView.showError(s);
+    }
+
+    public void onResume() {
+        getCategorias();
+    }
+
+    public void getProductLines() {
+        TicketProductoGetterInteractor task = new TicketProductoGetterInteractor(this);
+        task.execute();
+    }
+
+    public void drawCharByCategoty(Categoria item) {
+        ProductGetterByCategoryIterator task = new ProductGetterByCategoryIterator(this,item);
+        task.execute();
     }
 }

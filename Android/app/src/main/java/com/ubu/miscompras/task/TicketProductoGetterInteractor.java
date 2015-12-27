@@ -3,9 +3,8 @@ package com.ubu.miscompras.task;
 import android.os.AsyncTask;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.ubu.miscompras.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.OnLoadComplete;
 
 import java.sql.SQLException;
@@ -13,32 +12,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 18/12/15.
+ * Created by RobertoMiranda on 27/12/15.
  */
-public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categoria>> {
+public class TicketProductoGetterInteractor extends AsyncTask<Void, Void, List<TicketProducto>> {
 
 
-    private Dao<Categoria, Integer> categoriaDao;
+    private Dao<TicketProducto, Integer> categoriaDao;
     private DataBaseHelper db;
     private OnLoadComplete presenter;
 
-    public CategoryGetterInteractor(OnLoadComplete presenter) {
+    public TicketProductoGetterInteractor(OnLoadComplete presenter) {
         this.presenter = presenter;
 
         db = new DataBaseHelper(presenter.getContext());
 
         try {
-            categoriaDao = db.getCategoriaDAO();
+            categoriaDao = db.getTicketProductoDAO();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onPostExecute(List<Categoria> items) {
+    public void onPostExecute(List<TicketProducto> items) {
 
         if (items != null)
-            presenter.loadCompleteCategoria(items);
+            presenter.loadCompleteTicketProducto(items);
         else
             presenter.showError();
 
@@ -46,12 +45,11 @@ public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categor
 
 
     @Override
-    protected List<Categoria> doInBackground(Void... params) {
+    protected List<TicketProducto> doInBackground(Void... params) {
 
-        List<Categoria> items = new ArrayList<>();
+        List<TicketProducto> items = new ArrayList<>();
         try {
-            QueryBuilder<Categoria,Integer> categoryQb= categoriaDao.queryBuilder();
-            items = categoryQb.orderBy(Categoria.NOMBRE_FIELD,true).query();
+            items = categoriaDao.queryForAll();
         } catch (SQLException ex) {
             return null;
         }

@@ -2,8 +2,12 @@ package com.ubu.miscompras.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,18 +15,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.txusballesteros.widgets.FitChart;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.activity.AddProductsActivity;
+import com.ubu.miscompras.activity.CropActivity;
+import com.ubu.miscompras.adapters.CategoryAdapter;
+import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.MainFragmentPresenter;
+
+import java.util.List;
 
 /**
  * Created by RobertoMiranda on 17/11/15.
  */
-public class MainFragment extends Fragment implements View.OnClickListener {
+public class MainFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Animation rotate_forward, rotate_backward;
     private FloatingActionButton addTicket_Button;
@@ -40,6 +53,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private MainFragmentPresenter presenter;
     private ProgressDialog barProgressDialog;
+    private List<TicketProducto> productLines;
+    private FitChart fitChart;
+    private TextView textView_ammount;
+    private Spinner spinerCategorias;
+    private CategoryAdapter categoryAdapter;
+    private int position = 0;
+    private TextView texView_totalImport;
 
 
     @Override
@@ -48,8 +68,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         presenter = new MainFragmentPresenter(this);
 
         View mView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        imageView = (ImageView) mView.findViewById(R.id.imageView_recortada);
 
 
         addTicket_Button = (FloatingActionButton) mView.findViewById(R.id.FloattingButton_addTicket);
@@ -66,7 +84,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         addImage_Button.setOnClickListener(this);
         addCamera_Button.setOnClickListener(this);
 
-        editText = (TextView) mView.findViewById(R.id.textoJson);
+
+        spinerCategorias = (Spinner) mView.findViewById(R.id.spinner_categorias);
+        spinerCategorias.setOnItemSelectedListener(this);
+
+        fitChart = (FitChart) mView.findViewById(R.id.fitChart);
+        fitChart.setMinValue(0f);
+        fitChart.setMaxValue(100f);
+
+        textView_ammount = (TextView) mView.findViewById(R.id.textView_Percentage);
+        texView_totalImport = (TextView) mView.findViewById(R.id.textView_Total);
+
+        presenter.onResume();
+
         return mView;
 
     }
@@ -88,8 +118,33 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        this.position = sharedPref.getInt("spinnerPosition", 0);
+        spinerCategorias.setSelection(position);
+
+
+    }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("spinnerPosition", position);
+        editor.commit();
+
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -100,18 +155,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 break;
             case LOAD_IMAGE_GALLERY:
                 if (resultCode == Activity.RESULT_OK)
-                    presenter.startCropActivity(data.getData());
+                    startCropActivity(data.getData());
                 break;
             case LOAD_IMAGE_CAMERA:
                 if (resultCode == Activity.RESULT_OK)
-                    presenter.startCropActivity(data.getData());
+                    startCropActivity(data.getData());
         }
 
     }
 
 
     public void setText(String text) {
-        editText.setText(text);
         Intent i = new Intent();
         i.setClass(getActivity(), AddProductsActivity.class);
         i.putExtra("productos", text);
@@ -157,11 +211,72 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 openButtonSelector();
                 break;
             case R.id.FloattingButton_addCamera:
-                presenter.startCameraIntent();
+                startCameraIntent();
                 break;
             case R.id.FloattingButton_addImage:
-                presenter.startGalleryIntent();
+                startGalleryIntent();
                 break;
         }
+    }
+
+    public void startGalleryIntent() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, LOAD_IMAGE_GALLERY);
+
+    }
+
+    public void startCameraIntent() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);
+    }
+
+    public void startCropActivity(Uri source) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), CropActivity.class);
+        intent.setData(source);
+        startActivityForResult(intent, CROP_PIC);
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        categoryAdapter = new CategoryAdapter(getContext(), R.layout.item_category, categorias);
+        spinerCategorias.setAdapter(categoryAdapter);
+    }
+
+    public void setProductLines(List<TicketProducto> productLines) {
+        this.productLines = productLines;
+
+        float total = 0;
+        for (TicketProducto p : productLines) {
+
+            total += p.getImporte();
+        }
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        double importeTotal = sharedPref.getFloat("importeTotal", total);
+        if (importeTotal == 0) {
+            textView_ammount.setText(getString(R.string.format_percentage, importeTotal) + getString(R.string.percent_sign));
+            fitChart.setValue((float) importeTotal);
+        } else {
+            double percentage = (total / importeTotal) * 100;
+
+            textView_ammount.setText(getString(R.string.format_percentage, percentage) + getString(R.string.percent_sign));
+            fitChart.setValue((float) percentage);
+        }
+        texView_totalImport.setText(getString(R.string.format_importeTotal, total));
+
+
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        presenter.drawCharByCategoty(categoryAdapter.getItem(position));
+        this.position = position;
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

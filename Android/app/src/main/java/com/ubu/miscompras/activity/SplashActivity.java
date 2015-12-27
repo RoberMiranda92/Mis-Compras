@@ -1,18 +1,23 @@
 package com.ubu.miscompras.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.SplashActivityPresenter;
 import com.ubu.miscompras.utils.Constans;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by RobertoMiranda on 6/11/15.
@@ -37,8 +42,13 @@ public class SplashActivity extends AppCompatActivity {
             presenter.insertCategories(new ArrayList<String>(Arrays.asList(categories)));
         }
 
-        startApp();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
     }
 
     private void startApp() {
@@ -74,6 +84,23 @@ public class SplashActivity extends AppCompatActivity {
     public void showMessage() {
 
         Toast.makeText(this, getString(R.string.insertCorrect), Toast.LENGTH_SHORT).show();
+    }
+
+    public void setTicketProducto(List<TicketProducto> ticketProducto) {
+
+        float total = 0;
+
+        for (TicketProducto l : ticketProducto)
+            total += l.getImporte();
+
+
+        SharedPreferences sharedPref =getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat("importeTotal", total);
+        editor.commit();
+
+
+        startApp();
     }
 }
 
