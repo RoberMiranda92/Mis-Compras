@@ -28,7 +28,7 @@ public class Categoria implements Parcelable{
     public static final int PLATOS_COMBINADOS = 11;
     public static final int OTROS = 12;
 
-
+    public static final String TABLE_NAME = "categoria";
     public static final String ID_FIELD = "id";
     public static final String NOMBRE_FIELD = "nombre";
 

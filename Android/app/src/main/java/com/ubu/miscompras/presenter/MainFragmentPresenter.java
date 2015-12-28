@@ -7,21 +7,19 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.ubu.miscompras.activity.AddProductsActivity;
-import com.ubu.miscompras.activity.CropActivity;
 import com.ubu.miscompras.fragment.MainFragment;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.task.CategoryGetterInteractor;
 import com.ubu.miscompras.task.ComunicatorService;
 import com.ubu.miscompras.task.ProductGetterByCategoryIterator;
-import com.ubu.miscompras.task.TicketProductoGetterInteractor;
 
 import java.util.List;
 
 /**
  * Created by RobertoMiranda on 16/12/15.
  */
-public class MainFragmentPresenter implements OnLoadComplete{
+public class MainFragmentPresenter implements OnLoadComplete {
 
 
     private MainFragment mView;
@@ -38,7 +36,8 @@ public class MainFragmentPresenter implements OnLoadComplete{
         tars.execute(picturePath);
     }
 
-    public void getCategorias() {
+    @Override
+    public void getCategories() {
         CategoryGetterInteractor task = new CategoryGetterInteractor(this);
         task.execute();
     }
@@ -87,14 +86,10 @@ public class MainFragmentPresenter implements OnLoadComplete{
         mView.setProductLines(items);
     }
 
-    public Context getContext() {
-        return mView.getContext();
-    }
 
     public void hideProgressBar() {
         mView.hideProgressBar();
     }
-
 
 
     public void showProgresBar() {
@@ -113,17 +108,14 @@ public class MainFragmentPresenter implements OnLoadComplete{
         mView.showError(s);
     }
 
+    @Override
     public void onResume() {
-        getCategorias();
+        getCategories();
     }
 
-    public void getProductLines() {
-        TicketProductoGetterInteractor task = new TicketProductoGetterInteractor(this);
-        task.execute();
-    }
 
     public void drawCharByCategoty(Categoria item) {
-        ProductGetterByCategoryIterator task = new ProductGetterByCategoryIterator(this,item);
+        ProductGetterByCategoryIterator task = new ProductGetterByCategoryIterator(this, item);
         task.execute();
     }
 }

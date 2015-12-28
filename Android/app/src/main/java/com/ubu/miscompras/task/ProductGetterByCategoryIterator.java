@@ -3,7 +3,9 @@ package com.ubu.miscompras.task;
 import android.os.AsyncTask;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.field.DataType;
+import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.Producto;
@@ -31,7 +33,7 @@ public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<
         this.categoria = categoria;
         this.presenter = presenter;
 
-        db = new DataBaseHelper(presenter.getContext());
+        db = new DataBaseHelper(App.getAppContext());
 
         try {
             lineaProductoDao = db.getTicketProductoDAO();
@@ -59,12 +61,29 @@ public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<
         List<TicketProducto> products = new ArrayList<>();
 
         try {
-            QueryBuilder<Producto, Integer> productQb = productoDao.queryBuilder();
-            productQb.where().eq(Producto.CATEGORIA_FIELD__ID, categoria);
+            GenericRawResults<Object[]> rawResults =
+                    lineaProductoDao.queryRaw(
+                            "SELECT SUM(" + TicketProducto.TABLE_NAME + "." + TicketProducto.CANTIDAD + ")AS Cantidad," +
+                                    "SUM(" + TicketProducto.TABLE_NAME + "." + TicketProducto.IMPORTE + ")AS Importe," +
+                                    TicketProducto.PRECIO + "," + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME +
+                                    " FROM " + TicketProducto.TABLE_NAME + " JOIN " + Producto.TABLE_NAME +
+                                    " ON " + TicketProducto.TABLE_NAME + "." + TicketProducto.PRODUCTO_ID_FIELD_NAME +
+                                    "=" + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME + " JOIN " + Categoria.TABLE_NAME +
+                                    " ON " + Producto.TABLE_NAME + "." + Producto.CATEGORIA_FIELD__ID + "=" + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD +
+                                    " WHERE " + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD + "=? GROUP BY " + TicketProducto.TABLE_NAME + "." + TicketProducto.PRODUCTO_ID_FIELD_NAME,
+                            new DataType[]{DataType.INTEGER, DataType.DOUBLE, DataType.DOUBLE, DataType.INTEGER}, String.valueOf(categoria.getId()));
 
-            QueryBuilder<TicketProducto, Integer> lineaPRoductoQb = lineaProductoDao.queryBuilder();
 
-            products = lineaPRoductoQb.join(productQb).query();
+            for (Object[] resultArray : rawResults) {
+                int cant = (int) resultArray[0];
+                double importe = (double) resultArray[1];
+                double precio = (double) resultArray[2];
+                Producto p = productoDao.queryForId((int) resultArray[3]);
+                TicketProducto t = new TicketProducto(p, cant, precio, importe);
+                products.add(t);
+            }
+            rawResults.close();
+
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
+import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.Ticket;
@@ -29,7 +30,7 @@ public class CaregoryInsertInteractor extends AsyncTask<Void, Void, Boolean> {
     public CaregoryInsertInteractor(OnFinishedListener presenter, List<String> categories) {
         this.presenter = presenter;
         this.categories = categories;
-        db = new DataBaseHelper(presenter.getContext());
+        db = new DataBaseHelper(App.getAppContext());
 
         try {
             categoriaDao = db.getCategoriaDAO();

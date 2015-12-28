@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 16/12/15.
  */
-public class AddProductsPresenter implements MainPresenter, OnFinishedListener, OnLoadComplete {
+public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete {
 
 
     private double total;
@@ -43,8 +43,7 @@ public class AddProductsPresenter implements MainPresenter, OnFinishedListener, 
             mainView.setDate(dateFormat.format(cal.getTime()));
             mainView.setTotal(total);
             mainView.setItems(lineas);
-            CategoryGetterInteractor task = new CategoryGetterInteractor(this);
-            task.execute();
+            getCategories();
 
         } else {
             mainView.showErrorMensage();
@@ -52,6 +51,7 @@ public class AddProductsPresenter implements MainPresenter, OnFinishedListener, 
 
 
     }
+
 
     @Override
     public void showError() {
@@ -64,19 +64,16 @@ public class AddProductsPresenter implements MainPresenter, OnFinishedListener, 
     }
 
     @Override
+    public void getCategories() {
+        CategoryGetterInteractor task = new CategoryGetterInteractor(this);
+        task.execute();
+    }
+
+    @Override
     public void loadCompleteCategoria(List items) {
         mainView.setCategories(items);
     }
 
-    @Override
-    public Context getContext() {
-        return mainView;
-    }
-
-    @Override
-    public void onItemClicked(int position) {
-
-    }
 
     public void setResource(String json) {
         this.json = json;

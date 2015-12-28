@@ -6,6 +6,7 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.Producto;
@@ -34,7 +35,7 @@ public class ProductInsertIterator extends AsyncTask<List<TicketProducto>, Void,
 
     public ProductInsertIterator(AddProductsPresenter presenter) {
         this.presenter = presenter;
-        db = new DataBaseHelper(presenter.getContext());
+        db = new DataBaseHelper(App.getAppContext());
         try {
             productoDao = db.getProductoDAO();
             lineaProductoDao = db.getTicketProductoDAO();

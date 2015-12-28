@@ -61,7 +61,8 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
     }
 
     @Override
-    public Context getContext() {
-        return mView;
+    public void getCategories() {
+
     }
+
 }

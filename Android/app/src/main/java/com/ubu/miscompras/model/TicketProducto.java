@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "ticketproducto")
 public class TicketProducto implements Parcelable {
 
-
+    public static final String TABLE_NAME = "ticketproducto";
     public static final String TICKET_ID_FIELD_NAME = "id_ticket";
     public static final String PRODUCTO_ID_FIELD_NAME = "id_producto";
     public static final String CANTIDAD = "cantidadt";

@@ -3,6 +3,7 @@ package com.ubu.miscompras.task;
 import android.os.AsyncTask;
 
 import com.j256.ormlite.dao.Dao;
+import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.OnLoadComplete;
@@ -24,7 +25,7 @@ public class TicketProductoGetterInteractor extends AsyncTask<Void, Void, List<T
     public TicketProductoGetterInteractor(OnLoadComplete presenter) {
         this.presenter = presenter;
 
-        db = new DataBaseHelper(presenter.getContext());
+        db = new DataBaseHelper(App.getAppContext());
 
         try {
             categoriaDao = db.getTicketProductoDAO();

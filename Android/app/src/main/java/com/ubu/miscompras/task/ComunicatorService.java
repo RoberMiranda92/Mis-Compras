@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.presenter.MainFragmentPresenter;
 import com.ubu.miscompras.utils.AndroidMultiPartEntity;
+import com.ubu.miscompras.utils.Constans;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -45,7 +47,7 @@ public class ComunicatorService extends AsyncTask<String, Integer, String> {
 
     public ComunicatorService(MainFragmentPresenter presenter) {
         this.presenter = presenter;
-        this.context = presenter.getContext();
+        this.context = App.getAppContext();
     }
 
     @Override
@@ -103,7 +105,14 @@ public class ComunicatorService extends AsyncTask<String, Integer, String> {
 
             String ip = pref.getString(context.getString(R.string.pref_ip_key), context.getString(R.string.pref_ip_default));
 
-            HttpPost httppost = new HttpPost("http://" + ip + ":8080/misCompras/rest/file/upload");
+            StringBuilder builder = new StringBuilder();
+
+            builder.append(Constans.PROTOCOL);
+            builder.append(ip);
+            builder.append(Constans.PORT);
+            builder.append(Constans.URL_PATH);
+
+            HttpPost httppost = new HttpPost(builder.toString());
 
 
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,

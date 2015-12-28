@@ -63,7 +63,8 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
 
     }
 
-    public void getCategorias() {
+    @Override
+    public void getCategories() {
         CategoryGetterInteractor task = new CategoryGetterInteractor(this);
         task.execute();
     }
@@ -96,10 +97,6 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
 
     }
 
-    @Override
-    public Context getContext() {
-        return mView.getContext();
-    }
 
     public void showStartDialog(Date startDate) {
 
@@ -111,7 +108,6 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
     }
 
     public void setStartDate(Date startDate) {
-
         mView.setStartDate(startDate);
     }
 
@@ -120,8 +116,9 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
     }
 
 
+    @Override
     public void onResume() {
-        getCategorias();
+        getCategories();
         Calendar cal = Calendar.getInstance();
         setEndDate(cal.getTime());
         cal.set(Calendar.HOUR_OF_DAY, 0);

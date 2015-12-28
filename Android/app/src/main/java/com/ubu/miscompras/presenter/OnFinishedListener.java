@@ -7,5 +7,4 @@ import android.content.Context;
  */
 public interface OnFinishedListener {
     void onFinished(Boolean result);
-    Context getContext();
 }

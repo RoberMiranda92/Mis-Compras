@@ -10,7 +10,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "producto")
 public class Producto {
 
-
+    public static final String TABLE_NAME = "producto";
     public static final String ID_FIELD_NAME = "id";
     public static final String NOMBRE_FIELD_NAME = "nombre";
     public static final String CATEGORIA_FIELD__ID = "id_categoria";

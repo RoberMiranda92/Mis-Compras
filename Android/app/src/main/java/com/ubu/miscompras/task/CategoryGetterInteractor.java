@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.presenter.OnLoadComplete;
@@ -25,7 +26,7 @@ public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categor
     public CategoryGetterInteractor(OnLoadComplete presenter) {
         this.presenter = presenter;
 
-        db = new DataBaseHelper(presenter.getContext());
+        db = new DataBaseHelper(App.getAppContext());
 
         try {
             categoriaDao = db.getCategoriaDAO();
@@ -52,6 +53,7 @@ public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categor
         try {
             QueryBuilder<Categoria,Integer> categoryQb= categoriaDao.queryBuilder();
             items = categoryQb.orderBy(Categoria.NOMBRE_FIELD,true).query();
+
         } catch (SQLException ex) {
             return null;
         }

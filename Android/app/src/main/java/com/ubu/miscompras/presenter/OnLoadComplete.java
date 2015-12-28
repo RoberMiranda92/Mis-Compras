@@ -19,5 +19,7 @@ public interface OnLoadComplete {
 
     public void loadCompleteTicketProducto(List<TicketProducto> items);
 
-    public Context getContext();
+    public void getCategories();
+
+    public void onResume();
 }

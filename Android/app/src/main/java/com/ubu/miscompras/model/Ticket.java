@@ -14,8 +14,10 @@ import java.util.List;
 @DatabaseTable(tableName = "ticket")
 public class Ticket {
 
+    public static final String TABLE_NAME = "ticket";
     public static final String ID_FIELD_NAME = "id";
     public static final String FECHA_FIELD_NAME = "fecha_compra";
+
     @DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
     private int id;
 
