@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,29 +38,21 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 29/12/15.
  */
-public class TicketFragment extends android.support.v4.app.Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, Animation.AnimationListener {
+public class TicketFragment extends android.support.v4.app.Fragment implements View.OnClickListener, Animation.AnimationListener {
 
 
     private static EditText editTextStartDate;
     private static EditText editTextEndDate;
-    private static int year_x;
-    private static int month_x;
-    private static int day_x;
-    private static int year_y;
-    private static int month_y;
-    private static int day_y;
     private FloatingActionButton botonBuscar;
     private int filtro = 0;
     private LinearLayout linearFechas;
     private LinearLayout linearPrecios;
-    private LinearLayout linearCategorias;
     private Spinner spinerCategorias;
     private Animation slide_down;
     private Animation slide_up;
     private LinearLayout currentLinearLayout;
     private AppBarLayout rectangulo;
     private TicketFragmentPresenter presenter;
-    private int categorySelected;
     private EditText editTextMinPrice;
     private EditText editTextMaxPrice;
     private Date startDate;
@@ -100,14 +91,14 @@ public class TicketFragment extends android.support.v4.app.Fragment implements A
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+
         View mView = inflater.inflate(R.layout.fragment_productos, container, false);
 
-        getActivity().setTitle(getString(R.string.historial));
+        setHasOptionsMenu(true);
+
 
         linearFechas = (LinearLayout) mView.findViewById(R.id.linear_fechas);
         linearPrecios = (LinearLayout) mView.findViewById(R.id.linear_precios);
-        linearCategorias = (LinearLayout) mView.findViewById(R.id.linear_categorias);
 
         editTextStartDate = (EditText) mView.findViewById(R.id.editText_startDate);
         editTextEndDate = (EditText) mView.findViewById(R.id.editText_endDate);
@@ -124,15 +115,6 @@ public class TicketFragment extends android.support.v4.app.Fragment implements A
         editTextEndDate.setOnClickListener(this);
         botonBuscar.setOnClickListener(this);
 
-
-        editTextStartDate.setText(getString(R.string.format_date, day_x, month_x, year_x));
-        editTextEndDate.setText(getString(R.string.format_date, day_y, month_y, year_y));
-
-
-        spinerCategorias = (Spinner) mView.findViewById(R.id.spinner_categorias);
-        spinerCategorias.setOnItemSelectedListener(this);
-
-
         rectangulo = (AppBarLayout) mView.findViewById(R.id.AppBarLayout_fragmentProductos);
         slide_up.setAnimationListener(this);
         slide_down.setAnimationListener(this);
@@ -143,8 +125,6 @@ public class TicketFragment extends android.support.v4.app.Fragment implements A
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView_list.addItemDecoration(new VerticalDividerItemDecorator(1, false));
 
-
-        //recyclerView_list.setAdapter(recyclerView_Adapter);
 
         switchFilter(0);
 
@@ -157,6 +137,7 @@ public class TicketFragment extends android.support.v4.app.Fragment implements A
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(getString(R.string.historial));
         presenter.onResume();
 
 
@@ -290,15 +271,6 @@ public class TicketFragment extends android.support.v4.app.Fragment implements A
         recyclerView_list.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        categorySelected = position;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     @Override
     public void onClick(View v) {

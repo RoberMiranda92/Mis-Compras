@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TimerTask;
 
 /**
  * Created by RobertoMiranda on 6/11/15.
@@ -98,8 +99,13 @@ public class SplashActivity extends AppCompatActivity {
         editor.putFloat("importeTotal", total);
         editor.commit();
 
+        new Handler().postDelayed(new TimerTask() {
+            @Override
+            public void run() {
+                startApp();
+            }
+        },1500);
 
-        startApp();
     }
 }
 

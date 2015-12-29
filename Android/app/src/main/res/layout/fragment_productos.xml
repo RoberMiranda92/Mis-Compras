@@ -83,6 +83,7 @@
             android:id="@+id/linear_precios"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:minHeight="0dp"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_scrollFlags="scroll|enterAlways">

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,12 +46,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     private FloatingActionButton addImage_Button;
     private Animation fab_open;
     private Animation fab_close;
-    private ImageView imageView;
-    private TextView editText;
 
     private MainFragmentPresenter presenter;
     private ProgressDialog barProgressDialog;
-    private List<LineaProducto> productLines;
     private FitChart fitChart;
     private TextView textView_ammount;
     private Spinner spinerCategorias;
@@ -68,7 +64,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
 
         View mView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        getActivity().setTitle(getString(R.string.app_name));
 
         addTicket_Button = (FloatingActionButton) mView.findViewById(R.id.FloattingButton_addTicket);
         addCamera_Button = (FloatingActionButton) mView.findViewById(R.id.FloattingButton_addCamera);
@@ -131,6 +126,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(getString(R.string.app_name));
 
 
     }
@@ -243,7 +239,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     public void setProductLines(List<LineaProducto> productLines) {
-        this.productLines = productLines;
 
         float total = 0;
         for (LineaProducto p : productLines) {

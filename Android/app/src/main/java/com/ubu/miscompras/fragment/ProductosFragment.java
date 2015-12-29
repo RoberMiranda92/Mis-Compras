@@ -49,12 +49,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     private static EditText editTextStartDate;
     private static EditText editTextEndDate;
-    private static int year_x;
-    private static int month_x;
-    private static int day_x;
-    private static int year_y;
-    private static int month_y;
-    private static int day_y;
     private FloatingActionButton botonBuscar;
     private int filtro = 0;
     private LinearLayout linearFechas;
@@ -86,9 +80,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         presenter = new ProductoFragmentPresenter(this);
 
 
-        final Calendar calendar = Calendar.getInstance();
-
-
         slide_down = AnimationUtils.loadAnimation(getContext(),
                 R.anim.slide_down);
 
@@ -110,7 +101,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         setHasOptionsMenu(true);
         View mView = inflater.inflate(R.layout.fragment_productos, container, false);
 
-        getActivity().setTitle(getString(R.string.products));
 
         linearFechas = (LinearLayout) mView.findViewById(R.id.linear_fechas);
         linearPrecios = (LinearLayout) mView.findViewById(R.id.linear_precios);
@@ -132,10 +122,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         botonBuscar.setOnClickListener(this);
 
 
-        editTextStartDate.setText(getString(R.string.format_date, day_x, month_x, year_x));
-        editTextEndDate.setText(getString(R.string.format_date, day_y, month_y, year_y));
-
-
         spinerCategorias = (Spinner) mView.findViewById(R.id.spinner_categorias);
         spinerCategorias.setOnItemSelectedListener(this);
 
@@ -151,8 +137,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         recyclerView_list.addItemDecoration(new VerticalDividerItemDecorator(1, false));
 
 
-        //recyclerView_list.setAdapter(recyclerView_Adapter);
-
         switchFilter(0);
 
 
@@ -164,6 +148,7 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(getString(R.string.products));
         presenter.onResume();
 
 
@@ -191,6 +176,7 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     public void hideFilter() {
+        rectangulo.setVisibility(View.GONE);
         rectangulo.startAnimation(slide_up);
     }
 

@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -19,10 +19,19 @@ import com.ubu.miscompras.fragment.MainFragment;
 import com.ubu.miscompras.fragment.ProductosFragment;
 import com.ubu.miscompras.fragment.TicketFragment;
 
+import java.util.HashMap;
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Fragment fragment;
+    private Stack<Fragment> fragmentStack;
+    private FragmentManager fragmentManager;
+    private int currentFragment = 0;
+    private int selectedFragment = 0;
+    private NavigationView navigationView;
+    private HashMap<Fragment, Integer> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,64 +49,74 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.summary);
+
+        fragmentStack = new Stack<Fragment>();
+        fragments = new HashMap<>();
+        
+
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+
+
+        navigationView.setCheckedItem(R.id.summary);
+
+        fragmentStack.clear();;
+
         fragment = new MainFragment();
-        changeFragment(fragment);
+        fragments.put(fragment, 0);
 
-
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.add(R.id.main_fragment_container, fragment);
+        fragmentStack.push(fragment);
+        ft.commit();
     }
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+
+        if (selectedFragment == 0) {
             super.onBackPressed();
+        } else {
+
+            if (fragmentStack.size() >= 2) {
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                fragmentStack.lastElement().onPause();
+                ft.remove(fragmentStack.pop());
+                fragmentStack.lastElement().onResume();
+                int key = fragments.get(fragmentStack.lastElement());
+                navigationView.getMenu().getItem(key).setChecked(true);
+                ft.show(fragmentStack.lastElement());
+                ft.commit();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
         switch (id) {
             case R.id.summary:
                 fragment = new MainFragment();
+                selectedFragment = 0;
                 break;
             case R.id.products:
                 fragment = new ProductosFragment();
+                selectedFragment = 1;
                 break;
-            case  R.id.tickets:
-                fragment=new TicketFragment();
+            case R.id.tickets:
+                fragment = new TicketFragment();
+                selectedFragment = 2;
                 break;
             case R.id.config:
                 startSettingsActivity();
@@ -107,6 +126,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "No implementado Aun", Toast.LENGTH_SHORT).show();
 
         }
+        fragments.put(fragment, selectedFragment);
         changeFragment(fragment);
 
 
@@ -117,9 +137,17 @@ public class MainActivity extends AppCompatActivity
 
     private void changeFragment(Fragment fragment) {
 
-        FragmentManager manager = getSupportFragmentManager();
-        if (fragment != null)
-            manager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
+        if (fragment != null && currentFragment != selectedFragment) {
+            currentFragment = selectedFragment;
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.add(R.id.main_fragment_container, fragment);
+            fragmentStack.lastElement().onPause();
+            ft.hide(fragmentStack.lastElement());
+            fragmentStack.push(fragment);
+            ft.commit();
+        }
+
+
     }
 
     private void startSettingsActivity() {
@@ -127,61 +155,4 @@ public class MainActivity extends AppCompatActivity
         startActivity(i);
     }
 
-
-    private void initData() {
-
-        /*DataBaseHelper helper = new DataBaseHelper(this);
-
-        //InsertarCategorias
-
-        try {
-            Dao<Categoria, Integer> categoriaDAO = helper.getCategoriaDAO();
-            Dao<Producto, Integer> productoDAO = helper.getProductoDAO();
-            Dao<Ticket, Integer> ticketDAO = helper.getTicketDAO();
-            Dao<LineaProducto, Integer> ticketProductoDAO = helper.getTicketProductoDAO();
-
-
-            categoriaDAO.create(new Categoria("Fruta"));
-            categoriaDAO.create(new Categoria("Verdura"));
-            categoriaDAO.create(new Categoria("Lacteos"));
-
-            List<Categoria> categorias = categoriaDAO.queryForAll();
-
-            productoDAO.create(new Producto("Naranja", 4, 0.98, categoriaDAO.queryForId(1)));
-            productoDAO.create(new Producto("Manzana", 4, 0.98, categoriaDAO.queryForId(1)));
-
-            productoDAO.create(new Producto("Lechuga", 4, 0.98, categoriaDAO.queryForId(2)));
-            productoDAO.create(new Producto("Judias", 4, 0.98, categoriaDAO.queryForId(2)));
-
-            productoDAO.create(new Producto("Leche Entera", 4, 0.98, categoriaDAO.queryForId(3)));
-            productoDAO.create(new Producto("Leche Desnatada", 4, 0.98, categoriaDAO.queryForId(3)));
-
-
-            List<Producto> productos = productoDAO.queryForAll();
-
-
-            ticketDAO.create(new Ticket(new Date(), "Mercadona", productos));
-
-            List<Ticket> tickets = ticketDAO.queryForAll();
-
-            for (Producto p : productos)
-                ticketProductoDAO.create(new LineaProducto(ticketDAO.queryForId(1), p));
-
-            List<LineaProducto> list = ticketProductoDAO.queryForAll();
-
-            for (LineaProducto tp : list) {
-                ticketDAO.refresh(tp.getTicket());
-                productoDAO.refresh(tp.getProducto());
-                categoriaDAO.refresh(tp.getProducto().getCategoria());
-            }
-
-
-            Log.d("Producto", "producto");
-
-        } catch (java.sql.SQLException e) {
-            e.printStackTrace();
-        }*/
-
-
-    }
 }

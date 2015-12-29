@@ -46,7 +46,7 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
 
     @Override
     public void showError() {
-
+        mView.showError();
     }
 
     @Override
@@ -61,7 +61,6 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
 
     @Override
     public void loadCompleteTicket(List<Ticket> items) {
-
     }
 
     @Override
