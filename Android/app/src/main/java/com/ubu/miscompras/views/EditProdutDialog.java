@@ -16,7 +16,7 @@ import com.ubu.miscompras.R;
 import com.ubu.miscompras.activity.OnEditableItem;
 import com.ubu.miscompras.adapters.CategoryAdapter;
 import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
         // Empty constructor required for DialogFragment
     }
 
-    public static EditProdutDialog newInstance(List<Categoria> categories, TicketProducto producto, int position) {
+    public static EditProdutDialog newInstance(List<Categoria> categories, LineaProducto producto, int position) {
         EditProdutDialog frag = new EditProdutDialog();
         Bundle args = new Bundle();
         args.putParcelableArrayList("categorias", new ArrayList<Parcelable>(categories));
@@ -56,7 +56,7 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         ArrayList<Categoria> categories = getArguments().getParcelableArrayList("categorias");
-        final TicketProducto producto = getArguments().getParcelable("producto");
+        final LineaProducto producto = getArguments().getParcelable("producto");
         int cantidad = producto.getCantidad();
         String descripcion = producto.getProducto().getNombre();
         final double precio = producto.getPrecio();

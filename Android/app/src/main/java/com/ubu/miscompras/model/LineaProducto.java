@@ -9,10 +9,10 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * Created by RobertoMiranda on 6/11/15.
  */
-@DatabaseTable(tableName = "ticketproducto")
-public class TicketProducto implements Parcelable {
+@DatabaseTable(tableName = "lineaproducto")
+public class LineaProducto implements Parcelable {
 
-    public static final String TABLE_NAME = "ticketproducto";
+    public static final String TABLE_NAME = "lineaproducto";
     public static final String TICKET_ID_FIELD_NAME = "id_ticket";
     public static final String PRODUCTO_ID_FIELD_NAME = "id_producto";
     public static final String CANTIDAD = "cantidadt";
@@ -40,7 +40,7 @@ public class TicketProducto implements Parcelable {
     private double importe;
 
 
-    public TicketProducto(Ticket ticket, Producto producto, int cantidad, double precio, double importe) {
+    public LineaProducto(Ticket ticket, Producto producto, int cantidad, double precio, double importe) {
         this.ticket = ticket;
         this.producto = producto;
         this.setCantidad(cantidad);
@@ -48,33 +48,33 @@ public class TicketProducto implements Parcelable {
         this.importe = importe;
     }
 
-    public TicketProducto(Producto producto, int cantidad, double precio, double importe) {
+    public LineaProducto(Producto producto, int cantidad, double precio, double importe) {
         this.producto = producto;
         this.setCantidad(cantidad);
         this.precio = precio;
         this.importe = importe;
     }
 
-    private TicketProducto() {
+    private LineaProducto() {
 
     }
 
-    protected TicketProducto(Parcel in) {
+    protected LineaProducto(Parcel in) {
         id = in.readInt();
         cantidad = in.readInt();
         precio = in.readDouble();
         importe = in.readDouble();
     }
 
-    public static final Creator<TicketProducto> CREATOR = new Creator<TicketProducto>() {
+    public static final Creator<LineaProducto> CREATOR = new Creator<LineaProducto>() {
         @Override
-        public TicketProducto createFromParcel(Parcel in) {
-            return new TicketProducto(in);
+        public LineaProducto createFromParcel(Parcel in) {
+            return new LineaProducto(in);
         }
 
         @Override
-        public TicketProducto[] newArray(int size) {
-            return new TicketProducto[size];
+        public LineaProducto[] newArray(int size) {
+            return new LineaProducto[size];
         }
     };
 

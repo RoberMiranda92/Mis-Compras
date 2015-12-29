@@ -6,7 +6,7 @@ import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.sql.SQLException;
  */
 public class DataBaseConfig extends OrmLiteConfigUtil {
 
-    private static final Class<?>[] classes = new Class[]{Ticket.class, Producto.class, Categoria.class, TicketProducto.class};
+    private static final Class<?>[] classes = new Class[]{Ticket.class, Producto.class, Categoria.class, LineaProducto.class};
 
     public static void main(String[] args) throws IOException, SQLException {
 

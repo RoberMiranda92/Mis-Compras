@@ -1,6 +1,5 @@
 package com.ubu.miscompras.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.presenter.SplashActivityPresenter;
 import com.ubu.miscompras.utils.Constans;
 
@@ -86,11 +85,11 @@ public class SplashActivity extends AppCompatActivity {
         Toast.makeText(this, getString(R.string.insertCorrect), Toast.LENGTH_SHORT).show();
     }
 
-    public void setTicketProducto(List<TicketProducto> ticketProducto) {
+    public void setTicketProducto(List<LineaProducto> ticketProducto) {
 
         float total = 0;
 
-        for (TicketProducto l : ticketProducto)
+        for (LineaProducto l : ticketProducto)
             total += l.getImporte();
 
 

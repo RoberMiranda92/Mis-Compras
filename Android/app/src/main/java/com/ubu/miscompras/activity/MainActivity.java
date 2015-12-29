@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.fragment.MainFragment;
 import com.ubu.miscompras.fragment.ProductosFragment;
+import com.ubu.miscompras.fragment.TicketFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -95,8 +96,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.products:
                 fragment = new ProductosFragment();
                 break;
+            case  R.id.tickets:
+                fragment=new TicketFragment();
+                break;
             case R.id.config:
-
                 startSettingsActivity();
                 break;
             default:
@@ -135,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             Dao<Categoria, Integer> categoriaDAO = helper.getCategoriaDAO();
             Dao<Producto, Integer> productoDAO = helper.getProductoDAO();
             Dao<Ticket, Integer> ticketDAO = helper.getTicketDAO();
-            Dao<TicketProducto, Integer> ticketProductoDAO = helper.getTicketProductoDAO();
+            Dao<LineaProducto, Integer> ticketProductoDAO = helper.getTicketProductoDAO();
 
 
             categoriaDAO.create(new Categoria("Fruta"));
@@ -162,11 +165,11 @@ public class MainActivity extends AppCompatActivity
             List<Ticket> tickets = ticketDAO.queryForAll();
 
             for (Producto p : productos)
-                ticketProductoDAO.create(new TicketProducto(ticketDAO.queryForId(1), p));
+                ticketProductoDAO.create(new LineaProducto(ticketDAO.queryForId(1), p));
 
-            List<TicketProducto> list = ticketProductoDAO.queryForAll();
+            List<LineaProducto> list = ticketProductoDAO.queryForAll();
 
-            for (TicketProducto tp : list) {
+            for (LineaProducto tp : list) {
                 ticketDAO.refresh(tp.getTicket());
                 productoDAO.refresh(tp.getProducto());
                 categoriaDAO.refresh(tp.getProducto().getCategoria());

@@ -1,6 +1,5 @@
 package com.ubu.miscompras.fragment;
 
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -8,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,22 +27,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.adapters.CategoryAdapter;
-import com.ubu.miscompras.adapters.ProductsShowAdapter;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.presenter.ProductoFragmentPresenter;
+import com.ubu.miscompras.adapters.TicketShowAdapter;
+import com.ubu.miscompras.model.Ticket;
+import com.ubu.miscompras.presenter.TicketFragmentPresenter;
 import com.ubu.miscompras.utils.VerticalDividerItemDecorator;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * Created by RobertoMiranda on 29/12/15.
  */
-public class ProductosFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, Animation.AnimationListener {
+public class TicketFragment extends android.support.v4.app.Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, Animation.AnimationListener {
 
 
     private static EditText editTextStartDate;
@@ -65,25 +60,23 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     private Animation slide_up;
     private LinearLayout currentLinearLayout;
     private AppBarLayout rectangulo;
-    private ProductoFragmentPresenter presenter;
-    private List<Categoria> categorias;
-    private CategoryAdapter categoryAdapter;
+    private TicketFragmentPresenter presenter;
     private int categorySelected;
     private EditText editTextMinPrice;
     private EditText editTextMaxPrice;
     private Date startDate;
     private Date endDate;
     private RecyclerView recyclerView_list;
-    private ProductsShowAdapter recyclerView_Adapter;
+    private TicketShowAdapter recyclerView_Adapter;
     private Animation fade_close;
     private Animation fade_open;
 
-    public ProductosFragment() {
+    public TicketFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        presenter = new ProductoFragmentPresenter(this);
+        presenter = new TicketFragmentPresenter(this);
 
 
         final Calendar calendar = Calendar.getInstance();
@@ -110,7 +103,7 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         setHasOptionsMenu(true);
         View mView = inflater.inflate(R.layout.fragment_productos, container, false);
 
-        getActivity().setTitle(getString(R.string.products));
+        getActivity().setTitle(getString(R.string.historial));
 
         linearFechas = (LinearLayout) mView.findViewById(R.id.linear_fechas);
         linearPrecios = (LinearLayout) mView.findViewById(R.id.linear_precios);
@@ -145,7 +138,7 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         slide_down.setAnimationListener(this);
 
 
-        recyclerView_Adapter = new ProductsShowAdapter(getContext());
+        recyclerView_Adapter = new TicketShowAdapter(getContext());
         recyclerView_list = (RecyclerView) mView.findViewById(R.id.recyclerView_listProductos);
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView_list.addItemDecoration(new VerticalDividerItemDecorator(1, false));
@@ -237,7 +230,7 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         final int[] tempSelection = new int[1];
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
         dialog.setTitle(getString(R.string.filterDialogTitile));
-        CharSequence[] secuence = getResources().getStringArray(R.array.filterDialogItems);
+        CharSequence[] secuence = getResources().getStringArray(R.array.filterDialogTicket);
         dialog.setSingleChoiceItems(secuence, filtro, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -276,20 +269,12 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
                 currentLinearLayout = linearPrecios;
                 recyclerView_Adapter.enablePricesFilter();
                 break;
-            case 2:
-                currentLinearLayout = linearCategorias;
-                recyclerView_Adapter.enableCategoryFilter();
-                break;
         }
         rectangulo.setExpanded(true);
     }
 
-    public void setCategorias(List<Categoria> categorias) {
-        categoryAdapter = new CategoryAdapter(getContext(), R.layout.item_category, categorias);
-        spinerCategorias.setAdapter(categoryAdapter);
-    }
 
-    public void setProductLines(List<LineaProducto> items) {
+    public void setTicket(List<Ticket> items) {
         recyclerView_Adapter.setProducts(items);
         recyclerView_list.setAdapter(recyclerView_Adapter);
         recyclerView_Adapter.notifyDataSetChanged();
@@ -321,13 +306,10 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         switch (v.getId()) {
             case R.id.buton_search:
                 hideKeyboard();
-                if (currentLinearLayout == linearCategorias)
-                    presenter.getProductosByCategoria(categoryAdapter.getItem(categorySelected));
                 if (currentLinearLayout == linearFechas) {
                     presenter.getProductosByDate(startDate, endDate);
                 }
                 if (currentLinearLayout == linearPrecios) {
-
                     presenter.getProductosByPrice(editTextMinPrice.getText().toString(),
                             editTextMaxPrice.getText().toString());
                 }
@@ -448,4 +430,3 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 }
-

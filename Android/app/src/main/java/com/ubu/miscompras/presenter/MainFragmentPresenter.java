@@ -1,15 +1,13 @@
 package com.ubu.miscompras.presenter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.ubu.miscompras.activity.AddProductsActivity;
 import com.ubu.miscompras.fragment.MainFragment;
 import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.task.CategoryGetterInteractor;
 import com.ubu.miscompras.task.ComunicatorService;
 import com.ubu.miscompras.task.ProductGetterByCategoryIterator;
@@ -45,10 +43,7 @@ public class MainFragmentPresenter implements OnLoadComplete {
 
     public void onFinished(String result) {
         hideProgressBar();
-        Intent i = new Intent();
-        i.setClass(mView.getActivity(), AddProductsActivity.class);
-        i.putExtra("productos", result);
-        mView.startActivity(i);
+        mView.starAddProductActivity(result);
     }
 
 
@@ -82,8 +77,13 @@ public class MainFragmentPresenter implements OnLoadComplete {
 
 
     @Override
-    public void loadCompleteTicketProducto(List<TicketProducto> items) {
+    public void loadCompleteTicketProducto(List<LineaProducto> items) {
         mView.setProductLines(items);
+    }
+
+    @Override
+    public void loadCompleteTicket(List<Ticket> items) {
+
     }
 
 

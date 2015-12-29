@@ -27,7 +27,7 @@ import com.ubu.miscompras.activity.AddProductsActivity;
 import com.ubu.miscompras.activity.CropActivity;
 import com.ubu.miscompras.adapters.CategoryAdapter;
 import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.presenter.MainFragmentPresenter;
 
 import java.util.List;
@@ -37,6 +37,9 @@ import java.util.List;
  */
 public class MainFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+    public static final int CROP_PIC = 3;
+    public final int LOAD_IMAGE_GALLERY = 1;
+    public final int LOAD_IMAGE_CAMERA = 2;
     private Animation rotate_forward, rotate_backward;
     private FloatingActionButton addTicket_Button;
     private boolean isButtonClick = false;
@@ -44,16 +47,12 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     private FloatingActionButton addImage_Button;
     private Animation fab_open;
     private Animation fab_close;
-
-    public final int LOAD_IMAGE_GALLERY = 1;
-    public final int LOAD_IMAGE_CAMERA = 2;
-    public static final int CROP_PIC = 3;
     private ImageView imageView;
     private TextView editText;
 
     private MainFragmentPresenter presenter;
     private ProgressDialog barProgressDialog;
-    private List<TicketProducto> productLines;
+    private List<LineaProducto> productLines;
     private FitChart fitChart;
     private TextView textView_ammount;
     private Spinner spinerCategorias;
@@ -69,6 +68,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
 
         View mView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        getActivity().setTitle(getString(R.string.app_name));
 
         addTicket_Button = (FloatingActionButton) mView.findViewById(R.id.FloattingButton_addTicket);
         addCamera_Button = (FloatingActionButton) mView.findViewById(R.id.FloattingButton_addCamera);
@@ -165,7 +165,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     }
 
 
-    public void setText(String text) {
+    public void starAddProductActivity(String text) {
         Intent i = new Intent();
         i.setClass(getActivity(), AddProductsActivity.class);
         i.putExtra("productos", text);
@@ -219,18 +219,18 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         }
     }
 
-    public void startGalleryIntent() {
+    private void startGalleryIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, LOAD_IMAGE_GALLERY);
 
     }
 
-    public void startCameraIntent() {
+    private void startCameraIntent() {
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);
     }
 
-    public void startCropActivity(Uri source) {
+    private void startCropActivity(Uri source) {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CropActivity.class);
         intent.setData(source);
@@ -242,11 +242,11 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         spinerCategorias.setAdapter(categoryAdapter);
     }
 
-    public void setProductLines(List<TicketProducto> productLines) {
+    public void setProductLines(List<LineaProducto> productLines) {
         this.productLines = productLines;
 
         float total = 0;
-        for (TicketProducto p : productLines) {
+        for (LineaProducto p : productLines) {
 
             total += p.getImporte();
         }

@@ -1,10 +1,9 @@
 package com.ubu.miscompras.presenter;
 
-import android.content.Context;
-
 import com.ubu.miscompras.activity.SplashActivity;
 import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.task.CaregoryInsertInteractor;
 import com.ubu.miscompras.task.TicketProductoGetterInteractor;
 
@@ -56,8 +55,13 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<TicketProducto> items) {
+    public void loadCompleteTicketProducto(List<LineaProducto> items) {
         mView.setTicketProducto(items);
+    }
+
+    @Override
+    public void loadCompleteTicket(List<Ticket> items) {
+
     }
 
     @Override

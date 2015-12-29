@@ -1,10 +1,9 @@
 package com.ubu.miscompras.presenter;
 
-import android.content.Context;
-
 import com.ubu.miscompras.activity.AddProductsActivity;
 import com.ubu.miscompras.model.Producto;
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.task.CategoryGetterInteractor;
 import com.ubu.miscompras.task.ProductInsertIterator;
 
@@ -23,12 +22,10 @@ import java.util.List;
 public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete {
 
 
-    private double total;
     private AddProductsActivity mainView;
-    private String json;
+    private String json = "";
 
     public AddProductsPresenter(AddProductsActivity mainView) {
-
         this.mainView = mainView;
     }
 
@@ -36,17 +33,15 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     @Override
     public void onResume() {
 
-        if (!json.isEmpty()) {
-            List<TicketProducto> lineas = getProdcutFromJson(json);
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Calendar cal = Calendar.getInstance();
-            mainView.setDate(dateFormat.format(cal.getTime()));
-            mainView.setTotal(total);
-            mainView.setItems(lineas);
-            getCategories();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
+        mainView.setDate(dateFormat.format(cal.getTime()));
+        getCategories();
 
-        } else {
-            mainView.showErrorMensage();
+        if (!json.isEmpty()) {
+            List<LineaProducto> lineas = getProdcutFromJson(json);
+            mainView.setItems(lineas);
+
         }
 
 
@@ -59,7 +54,12 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<TicketProducto> items) {
+    public void loadCompleteTicketProducto(List<LineaProducto> items) {
+
+    }
+
+    @Override
+    public void loadCompleteTicket(List<Ticket> items) {
 
     }
 
@@ -80,15 +80,15 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
 
     }
 
-    public void saveProducts(List<TicketProducto> lineasDeProducto) {
+    public void saveProducts(List<LineaProducto> lineasDeProducto) {
         ProductInsertIterator iterator = new ProductInsertIterator(this);
         iterator.execute(lineasDeProducto);
 
     }
 
 
-    private ArrayList<TicketProducto> getProdcutFromJson(String ArrayJson) {
-        ArrayList<TicketProducto> lineasProducto = new ArrayList<>();
+    private ArrayList<LineaProducto> getProdcutFromJson(String ArrayJson) {
+        ArrayList<LineaProducto> lineasProducto = new ArrayList<>();
         try {
             JSONArray array = new JSONArray(ArrayJson);
 
@@ -102,10 +102,9 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
                 String importe = arrayLineasProducto.getString("total");
                 try {
                     Producto producto = new Producto(nombre);
-                    TicketProducto lineaDeProducto = new TicketProducto(producto,
+                    LineaProducto lineaDeProducto = new LineaProducto(producto,
                             Integer.parseInt(cantidad), Double.parseDouble(precio),
                             Double.parseDouble(importe));
-                    total += Double.parseDouble(importe);
                     lineasProducto.add(lineaDeProducto);
                 } catch (NumberFormatException ex) {
                     mainView.showErrorMensage();

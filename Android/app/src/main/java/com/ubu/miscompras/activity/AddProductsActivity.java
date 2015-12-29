@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.adapters.ProductosAddAdapter;
 import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Producto;
-import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.AddProductsPresenter;
 import com.ubu.miscompras.utils.VerticalDividerItemDecorator;
 import com.ubu.miscompras.views.EditProdutDialog;
@@ -83,19 +83,16 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.activity_add_products, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.newProduct) {
             createNewProdcut();
             return true;
@@ -106,7 +103,7 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
 
     private void createNewProdcut() {
 
-        TicketProducto newLinea = new TicketProducto(new Producto(""), 0, 0, 0);
+        LineaProducto newLinea = new LineaProducto(new Producto(""), 0, 0, 0);
         int position = recyclerView_Adapter.getItemCount();
         FragmentManager fm = getSupportFragmentManager();
         EditProdutDialog editNameDialog = EditProdutDialog.newInstance(categorias, newLinea, position);
@@ -135,15 +132,17 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onItemClick(View v) {
         int itemPosition = recyclerView_productos.getChildPosition(v);
-        TicketProducto item = recyclerView_Adapter.getItemAt(itemPosition);
+        LineaProducto item = recyclerView_Adapter.getItemAt(itemPosition);
         FragmentManager fm = getSupportFragmentManager();
         EditProdutDialog editNameDialog = EditProdutDialog.newInstance(categorias, item, itemPosition);
         editNameDialog.show(fm, "fragment_edit_name");
     }
 
-    public void setItems(List<TicketProducto> items) {
+    public void setItems(List<LineaProducto> items) {
         recyclerView_Adapter.setProducts(items);
         recyclerView_Adapter.notifyDataSetChanged();
+
+        calculateTotal();
 
     }
 
@@ -176,13 +175,26 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void OnEditItem(TicketProducto productLine, int position) {
+    public void OnEditItem(LineaProducto productLine, int position) {
         recyclerView_Adapter.setItemAt(productLine, position);
         recyclerView_Adapter.notifyDataSetChanged();
+
+        calculateTotal();
+    }
+
+    private void calculateTotal() {
+
+        List<LineaProducto> lines = recyclerView_Adapter.getItems();
+        double total = 0;
+
+        for (LineaProducto l : lines) {
+            total += l.getImporte();
+        }
+        setTotal(total);
     }
 
     @Override
     public void showOnEditItemError(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

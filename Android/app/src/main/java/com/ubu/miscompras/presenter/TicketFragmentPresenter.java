@@ -1,32 +1,31 @@
 package com.ubu.miscompras.presenter;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.fragment.ProductosFragment;
+import com.ubu.miscompras.fragment.TicketFragment;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.task.CategoryGetterInteractor;
-import com.ubu.miscompras.task.ProductGetterByCategoryIterator;
-import com.ubu.miscompras.task.ProductGetterByPriceInteractor;
-import com.ubu.miscompras.task.ProductosGetterIteratorByDate;
+import com.ubu.miscompras.task.TicketGetterByDateInteractor;
+import com.ubu.miscompras.task.TicketGetterByPriceInteractor;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 17/12/15.
+ * Created by RobertoMiranda on 29/12/15.
  */
-public class ProductoFragmentPresenter implements OnLoadComplete {
+public class TicketFragmentPresenter implements OnLoadComplete {
 
 
-    private ProductosFragment mView;
+    private TicketFragment mView;
 
     private boolean animationOn = false;
 
-    public ProductoFragmentPresenter(ProductosFragment productosFragment) {
+    public TicketFragmentPresenter(TicketFragment fragment) {
 
-        this.mView = productosFragment;
+        this.mView = fragment;
 
     }
 
@@ -34,16 +33,11 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
         if (endDate.before(starDate)) {
             mView.showMessage(mView.getString(R.string.errorDates));
         } else {
-
-            ProductosGetterIteratorByDate task = new ProductosGetterIteratorByDate(this, starDate, endDate);
+            TicketGetterByDateInteractor task = new TicketGetterByDateInteractor(this, starDate, endDate);
             task.execute();
         }
     }
 
-    public void getProductosByCategoria(Categoria categoria) {
-        ProductGetterByCategoryIterator task = new ProductGetterByCategoryIterator(this, categoria);
-        task.execute();
-    }
 
     public void getProductosByPrice(String minPrice, String maxPrice) {
         try {
@@ -53,7 +47,7 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
             if (min > max) {
                 mView.showMessage(mView.getString(R.string.errorPrices));
             } else {
-                ProductGetterByPriceInteractor task = new ProductGetterByPriceInteractor(this, min, max);
+                TicketGetterByPriceInteractor task = new TicketGetterByPriceInteractor(this, min, max);
                 task.execute();
             }
         } catch (NumberFormatException e) {
@@ -76,29 +70,23 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
 
     @Override
     public void loadCompleteCategoria(List<Categoria> items) {
-        if (!items.isEmpty()) {
-            mView.setCategorias(items);
-        } else {
-            mView.showMessage(mView.getString(R.string.productsEmpty));
-        }
 
     }
 
     @Override
     public void loadCompleteTicketProducto(List<LineaProducto> items) {
-        if (!items.isEmpty()) {
-            mView.setProductLines(items);
-            mView.showList();
-        } else {
-            mView.hideList();
-            mView.showMessage(mView.getString(R.string.productsEmpty));
-        }
 
     }
 
     @Override
     public void loadCompleteTicket(List<Ticket> items) {
-
+        if (!items.isEmpty()) {
+            mView.setTicket(items);
+            mView.showList();
+        } else {
+            mView.hideList();
+            mView.showMessage(mView.getString(R.string.productsEmpty));
+        }
     }
 
 

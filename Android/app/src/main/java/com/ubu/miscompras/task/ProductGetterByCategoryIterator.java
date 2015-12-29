@@ -8,8 +8,8 @@ import com.j256.ormlite.field.DataType;
 import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Producto;
-import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.OnLoadComplete;
 
 import java.sql.SQLException;
@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 18/12/15.
  */
-public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<TicketProducto>> {
+public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<LineaProducto>> {
 
 
     private OnLoadComplete presenter;
-    private Dao<TicketProducto, Integer> lineaProductoDao;
+    private Dao<LineaProducto, Integer> lineaProductoDao;
     private DataBaseHelper db;
     private Categoria categoria;
     private Dao<Producto, Integer> productoDao;
@@ -45,7 +45,7 @@ public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<
     }
 
     @Override
-    public void onPostExecute(List<TicketProducto> items) {
+    public void onPostExecute(List<LineaProducto> items) {
 
         if (items != null)
             presenter.loadCompleteTicketProducto(items);
@@ -56,21 +56,23 @@ public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<
 
 
     @Override
-    protected List<TicketProducto> doInBackground(Void... params) {
+    protected List<LineaProducto> doInBackground(Void... params) {
 
-        List<TicketProducto> products = new ArrayList<>();
+        List<LineaProducto> products = new ArrayList<>();
 
         try {
             GenericRawResults<Object[]> rawResults =
                     lineaProductoDao.queryRaw(
-                            "SELECT SUM(" + TicketProducto.TABLE_NAME + "." + TicketProducto.CANTIDAD + ")AS Cantidad," +
-                                    "SUM(" + TicketProducto.TABLE_NAME + "." + TicketProducto.IMPORTE + ")AS Importe," +
-                                    TicketProducto.PRECIO + "," + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME +
-                                    " FROM " + TicketProducto.TABLE_NAME + " JOIN " + Producto.TABLE_NAME +
-                                    " ON " + TicketProducto.TABLE_NAME + "." + TicketProducto.PRODUCTO_ID_FIELD_NAME +
+                            "SELECT SUM(" + LineaProducto.TABLE_NAME + "." + LineaProducto.CANTIDAD + ")AS Cantidad," +
+                                    "SUM(" + LineaProducto.TABLE_NAME + "." + LineaProducto.IMPORTE + ")AS Importe," +
+                                    LineaProducto.PRECIO + "," + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME +
+                                    " FROM " + LineaProducto.TABLE_NAME + " JOIN " + Producto.TABLE_NAME +
+                                    " ON " + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME +
                                     "=" + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME + " JOIN " + Categoria.TABLE_NAME +
                                     " ON " + Producto.TABLE_NAME + "." + Producto.CATEGORIA_FIELD__ID + "=" + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD +
-                                    " WHERE " + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD + "=? GROUP BY " + TicketProducto.TABLE_NAME + "." + TicketProducto.PRODUCTO_ID_FIELD_NAME,
+                                    " WHERE " + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD + "=? GROUP BY " + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME +
+                                    "," + LineaProducto.TABLE_NAME + "." + LineaProducto.PRECIO +
+                                    " ORDER BY " + Producto.TABLE_NAME + "." + Producto.NOMBRE_FIELD_NAME,
                             new DataType[]{DataType.INTEGER, DataType.DOUBLE, DataType.DOUBLE, DataType.INTEGER}, String.valueOf(categoria.getId()));
 
 
@@ -79,7 +81,7 @@ public class ProductGetterByCategoryIterator extends AsyncTask<Void, Void, List<
                 double importe = (double) resultArray[1];
                 double precio = (double) resultArray[2];
                 Producto p = productoDao.queryForId((int) resultArray[3]);
-                TicketProducto t = new TicketProducto(p, cant, precio, importe);
+                LineaProducto t = new LineaProducto(p, cant, precio, importe);
                 products.add(t);
             }
             rawResults.close();

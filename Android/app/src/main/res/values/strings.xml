@@ -25,8 +25,10 @@
     <string name="format_percentage"><xliff:g id="percentage">%.2f</xliff:g></string>
     <string name="percent_sign">&#x0025;</string>
     <string name="format_importeTotal"><xliff:g id="importe">%.2f</xliff:g>€</string>
-
+    <string name="format_comra">Compra Nº: <xliff:g id="numero">%d</xliff:g></string>
+    <string name="format_articulos">Número de articulos: <xliff:g id="articulos">%d</xliff:g></string>
     <string name="format_date"><xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
+    <string name="format_date2">Fecha: <xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
 
 
     <string name="pref_ip_display_name">Dirección IP</string>
@@ -43,5 +45,6 @@
     <string name="errorDates">La fecha de fin debe ser mayor que la fecha de inicio</string>
     <string name="errorInsert">\"Error al insertar los datos\"</string>
     <string name="insertCorrect">Actualización correcta</string>
+
 
 </resources>

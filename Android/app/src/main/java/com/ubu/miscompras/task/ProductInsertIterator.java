@@ -9,9 +9,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.ubu.miscompras.activity.App;
 import com.ubu.miscompras.database.DataBaseHelper;
 import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.model.TicketProducto;
 import com.ubu.miscompras.presenter.AddProductsPresenter;
 
 import java.sql.SQLException;
@@ -23,13 +23,13 @@ import java.util.concurrent.Callable;
 /**
  * Created by RobertoMiranda on 16/12/15.
  */
-public class ProductInsertIterator extends AsyncTask<List<TicketProducto>, Void, Boolean> {
+public class ProductInsertIterator extends AsyncTask<List<LineaProducto>, Void, Boolean> {
 
 
     private AddProductsPresenter presenter;
     private DataBaseHelper db;
     private Dao<Producto, Integer> productoDao;
-    private Dao<TicketProducto, Integer> lineaProductoDao;
+    private Dao<LineaProducto, Integer> lineaProductoDao;
     private Dao<Ticket, Integer> ticketDao;
     private Dao<Categoria, Integer> categoriaDao;
 
@@ -49,8 +49,8 @@ public class ProductInsertIterator extends AsyncTask<List<TicketProducto>, Void,
     }
 
     @Override
-    protected Boolean doInBackground(final List<TicketProducto>... params) {
-        final List<TicketProducto> productos = params[0];
+    protected Boolean doInBackground(final List<LineaProducto>... params) {
+        final List<LineaProducto> productos = params[0];
         try {
             if (!db.isOpen())
                 return false;
@@ -60,9 +60,17 @@ public class ProductInsertIterator extends AsyncTask<List<TicketProducto>, Void,
                 public Void call() throws Exception {
                     Date currentDate = Calendar.getInstance().getTime();
                     Ticket ticket = new Ticket(currentDate);
+                    int cant = 0;
+                    double total = 0;
 
+                    for (LineaProducto linea : productos) {
+                        cant += linea.getCantidad();
+                        total += linea.getImporte();
+                    }
+                    ticket.setTotal(total);
+                    ticket.setnArticulos(cant);
 
-                    for (TicketProducto linea : productos) {
+                    for (LineaProducto linea : productos) {
                         QueryBuilder<Producto, Integer> productoQb = productoDao.queryBuilder();
                         Producto p = productoQb.where().eq(Producto.NOMBRE_FIELD_NAME, linea.getProducto().getNombre()).queryForFirst();
                         if (p != null)
@@ -73,7 +81,6 @@ public class ProductInsertIterator extends AsyncTask<List<TicketProducto>, Void,
                                 Categoria other = categoriaDao.queryForId(Categoria.OTROS);
                                 linea.getProducto().setCategoria(other);
                             }
-
                         }
                         linea.setTicket(ticket);
                         lineaProductoDao.create(linea);

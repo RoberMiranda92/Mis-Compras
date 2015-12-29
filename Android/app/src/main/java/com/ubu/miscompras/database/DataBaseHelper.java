@@ -12,9 +12,9 @@ import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.model.TicketProducto;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -37,8 +37,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Categoria, Integer> categoriaDAO = null;
     private RuntimeExceptionDao<Categoria, Integer> categoriaRunTimeDAO = null;
 
-    private Dao<TicketProducto, Integer> ticketProductoDAO = null;
-    private RuntimeExceptionDao<TicketProducto, Integer> ticketProductoRunTimeDAO = null;
+    private Dao<LineaProducto, Integer> ticketProductoDAO = null;
+    private RuntimeExceptionDao<LineaProducto, Integer> ticketProductoRunTimeDAO = null;
 
 
     public DataBaseHelper(Context context) {
@@ -51,7 +51,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, Categoria.class);
             TableUtils.createTableIfNotExists(connectionSource, Ticket.class);
             TableUtils.createTableIfNotExists(connectionSource, Producto.class);
-            TableUtils.createTableIfNotExists(connectionSource, TicketProducto.class);
+            TableUtils.createTableIfNotExists(connectionSource, LineaProducto.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,16 +112,16 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
 
-    public Dao<TicketProducto, Integer> getTicketProductoDAO() throws SQLException {
+    public Dao<LineaProducto, Integer> getTicketProductoDAO() throws SQLException {
         if (ticketProductoDAO == null)
-            ticketProductoDAO = getDao(TicketProducto.class);
+            ticketProductoDAO = getDao(LineaProducto.class);
         return ticketProductoDAO;
     }
 
 
-    public RuntimeExceptionDao<TicketProducto, Integer> getTicketProductoRunTimeDAO() {
+    public RuntimeExceptionDao<LineaProducto, Integer> getTicketProductoRunTimeDAO() {
         if (ticketProductoRunTimeDAO == null)
-            ticketProductoRunTimeDAO = getRuntimeExceptionDao(TicketProducto.class);
+            ticketProductoRunTimeDAO = getRuntimeExceptionDao(LineaProducto.class);
         return ticketProductoRunTimeDAO;
     }
 
@@ -168,12 +168,12 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
      */
     private PreparedQuery<Ticket> makeTicketsForProductoQuery() throws SQLException {
         // build our inner query for ProductoTicket objects
-        QueryBuilder<TicketProducto, Integer> productoTicketQb = ticketProductoDAO.queryBuilder();
+        QueryBuilder<LineaProducto, Integer> productoTicketQb = ticketProductoDAO.queryBuilder();
         // just select the ticket-id field
-        productoTicketQb.selectColumns(TicketProducto.TICKET_ID_FIELD_NAME);
+        productoTicketQb.selectColumns(LineaProducto.TICKET_ID_FIELD_NAME);
         SelectArg productoSelectArg = new SelectArg();
         // you could also just pass in producto1 here
-        productoTicketQb.where().eq(TicketProducto.TICKET_ID_FIELD_NAME, productoSelectArg);
+        productoTicketQb.where().eq(LineaProducto.TICKET_ID_FIELD_NAME, productoSelectArg);
 
         // build our outer query for Ticket objects
         QueryBuilder<Ticket, Integer> ticketQb = ticketDAO.queryBuilder();
@@ -186,11 +186,11 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
      * Build our query for Producto objects that match a Ticket
      */
     private PreparedQuery<Producto> makeProductosForTicketQuery() throws SQLException {
-        QueryBuilder<TicketProducto, Integer> productoTicketQb = ticketProductoDAO.queryBuilder();
+        QueryBuilder<LineaProducto, Integer> productoTicketQb = ticketProductoDAO.queryBuilder();
         // this time selecting for the producto-id field
-        productoTicketQb.selectColumns(TicketProducto.PRODUCTO_ID_FIELD_NAME);
+        productoTicketQb.selectColumns(LineaProducto.PRODUCTO_ID_FIELD_NAME);
         SelectArg ticketSelectArg = new SelectArg();
-        productoTicketQb.where().eq(TicketProducto.TICKET_ID_FIELD_NAME, ticketSelectArg);
+        productoTicketQb.where().eq(LineaProducto.TICKET_ID_FIELD_NAME, ticketSelectArg);
 
         // build our outer query
         QueryBuilder<Producto, Integer> productoQb = productoDAO.queryBuilder();

@@ -1,6 +1,6 @@
 package com.ubu.miscompras.activity;
 
-import com.ubu.miscompras.model.TicketProducto;
+import com.ubu.miscompras.model.LineaProducto;
 
 /**
  * Created by RobertoMiranda on 22/12/15.
@@ -8,7 +8,7 @@ import com.ubu.miscompras.model.TicketProducto;
 public interface OnEditableItem {
 
 
-    void OnEditItem(TicketProducto productLine, int position);
+    void OnEditItem(LineaProducto productLine, int position);
 
     void showOnEditItemError(String message);
 }
