@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.activity.OnItemClick;
 import com.ubu.miscompras.model.Ticket;
 
 import java.util.Calendar;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.ViewHolderProductos> {
 
+    private OnItemClick mView;
     private Context context;
     private List<Ticket> itemData;
 
@@ -25,8 +27,9 @@ public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.Vi
     private boolean prices = false;
 
 
-    public TicketShowAdapter(Context context) {
-        this.context = context;
+    public TicketShowAdapter(OnItemClick activity) {
+        this.mView = activity;
+        this.context = activity.getContext();
 
     }
 
@@ -34,6 +37,13 @@ public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.Vi
     public ViewHolderProductos onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ticket, parent, false);
 
+
+        itemLayoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mView.onItemClick(v);
+            }
+        });
 
         ViewHolderProductos holder = new ViewHolderProductos(itemLayoutView);
         return holder;
@@ -87,6 +97,10 @@ public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.Vi
     public void enablePricesFilter() {
         this.dates = false;
         this.prices = true;
+    }
+
+    public Ticket getItemAt(int itemPosition) {
+        return itemData.get(itemPosition);
     }
 
 

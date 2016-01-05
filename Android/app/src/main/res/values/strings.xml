@@ -7,11 +7,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Configuración</string>
     <string name="title_activity_addProducts">Productos</string>
+    <string name="title_activity_ticketDetail">Detalle Tique</string>
 
 
     <string name="summary">Resumen</string>
     <string name="products">Productos</string>
-    <string name="historial">Historial</string>
+    <string name="historial">Compras</string>
     <string name="tools">Configuración</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -28,7 +29,7 @@
     <string name="format_comra">Compra Nº: <xliff:g id="numero">%d</xliff:g></string>
     <string name="format_articulos">Número de articulos: <xliff:g id="articulos">%d</xliff:g></string>
     <string name="format_date"><xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
-    <string name="format_date2">Fecha: <xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
+    <string name="format_date2">Fecha: <xliff:g id="day">%d</xliff:g>/<xliff:g id="month">%d</xliff:g>/<xliff:g id="year">%d</xliff:g></string>
 
 
     <string name="pref_ip_display_name">Dirección IP</string>
@@ -41,7 +42,8 @@
     <string name="filterDialogTitile">Selecione el Filtro</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="productsEmpty">No se encontraton Productos</string>
+    <string name="productsEmpty">No se encontraron Productos</string>
+    <string name="ticketEmpty">No se encontraron Compras</string>
     <string name="errorDates">La fecha de fin debe ser mayor que la fecha de inicio</string>
     <string name="errorInsert">\"Error al insertar los datos\"</string>
     <string name="insertCorrect">Actualización correcta</string>

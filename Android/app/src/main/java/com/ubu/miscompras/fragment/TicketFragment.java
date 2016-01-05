@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.activity.OnItemClick;
+import com.ubu.miscompras.activity.TicketDetail;
 import com.ubu.miscompras.adapters.TicketShowAdapter;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.presenter.TicketFragmentPresenter;
@@ -38,7 +41,7 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 29/12/15.
  */
-public class TicketFragment extends android.support.v4.app.Fragment implements View.OnClickListener, Animation.AnimationListener {
+public class TicketFragment extends android.support.v4.app.Fragment implements View.OnClickListener, Animation.AnimationListener, OnItemClick {
 
 
     private static EditText editTextStartDate;
@@ -120,7 +123,7 @@ public class TicketFragment extends android.support.v4.app.Fragment implements V
         slide_down.setAnimationListener(this);
 
 
-        recyclerView_Adapter = new TicketShowAdapter(getContext());
+        recyclerView_Adapter = new TicketShowAdapter(this);
         recyclerView_list = (RecyclerView) mView.findViewById(R.id.recyclerView_listProductos);
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView_list.addItemDecoration(new VerticalDividerItemDecorator(1, false));
@@ -345,8 +348,19 @@ public class TicketFragment extends android.support.v4.app.Fragment implements V
 
     }
 
+    @Override
     public void showMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(View v) {
+        int itemPosition = recyclerView_list.getChildPosition(v);
+
+        Intent intent = new Intent();
+        intent.putExtra("ticket", recyclerView_Adapter.getItemAt(itemPosition));
+        intent.setClass(getActivity(), TicketDetail.class);
+        startActivity(intent);
     }
 
     public void hideKeyboard() {

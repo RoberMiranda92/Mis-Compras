@@ -40,6 +40,12 @@
             android:label="@string/title_activity_addProducts"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.TicketDetail"
+            android:label="@string/title_activity_ticketDetail"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"

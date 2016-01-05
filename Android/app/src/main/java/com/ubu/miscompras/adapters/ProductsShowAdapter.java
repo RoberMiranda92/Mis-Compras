@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ubu.miscompras.R;
@@ -111,6 +112,7 @@ public class ProductsShowAdapter extends RecyclerView.Adapter<ProductsShowAdapte
         public TextView textViewPrice;
         public TextView textViewTotal;
         public TextView textViewMain;
+        public ImageView imageViewIcon;
 
         public ViewHolderProductos(View itemLayoutView) {
             super(itemLayoutView);
@@ -119,6 +121,7 @@ public class ProductsShowAdapter extends RecyclerView.Adapter<ProductsShowAdapte
             textViewPrice = (TextView) itemLayoutView.findViewById(R.id.textView_Precio);
             textViewTotal = (TextView) itemLayoutView.findViewById(R.id.textView_total);
             textViewMain = (TextView) itemLayoutView.findViewById(R.id.textView_main);
+            imageViewIcon = (ImageView) itemLayoutView.findViewById(R.id.imageView_categoryIcon);
 
         }
     }

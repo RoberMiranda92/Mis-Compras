@@ -55,21 +55,18 @@ public class MainActivity extends AppCompatActivity
 
         fragmentStack = new Stack<Fragment>();
         fragments = new HashMap<>();
-        
+
 
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-
         navigationView.setCheckedItem(R.id.summary);
-
-        fragmentStack.clear();;
-
+        fragmentStack.clear();
         fragment = new MainFragment();
         fragments.put(fragment, 0);
-
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.main_fragment_container, fragment);
@@ -80,6 +77,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawer(GravityCompat.START);
 
         if (selectedFragment == 0) {
             super.onBackPressed();
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         switch (id) {

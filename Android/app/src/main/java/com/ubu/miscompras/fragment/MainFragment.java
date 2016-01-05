@@ -116,9 +116,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onStart() {
         super.onStart();
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-        this.position = sharedPref.getInt("spinnerPosition", 0);
-        spinerCategorias.setSelection(position);
+
 
 
     }
@@ -127,6 +125,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     public void onResume() {
         super.onResume();
         getActivity().setTitle(getString(R.string.app_name));
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        this.position = sharedPref.getInt("spinnerPosition", 0);
+        spinerCategorias.setSelection(position);
 
 
     }

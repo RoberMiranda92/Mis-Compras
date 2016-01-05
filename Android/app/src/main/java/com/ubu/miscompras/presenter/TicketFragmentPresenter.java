@@ -85,7 +85,7 @@ public class TicketFragmentPresenter implements OnLoadComplete {
             mView.showList();
         } else {
             mView.hideList();
-            mView.showMessage(mView.getString(R.string.productsEmpty));
+            mView.showMessage(mView.getString(R.string.ticketEmpty));
         }
     }
 

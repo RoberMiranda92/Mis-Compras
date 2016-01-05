@@ -50,7 +50,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:text="Totalt 4€"
-                android:textColor="#4CAF50"
+                android:textColor="@color/textColorSecondary"
                 android:textSize="15sp" />
 
         </LinearLayout>
