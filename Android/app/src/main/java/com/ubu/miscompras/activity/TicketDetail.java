@@ -1,14 +1,11 @@
 package com.ubu.miscompras.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,11 +15,9 @@ import com.ubu.miscompras.R;
 import com.ubu.miscompras.adapters.TicketDetailAdapter;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.presenter.TicketDetaiPresenter;
 import com.ubu.miscompras.utils.VerticalDividerItemDecorator;
-import com.ubu.miscompras.views.EditProdutDialog;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +26,7 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 29/12/15.
  */
-public class TicketDetail extends AppCompatActivity{
+public class TicketDetail extends AppCompatActivity {
 
 
     private RecyclerView recyclerView_productos;
@@ -91,7 +86,6 @@ public class TicketDetail extends AppCompatActivity{
     }
 
 
-
     public void setDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.clear();
@@ -129,6 +123,16 @@ public class TicketDetail extends AppCompatActivity{
             total += l.getImporte();
         }
         setTotal(total);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                break;
+        }
+        return true;
     }
 
 }

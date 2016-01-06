@@ -62,6 +62,7 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
         final double precio = producto.getPrecio();
         this.position = getArguments().getInt("position");
 
+
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom)
                 .setTitle("Productos")
                 .setPositiveButton("OK",
@@ -105,6 +106,8 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
         editText_descripcion = (EditText) rootView.findViewById(R.id.editText_descripcion);
         editText_precio = (EditText) rootView.findViewById(R.id.editText_Precio);
 
+        int category_position = categoryAdapter.getPosition(producto.getProducto().getCategoria());
+
         if (cantidad != 0) {
             editText_cantidad.setText("" + cantidad);
         }
@@ -114,6 +117,9 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
 
         if (precio != 0) {
             editText_precio.setText("" + precio);
+        }
+        if(category_position!=-1) {
+            spinner_categories.setSelection(category_position);
         }
 
         b.setView(rootView);

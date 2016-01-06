@@ -50,6 +50,10 @@ public class CategoryAdapter extends BaseAdapter {
         return 0;
     }
 
+    public int getPosition(Categoria categoria){
+        return  itemList.indexOf(categoria);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

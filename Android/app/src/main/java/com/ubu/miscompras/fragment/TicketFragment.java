@@ -415,4 +415,5 @@ public class TicketFragment extends android.support.v4.app.Fragment implements V
     public void onAnimationRepeat(Animation animation) {
 
     }
+
 }

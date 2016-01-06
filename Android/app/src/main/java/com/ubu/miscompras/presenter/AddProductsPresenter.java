@@ -41,6 +41,7 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
         if (!json.isEmpty()) {
             List<LineaProducto> lineas = getProdcutFromJson(json);
             mainView.setItems(lineas);
+            mainView.showEditMessage();
 
         }
 
@@ -121,8 +122,8 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     @Override
     public void onFinished(Boolean result) {
         if (result) {
-            mainView.disableButton();
             mainView.showMessage("Productos guardados correctamente");
+            mainView.end();
         } else
             mainView.showMessage("Error al guardar los productos");
     }

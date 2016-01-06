@@ -102,7 +102,6 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void createNewProdcut() {
-
         LineaProducto newLinea = new LineaProducto(new Producto(""), 0, 0, 0);
         int position = recyclerView_Adapter.getItemCount();
         FragmentManager fm = getSupportFragmentManager();
@@ -141,11 +140,13 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
     public void setItems(List<LineaProducto> items) {
         recyclerView_Adapter.setProducts(items);
         recyclerView_Adapter.notifyDataSetChanged();
-
         calculateTotal();
 
     }
 
+    public void showEditMessage() {
+        Toast.makeText(this, getString(R.string.category_message), Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onClick(View v) {
@@ -166,8 +167,8 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         Toast.makeText(this, "Error al procesar algunos productos", Toast.LENGTH_LONG).show();
     }
 
-    public void disableButton() {
-        disable = true;
+    public void end(){
+        super.finish();
     }
 
     public void setCategories(List<Categoria> items) {
@@ -178,7 +179,6 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
     public void OnEditItem(LineaProducto productLine, int position) {
         recyclerView_Adapter.setItemAt(productLine, position);
         recyclerView_Adapter.notifyDataSetChanged();
-
         calculateTotal();
     }
 

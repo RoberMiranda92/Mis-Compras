@@ -19,6 +19,9 @@
 
     <!--Menus-->
     <string name="filters">Filtros</string>
+
+
+    <!--Formatos-->
     <string name="format_cantidad"><xliff:g id="cantidad">%d</xliff:g>x<xliff:g id="nombre">%s</xliff:g></string>
     <string name="format_total">Total: <xliff:g id="total">%.2f</xliff:g>€</string>
     <string name="format_productPrice">Precio: <xliff:g id="precio">%.2f</xliff:g>€</string>
@@ -48,5 +51,6 @@
     <string name="errorInsert">\"Error al insertar los datos\"</string>
     <string name="insertCorrect">Actualización correcta</string>
 
+    <string name="category_message">Cambie las categorias de los productos pulsando en ellas</string>
 
 </resources>
