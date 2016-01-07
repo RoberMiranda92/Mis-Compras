@@ -14,5 +14,9 @@ public class Constans {
 
     public static final String PORT = ":8080";
 
-    public static final String URL_PATH = "/misCompras/rest/file/upload";
+    public static final String URL_FILE_UPLOAD = "/misCompras/rest/file/upload";
+    public static final String URL_DICCIONARIO_UPLOAD = "/misCompras/rest/file/diccionario";
+
+    public static int CONNECTION_TIMEOUT = 10000;
+    public static int SOCKET_TIMEOUT = 30000;
 }

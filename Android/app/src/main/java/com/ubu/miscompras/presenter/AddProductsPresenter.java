@@ -6,6 +6,7 @@ import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.task.CategoryGetterInteractor;
 import com.ubu.miscompras.task.ProductInsertIterator;
+import com.ubu.miscompras.task.UploadProductLineInteractor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +49,10 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
 
     }
 
+    public void showError(String message) {
+        mainView.showMessage(message);
+
+    }
 
     @Override
     public void showError() {
@@ -82,8 +87,12 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     }
 
     public void saveProducts(List<LineaProducto> lineasDeProducto) {
+        if(!lineasDeProducto.isEmpty()){
         ProductInsertIterator iterator = new ProductInsertIterator(this);
-        iterator.execute(lineasDeProducto);
+        iterator.execute(lineasDeProducto);}
+        else{
+            mainView.showEmptyMessage();
+        }
 
     }
 
@@ -126,5 +135,23 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
             mainView.end();
         } else
             mainView.showMessage("Error al guardar los productos");
+    }
+
+    public void uploadProducts(List<LineaProducto> items) {
+
+        StringBuilder builder = new StringBuilder();
+
+        for(int i=0;i<items.size();i++){
+            if(i!=items.size()-1){
+                builder.append(items.get(i).getProducto().getNombre());
+                builder.append(",");
+            }else{
+                builder.append(items.get(i).getProducto().getNombre());
+            }
+        }
+
+        UploadProductLineInteractor task = new UploadProductLineInteractor(this,builder.toString());
+        task.execute();
+
     }
 }

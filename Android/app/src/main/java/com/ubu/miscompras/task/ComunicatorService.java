@@ -38,8 +38,6 @@ public class ComunicatorService extends AsyncTask<String, Integer, String> {
 
 
     private MainFragmentPresenter presenter;
-    private int CONNECTION_TIMEOUT = 10000;
-    private int SOCKET_TIMEOUT = 30000;
     private Context context;
     private long totalSize = 0;
     private boolean error = false;
@@ -96,8 +94,8 @@ public class ComunicatorService extends AsyncTask<String, Integer, String> {
         String responseString;
         try {
             HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMEOUT);
+            HttpConnectionParams.setConnectionTimeout(httpParams, Constans.CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpParams, Constans.SOCKET_TIMEOUT);
             HttpClient httpclient = new DefaultHttpClient(httpParams);
             HttpContext localContext = new BasicHttpContext();
 
@@ -110,7 +108,7 @@ public class ComunicatorService extends AsyncTask<String, Integer, String> {
             builder.append(Constans.PROTOCOL);
             builder.append(ip);
             builder.append(Constans.PORT);
-            builder.append(Constans.URL_PATH);
+            builder.append(Constans.URL_FILE_UPLOAD);
 
             HttpPost httppost = new HttpPost(builder.toString());
 

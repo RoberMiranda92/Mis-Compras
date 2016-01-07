@@ -42,6 +42,8 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
             mView.showError();
         else
             mView.showMessage();
+
+        mView.start();
     }
 
     @Override

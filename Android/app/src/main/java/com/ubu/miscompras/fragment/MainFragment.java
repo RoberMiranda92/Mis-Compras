@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,10 @@ import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.presenter.MainFragmentPresenter;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +61,8 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     private CategoryAdapter categoryAdapter;
     private int position = 0;
     private TextView texView_totalImport;
+    private File tempFile;
+    private String fileName;
 
 
     @Override
@@ -118,7 +126,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         super.onStart();
 
 
-
     }
 
     @Override
@@ -155,8 +162,11 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
                     startCropActivity(data.getData());
                 break;
             case LOAD_IMAGE_CAMERA:
-                if (resultCode == Activity.RESULT_OK)
-                    startCropActivity(data.getData());
+                if (resultCode == Activity.RESULT_OK) {
+                    startCropActivity(getPhotoFileUri(fileName));
+                }
+
+                break;
         }
 
     }
@@ -223,8 +233,13 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     private void startCameraIntent() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            Date now = new Date();
+            fileName = formatter.format(now.getTime()) + ".jpg";
+            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePicture.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(fileName));
+            startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);
     }
 
     private void startCropActivity(Uri source) {
@@ -275,4 +290,33 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+    // Returns the Uri for a photo stored on disk given the fileName
+    public Uri getPhotoFileUri(String fileName) {
+        // Only continue if the SD Card is mounted
+        if (isExternalStorageAvailable()) {
+            // Get safe storage directory for photos
+            File mediaStorageDir = new File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "String");
+
+            // Create the storage directory if it does not exist
+            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+                Log.d("exception", "failed to create directory");
+            }
+
+            // Return the file target for the photo based on filename
+            return Uri.fromFile(new File(mediaStorageDir.getPath() + File.separator + fileName));
+        }
+        return null;
+    }
+
+    private boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        }
+        return false;
+    }
+
 }

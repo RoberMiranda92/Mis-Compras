@@ -65,7 +65,7 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom)
                 .setTitle("Productos")
-                .setPositiveButton("OK",
+                .setPositiveButton(getString(R.string.accept),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 OnEditableItem listener = (OnEditableItem) getActivity();
@@ -87,7 +87,7 @@ public class EditProdutDialog extends DialogFragment implements AdapterView.OnIt
                             }
                         }
                 )
-                .setNegativeButton("Cancel",
+                .setNegativeButton(getString(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();

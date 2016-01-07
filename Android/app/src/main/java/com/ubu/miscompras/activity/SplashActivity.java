@@ -99,13 +99,19 @@ public class SplashActivity extends AppCompatActivity {
         editor.putFloat("importeTotal", total);
         editor.commit();
 
+        start();
+
+
+    }
+
+    public void start()
+    {
         new Handler().postDelayed(new TimerTask() {
             @Override
             public void run() {
                 startApp();
             }
         },1500);
-
     }
 
 }

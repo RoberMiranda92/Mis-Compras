@@ -153,10 +153,8 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         int id = v.getId();
         switch (id) {
             case R.id.FloattingButton_saveProducts:
-                if (!disable)
                     presenter.saveProducts(recyclerView_Adapter.getItems());
-                else
-                    showMessage("Ya se han guardado los productos");
+                    presenter.uploadProducts(recyclerView_Adapter.getItems());
                 break;
 
         }
@@ -164,7 +162,7 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
 
 
     public void showErrorMensage() {
-        Toast.makeText(this, "Error al procesar algunos productos", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Error al procesar algunos productos", Toast.LENGTH_SHORT).show();
     }
 
     public void end(){
@@ -196,5 +194,9 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void showOnEditItemError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showEmptyMessage() {
+        Toast.makeText(this, "Lista Vacia", Toast.LENGTH_SHORT).show();
     }
 }
