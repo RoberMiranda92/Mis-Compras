@@ -138,4 +138,35 @@ public class LineaProducto implements Parcelable {
         dest.writeDouble(precio);
         dest.writeDouble(importe);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LineaProducto that = (LineaProducto) o;
+
+        if (id != that.id) return false;
+        if (cantidad != that.cantidad) return false;
+        if (Double.compare(that.precio, precio) != 0) return false;
+        if (Double.compare(that.importe, importe) != 0) return false;
+        if (!ticket.equals(that.ticket)) return false;
+        return producto.equals(that.producto);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + ticket.hashCode();
+        result = 31 * result + producto.hashCode();
+        result = 31 * result + cantidad;
+        temp = Double.doubleToLongBits(precio);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(importe);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

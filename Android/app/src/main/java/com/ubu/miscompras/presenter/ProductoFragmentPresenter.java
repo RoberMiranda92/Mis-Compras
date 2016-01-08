@@ -1,14 +1,14 @@
 package com.ubu.miscompras.presenter;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.fragment.ProductosFragment;
+import com.ubu.miscompras.view.fragment.ProductosFragment;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.task.CategoryGetterInteractor;
-import com.ubu.miscompras.task.ProductGetterByCategoryIterator;
-import com.ubu.miscompras.task.ProductGetterByPriceInteractor;
-import com.ubu.miscompras.task.ProductosGetterIteratorByDate;
+import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
+import com.ubu.miscompras.model.interactors.ProductGetterByCategoryInterator;
+import com.ubu.miscompras.model.interactors.ProductGetterByPriceInteractor;
+import com.ubu.miscompras.model.interactors.ProductGetterByDateInteractor;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,13 +35,13 @@ public class ProductoFragmentPresenter implements OnLoadComplete {
             mView.showMessage(mView.getString(R.string.errorDates));
         } else {
 
-            ProductosGetterIteratorByDate task = new ProductosGetterIteratorByDate(this, starDate, endDate);
+            ProductGetterByDateInteractor task = new ProductGetterByDateInteractor(this, starDate, endDate);
             task.execute();
         }
     }
 
     public void getProductosByCategoria(Categoria categoria) {
-        ProductGetterByCategoryIterator task = new ProductGetterByCategoryIterator(this, categoria);
+        ProductGetterByCategoryInterator task = new ProductGetterByCategoryInterator(this, categoria);
         task.execute();
     }
 

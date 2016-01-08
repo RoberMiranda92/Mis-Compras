@@ -6,7 +6,7 @@
     android:background="@color/windowsBackground"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".activity.CropActivity">
+    tools:context=".view.activity.CropActivity">
 
     <com.isseiaoki.simplecropview.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropImageView"

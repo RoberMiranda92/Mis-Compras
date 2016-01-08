@@ -4,13 +4,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.ubu.miscompras.fragment.MainFragment;
+import com.ubu.miscompras.view.fragment.MainFragment;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.task.CategoryGetterInteractor;
-import com.ubu.miscompras.task.ComunicatorService;
-import com.ubu.miscompras.task.ProductGetterByCategoryIterator;
+import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
+import com.ubu.miscompras.model.interactors.ComunicatorService;
+import com.ubu.miscompras.model.interactors.ProductGetterByCategoryInterator;
 
 import java.util.List;
 
@@ -115,7 +115,7 @@ public class MainFragmentPresenter implements OnLoadComplete {
 
 
     public void drawCharByCategoty(Categoria item) {
-        ProductGetterByCategoryIterator task = new ProductGetterByCategoryIterator(this, item);
+        ProductGetterByCategoryInterator task = new ProductGetterByCategoryInterator(this, item);
         task.execute();
     }
 }

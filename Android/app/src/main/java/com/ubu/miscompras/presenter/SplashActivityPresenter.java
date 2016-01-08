@@ -1,11 +1,11 @@
 package com.ubu.miscompras.presenter;
 
-import com.ubu.miscompras.activity.SplashActivity;
+import com.ubu.miscompras.view.activity.SplashActivity;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.task.CaregoryInsertInteractor;
-import com.ubu.miscompras.task.TicketProductoGetterInteractor;
+import com.ubu.miscompras.model.interactors.CaregoryInsertInteractor;
+import com.ubu.miscompras.model.interactors.ProductGetterInteractor;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
     }
 
     public void onResume() {
-        TicketProductoGetterInteractor task = new TicketProductoGetterInteractor(this);
+        ProductGetterInteractor task = new ProductGetterInteractor(this);
         task.execute();
     }
 

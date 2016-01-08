@@ -6,7 +6,7 @@
     android:background="@color/windowsBackground"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activity.MainActivity">
+    tools:context=".view.activity.MainActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout_spinner"

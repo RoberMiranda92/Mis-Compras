@@ -1,10 +1,10 @@
 package com.ubu.miscompras.presenter;
 
-import com.ubu.miscompras.activity.TicketDetail;
+import com.ubu.miscompras.view.activity.TicketDetail;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.task.TicketProductoGetterByTicket;
+import com.ubu.miscompras.model.interactors.ProductGetterByTicketInteractor;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class TicketDetaiPresenter implements  OnLoadComplete{
     }
 
     public void getTicketLinesByTicket(Ticket ticket){
-        TicketProductoGetterByTicket task = new TicketProductoGetterByTicket(this,ticket);
+        ProductGetterByTicketInteractor task = new ProductGetterByTicketInteractor(this,ticket);
         task.execute();
     }
 }

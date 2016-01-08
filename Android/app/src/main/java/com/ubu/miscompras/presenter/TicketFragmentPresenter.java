@@ -1,13 +1,13 @@
 package com.ubu.miscompras.presenter;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.fragment.TicketFragment;
+import com.ubu.miscompras.view.fragment.TicketFragment;
 import com.ubu.miscompras.model.Categoria;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.task.CategoryGetterInteractor;
-import com.ubu.miscompras.task.TicketGetterByDateInteractor;
-import com.ubu.miscompras.task.TicketGetterByPriceInteractor;
+import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
+import com.ubu.miscompras.model.interactors.TicketGetterByDateInteractor;
+import com.ubu.miscompras.model.interactors.TicketGetterByPriceInteractor;
 
 import java.util.Calendar;
 import java.util.Date;

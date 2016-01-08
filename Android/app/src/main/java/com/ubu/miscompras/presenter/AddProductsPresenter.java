@@ -1,12 +1,12 @@
 package com.ubu.miscompras.presenter;
 
-import com.ubu.miscompras.activity.AddProductsActivity;
+import com.ubu.miscompras.view.activity.AddProductsActivity;
 import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.LineaProducto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.task.CategoryGetterInteractor;
-import com.ubu.miscompras.task.ProductInsertIterator;
-import com.ubu.miscompras.task.UploadProductLineInteractor;
+import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
+import com.ubu.miscompras.model.interactors.ProductInsertIterator;
+import com.ubu.miscompras.model.interactors.UploadProductLineInteractor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -88,8 +88,8 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
 
     public void saveProducts(List<LineaProducto> lineasDeProducto) {
         if(!lineasDeProducto.isEmpty()){
-        ProductInsertIterator iterator = new ProductInsertIterator(this);
-        iterator.execute(lineasDeProducto);}
+        ProductInsertIterator iterator = new ProductInsertIterator(this,lineasDeProducto);
+        iterator.execute();}
         else{
             mainView.showEmptyMessage();
         }

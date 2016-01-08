@@ -94,17 +94,29 @@ public class Ticket implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof Ticket)) return false;
-        Ticket otherMyClass = (Ticket) other;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        if (!otherMyClass.getFecha_compra().equals(this.getFecha_compra()))
-            return false;
+        Ticket ticket = (Ticket) o;
 
+        if (id != ticket.id) return false;
+        if (nArticulos != ticket.nArticulos) return false;
+        if (Double.compare(ticket.total, total) != 0) return false;
+        return fecha_compra.equals(ticket.fecha_compra);
 
-        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + fecha_compra.hashCode();
+        result = 31 * result + nArticulos;
+        temp = Double.doubleToLongBits(total);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     public int getnArticulos() {
