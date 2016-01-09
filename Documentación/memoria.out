@@ -1,0 +1,31 @@
+\BOOKMARK [0][-]{section*.1}{\315ndice general}{}% 1
+\BOOKMARK [0][-]{section*.2}{\315ndice de figuras}{}% 2
+\BOOKMARK [0][-]{section*.3}{\315ndice de cuadros}{}% 3
+\BOOKMARK [0][-]{chapter*.4}{Introducci\363n}{}% 4
+\BOOKMARK [0][-]{chapter*.5}{Objetivos del proyecto}{}% 5
+\BOOKMARK [0][-]{chapter*.8}{Conceptos te\363ricos}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Visi\363n artificial}{chapter*.8}% 7
+\BOOKMARK [1][-]{section.3.2}{OCR}{chapter*.8}% 8
+\BOOKMARK [1][-]{section.3.3}{Operadores Morfol\363gicos}{chapter*.8}% 9
+\BOOKMARK [1][-]{section.3.4}{Erosi\363n y Dilataci\363n}{chapter*.8}% 10
+\BOOKMARK [1][-]{section.3.5}{Transformada de Hough}{chapter*.8}% 11
+\BOOKMARK [1][-]{section.3.6}{Distancia de Levenshtein }{chapter*.8}% 12
+\BOOKMARK [1][-]{section.3.7}{Tipos de tiques}{chapter*.8}% 13
+\BOOKMARK [1][-]{section.3.8}{Modelo Cliente-Servidor}{chapter*.8}% 14
+\BOOKMARK [1][-]{section.3.9}{Api-Rest}{chapter*.8}% 15
+\BOOKMARK [1][-]{section.3.10}{JSON}{chapter*.8}% 16
+\BOOKMARK [0][-]{chapter*.21}{T\351cnicas y herramientas}{}% 17
+\BOOKMARK [1][-]{section.4.1}{Metodologia \341gil Scrum }{chapter*.21}% 18
+\BOOKMARK [1][-]{section.4.2}{Herramientas}{chapter*.21}% 19
+\BOOKMARK [0][-]{chapter*.41}{Aspectos relevantes del desarrollo del proyecto}{}% 20
+\BOOKMARK [1][-]{section.5.1}{Desarrollo de la idea}{chapter*.41}% 21
+\BOOKMARK [1][-]{section.5.2}{Tesseract como Libreria OCR }{chapter*.41}% 22
+\BOOKMARK [1][-]{section.5.3}{Plataforma Android}{chapter*.41}% 23
+\BOOKMARK [1][-]{section.5.4}{\277 En dispositivo o en la Nube ?}{chapter*.41}% 24
+\BOOKMARK [1][-]{section.5.5}{Conexi\363n cliente Servidor}{chapter*.41}% 25
+\BOOKMARK [1][-]{section.5.6}{Librer\355a de Procesado de Im\341genes}{chapter*.41}% 26
+\BOOKMARK [1][-]{section.5.7}{Obtenci\363n de las lineas de producto}{chapter*.41}% 27
+\BOOKMARK [1][-]{section.5.8}{Mejora de Tesseract}{chapter*.41}% 28
+\BOOKMARK [0][-]{chapter*.50}{Trabajos relacionados}{}% 29
+\BOOKMARK [0][-]{chapter*.56}{Conclusiones y Lineas de trabajo futuras}{}% 30
+\BOOKMARK [0][-]{section*.61}{Bibliograf\355a}{}% 31

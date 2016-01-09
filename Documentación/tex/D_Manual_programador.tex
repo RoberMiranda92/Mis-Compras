@@ -1,0 +1,39 @@
+\apendice{Documentación técnica de programación}
+
+\section{Introducción}
+
+\section{Estructura de directorios}
+
+\section{Manual del programador}
+En esta sección se pretende explicar paso a paso como instalar, compilar y ejecutar el proyecto, como referencia a futuros programadores que usen este proyecto como base para desarrollar nuevas funcionalidades o nuevos proyectos.
+Esos manuales se han desarrollado en un sistema operativo Windows 7 de 64 bits pero también se puede usar la configuración de 32 bits.
+\section{Instalación, compilación y ejecución del proyecto}
+
+\subsection{Instalación del Entorno.}
+
+	\subsubsection{Java JDK 7}
+	Para la ejecución del proyecto, es necesario el uso de Java, por ello se debe realizar una descarga desde la web \cite{java}, eligiendo la versión del sistema operativo en la que ejecutemos el proyecto.
+	\subsection{NetBeans}
+	El servidor, se ha desarrollado bajo el IDE de NetBeans, para instarlo, se debe ir a la web \cite{netbeans}, y seleccionar la version Java EE(ver figura \ref{fig:netBeansJava}).
+	Una vez descargado instalar, y asegurarse de que se selecciona la versión \textit{GlassFish Server OpenSource Edition}, que instalará de forma automática GlassFish en nuestro ordenador.
+	
+\imagen{netBeansJava}{Selección de la versión de NetBeans}
+	\subsection{Tesseract}
+	Para el uso de Tesseract en el servidor, es necesario su instalación, pero \textbf{previamente} se debe instalar el paquete de \textbf{Visual C++ para visual Studio 2013}, que se puede descargar de \cite{paqueteVisual}.Se debe elegir la versión en función de la configuración del sistema operativo siendo:
+	\begin{itemize}
+		\item \textbf{vcredist\_x64.exe} para la versión de 64 bits.
+		\item \textbf{vcredist\_x86.exe} para la versión de 32 bits.
+	\end{itemize}
+Una vez instalado procedes a la descarga de Tesseract de \cite{tesseract} donde elegimos el archivo \textbf{tesseract-ocr-setup-3.02.02.exe}(ver figura \ref{fig:tesseractDownload})
+
+\imagen{tesseractDownload}{Selección de descarga Tesseract}
+	
+	\subsection{Android Studio}
+	Para el desarrollo del cliente, se ha utilizado el IDE de Android Studio, para su instalación, se debe ir a la web \cite{androidStudio} y elegir la versión de sistema operativo.
+	
+	\subsection{Git}
+	En el presentre proyecto se ha empleado repositorio Git para el control de versiones.Para la instalación se debe descargar el programa de la web \cite{git} y completar la instalación.
+
+\subsection{Importación del proyecto.}
+
+\section{Pruebas del sistema}

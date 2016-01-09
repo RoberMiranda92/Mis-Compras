@@ -1,0 +1,64 @@
+\select@language {spanish}
+\select@language {spanish}
+\contentsline {chapter}{\'{I}ndice general}{\es@scroman {iii}}{section*.1}
+\contentsline {chapter}{\'{I}ndice de figuras}{\es@scroman {v}}{section*.2}
+\contentsline {chapter}{\'{I}ndice de cuadros}{\es@scroman {vi}}{section*.3}
+\contentsline {chapter}{Introducci\IeC {\'o}n}{1}{chapter*.4}
+\contentsline {chapter}{Objetivos del proyecto}{3}{chapter*.5}
+\contentsline {subsection}{Objetivos Espec\IeC {\'\i }ficos}{3}{section*.6}
+\contentsline {subsection}{Objetivos Personales}{4}{section*.7}
+\contentsline {chapter}{Conceptos te\IeC {\'o}ricos}{5}{chapter*.8}
+\contentsline {section}{\numberline {3.1}Visi\IeC {\'o}n artificial}{5}{section.3.1}
+\contentsline {section}{\numberline {3.2}OCR}{5}{section.3.2}
+\contentsline {subsection}{Pre-Procesado}{5}{section*.9}
+\contentsline {subsection}{Reconocimiento de Caracteres}{7}{section*.13}
+\contentsline {subsubsection}{Coincidencia de patrones}{7}{section*.14}
+\contentsline {subsubsection}{Extracci\IeC {\'o}n de caracter\IeC {\'\i }sticas}{7}{section*.15}
+\contentsline {subsection}{Post-Procesado}{7}{section*.16}
+\contentsline {section}{\numberline {3.3}Operadores Morfol\IeC {\'o}gicos}{7}{section.3.3}
+\contentsline {section}{\numberline {3.4}Erosi\IeC {\'o}n y Dilataci\IeC {\'o}n}{8}{section.3.4}
+\contentsline {section}{\numberline {3.5}Transformada de Hough}{9}{section.3.5}
+\contentsline {section}{\numberline {3.6}Distancia de Levenshtein }{9}{section.3.6}
+\contentsline {section}{\numberline {3.7}Tipos de tiques}{10}{section.3.7}
+\contentsline {section}{\numberline {3.8}Modelo Cliente-Servidor}{12}{section.3.8}
+\contentsline {section}{\numberline {3.9}Api-Rest}{13}{section.3.9}
+\contentsline {section}{\numberline {3.10}JSON}{13}{section.3.10}
+\contentsline {chapter}{T\IeC {\'e}cnicas y herramientas}{14}{chapter*.21}
+\contentsline {section}{\numberline {4.1}Metodologia \IeC {\'a}gil Scrum }{14}{section.4.1}
+\contentsline {section}{\numberline {4.2}Herramientas}{14}{section.4.2}
+\contentsline {subsection}{Herramientas de desarrollo:}{15}{section*.22}
+\contentsline {subsubsection}{NetBeans}{15}{section*.23}
+\contentsline {subsubsection}{Android Studio}{15}{section*.24}
+\contentsline {subsection}{Herramientas de gesti\IeC {\'o}n:}{15}{section*.25}
+\contentsline {subsubsection}{Git}{15}{section*.26}
+\contentsline {subsubsection}{Bitbucket}{15}{section*.27}
+\contentsline {subsubsection}{SourceTree}{15}{section*.28}
+\contentsline {subsection}{Version One}{16}{section*.29}
+\contentsline {subsection}{Herramientas de documentaci\IeC {\'o}n:}{16}{section*.30}
+\contentsline {subsubsection}{T\kern -.1667em\lower .5ex\hbox {E}\kern -.125emX\spacefactor \@m {}{}Maker}{16}{section*.31}
+\contentsline {subsection}{Herramientas externas:}{16}{section*.32}
+\contentsline {subsubsection}{Tesseract}{16}{section*.33}
+\contentsline {subsubsection}{OpenCV}{16}{section*.34}
+\contentsline {subsubsection}{GlassFish}{17}{section*.35}
+\contentsline {subsubsection}{Jersey}{17}{section*.36}
+\contentsline {subsubsection}{SQLite}{17}{section*.37}
+\contentsline {subsubsection}{OrmLite}{17}{section*.38}
+\contentsline {subsubsection}{SimpleCropView}{18}{section*.39}
+\contentsline {chapter}{Aspectos relevantes del desarrollo del proyecto}{19}{chapter*.41}
+\contentsline {section}{\numberline {5.1}Desarrollo de la idea}{19}{section.5.1}
+\contentsline {section}{\numberline {5.2}Tesseract como Libreria OCR }{19}{section.5.2}
+\contentsline {section}{\numberline {5.3}Plataforma Android}{21}{section.5.3}
+\contentsline {section}{\numberline {5.4}\IeC {\textquestiondown } En dispositivo o en la Nube ?}{22}{section.5.4}
+\contentsline {section}{\numberline {5.5}Conexi\IeC {\'o}n cliente Servidor}{23}{section.5.5}
+\contentsline {section}{\numberline {5.6}Librer\IeC {\'\i }a de Procesado de Im\IeC {\'a}genes}{23}{section.5.6}
+\contentsline {section}{\numberline {5.7}Obtenci\IeC {\'o}n de las lineas de producto}{23}{section.5.7}
+\contentsline {section}{\numberline {5.8}Mejora de Tesseract}{24}{section.5.8}
+\contentsline {chapter}{Trabajos relacionados}{26}{chapter*.50}
+\contentsline {subsection}{Smart Receipts}{26}{section*.51}
+\contentsline {subsection}{Receipts by Wave}{26}{section*.52}
+\contentsline {subsection}{Num receipts}{26}{section*.53}
+\contentsline {subsection}{Fintonic}{27}{section*.54}
+\contentsline {chapter}{Conclusiones y Lineas de trabajo futuras}{28}{chapter*.56}
+\contentsline {subsection}{Conclusiones}{28}{section*.57}
+\contentsline {subsection}{Lineas de trabajo futuras }{28}{section*.58}
+\contentsline {chapter}{Bibliograf\'{\i }a}{31}{section*.61}

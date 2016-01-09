@@ -1,0 +1,145 @@
+\capitulo{4}{Técnicas y herramientas}
+
+En este apartado se describen las metodologías usadas y las herramientas de desarrollo que se han utilizado en el presente trabajo.
+
+\section{Metodologia ágil Scrum \label{scrum}}
+Scrum es una metodología de desarrollo ágil, la cual, está basada en iteraciones llamadas sprints. Cada iteración termina con una pieza de software que añade una nueva funcionalidad o mejora las ya existentes. Esta iteraciones suelen durar de 2 a 4 semanas\cite{scrum}.
+Como elementos clave del Scrum podemos encontrar:
+\begin{itemize}
+\item Entregas periódicas de de funcionalidades del producto que se está desarrollando
+\item Se desarrolla una serie de reuniones de equipo para determinar las tareas que se van a realizar en cada iteración.
+\end{itemize}
+
+Para el desarrollo del presente trabajo, las iteraciones se han desarrollado con un periodo de una a dos semana.
+
+\section{Herramientas}
+En esta sección aparecen cada una de las herramientas utilizadas para la realización del proyecto.
+Se han dividido en categorías en función de su uso:
+\begin{itemize}
+	\item \textbf{Herramientas de desarrollo}
+	\item \textbf{Herramientas de gestión}
+	\item \textbf{Herramientas de documentación}
+	\item \textbf{Herramientas externas}
+\end{itemize}
+
+\subsection{Herramientas de desarrollo:}
+\subsubsection{NetBeans}
+Como entorno de desarrollo de la aplicación por parte del servidor se ha utilizado NetBeans. Se ha decidido trabajar con esta herramienta por su incorporación de el servidor de Glassfish.
+NetBeans es un proyecto open source fundado por Sun MicroSystem. El IDE soporta todos los tipos de aplicación Java(J2SE,web y aplicaciones móviles).
+
+Página web de la herramienta: \url{https://netbeans.org/}
+
+\subsubsection{Android Studio}
+Android Studio es un entorno de desarrollo para la plataforma de Android, basado bajo el software de IntelliJ IDEA y desarrollado por Google. Como principales características soporta refactorizaciones especificas para Android, y plantillas para la creación de diseños.
+
+Página web de la herramienta: \url{http://developer.android.com/intl/es/sdk/index.html}
+\subsection{Herramientas de gestión:}
+
+\subsubsection{Git}
+Git es un software de control de versiones diseñado por Linus Torvalds, pensado para el mantenimiento de versiones de aplicaciones cuando estas tienen un volumen elevado de archivos con código fuente.
+
+Página web de la herramienta: \url{https://git-scm.com/}
+
+\subsubsection{Bitbucket} 
+Bitbucket es una web de alojamiento de proyectos basados en Git o Mercurial. Esta herramienta nos permite tener un control de versiones de nuestros proyecto, como principal ventaja es la privacidad de estos de forma gratuita.
+
+Página web de la herramienta: \url{https://bitbucket.org}
+
+\subsubsection{SourceTree}
+SourceTree es una aplicación de escritorio para MacOS y Windows que permite el control de proyectos Git o Mercurial.
+Como característica principal es su interfaz clara y de fácil manejo permitiendo de un vistazo ver los commits realizados, los branches, etc..
+Es gratuita, pero necesario realizar un registro para su funcionamiento.
+
+Página web de la herramienta: \url{https://www.sourcetreeapp.com/}
+
+\subsection{Version One}
+VersionOne es una aplicación web que permite gestionar proyectos.
+En ella se utiliza Scrum(ver sección \ref{scrum}) para gestionar estos, permitiendo crear sprints y tareas asociadas. Permite ver el seguimiento mediante una representación de gráficos, llamados Burndown.
+
+Página web de la herramienta: \url{http://www.versionone.com/}
+
+\subsection{Herramientas de documentación:}
+
+\subsubsection{\TeX{}Maker}
+TextMaker es un editor Latex multiplataforma.
+Permite la creación de documentos en PDF permitiendo la rápida localización de cada comando de Latex.
+
+Página web de la herramienta: \url{http://www.xm1math.net/texmaker/}
+	
+\subsection{Herramientas externas:}
+Estas herramientas se han empleado para la simplificación del desarrollo del presente proyecto, dado que sin ellas seria prácticamente imposible llevarlo a cabo.
+
+\subsubsection{Tesseract} \label{Tesseract}
+Teserract es un motor OCR desarrollado actualmente por Google bajo licencia Apache.
+Esta considerado uno de los mejores motores en cuanto precisión, multiplataforma y con una versión para Android, sin embargo el funcionamiento y precisión de esta versión esta lejos de una versión más madura como las de escritorio, por ello se ha decidido incorporar esta funcionalidad en la parte del servidor.
+
+Página web de la herramienta:
+ 
+\url{https://github.com/tesseract-ocr/tesseract}
+
+\subsubsection{OpenCV}
+OpenCv es una librería de procesamiento de imágenes. Esta librería contiene una gran cantidad de algoritmos para el procesado de imágenes y una comunidad de usuarios muy elevada. La ventaja de OpenCV es su versatilidad a la hora de emplearse en diferentes plataformas y S.O. Utiliza una licencia BSD
+
+Página web de la herramienta: \url{http://opencv.org/}
+
+\subsubsection{GlassFish}
+GlassFish es un servidor de aplicaciones java desarrollado por Oracle.
+Existen 2 versiones una de código libre y otra versión comercial, en este proyecto se ha usado la versión gratuita, bajo las licencias CDDL y la GNU GPL.
+
+Página web de la herramienta: \url{https://glassfish.java.net/}
+
+\subsubsection{Jersey}
+Jersey es un framework que permite simplificar la creación de un WebService.
+Esta herramienta se basa en el la api \textit{JAX-RS (Java API for RESTful Web Services)} \cite{wiki:JAX-RS} que proporciona soporte para la creación de servicios web RESTFul, a la cual, jersey añade nuevas características y utilidades para simplificar el proceso de desarrollo de una API REST.
+La principal ventaja de jersey es que incluye compatibilidad con GlassFish.
+
+Página web de la herramienta: \url{https://jersey.java.net}
+
+\subsubsection{SQLite}
+SQLite es un motor de base de datos relacional, como principal característica destaca por su pequeño tamaño del fichero utilizado para contener los datos, por ello es perfecto para dispositivos de memoria limitada como smartphones o werables.
+
+Página web de la herramienta: \url{https://www.sqlite.org}
+
+ 
+ \subsubsection{OrmLite}
+ OrmLite es un \textit{Object Relational Mapping (ORM)} que permite la conversión de nuestros objetos en datos persistentes nuestro sistema de persistencia, en este caso una BD en Sqlite. Soporta funionamiento en la plataforma de android y sus principales ventajas son:
+ 	\begin{itemize}
+ 		\item Configuración de los objetos  mediante anotaciones.
+ 		\item Abstracción de los objetos mediante el patrón DAO.
+ 		\item Construcción de consultas de forma sencilla.
+ 	\end{itemize}
+En este proyecto, se ha empleado para la persistencia de los tiques en la base de daros del smartphone.
+
+Página web de la herramienta: \url{http://ormlite.com/}
+
+\subsubsection{SimpleCropView}
+
+SimpleCropView es una biblioteca para el recortado de  imágenes en Android.
+Esta biblioteca simplifica el código y proporciona una interfaz de usuario fácil de personalizar.
+
+Página web de la herramienta: \url{https://android-arsenal.com/details/1/2366} 
+
+\begin{table}[]
+\rowcolors {2}{gray!35}{}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+    Herramienta    & Tipo de Licencia          & Coste \\
+    \otoprule
+Net Beans      &            -                & 0\euro       \\
+Android Studio & Apache License 2.0        & 0\euro      \\
+Bitbucket      & -                         & 0 \euro     \\
+SourceTree     & -                         & 0 \euro     \\
+TexMaker       & GPL License               & 0 \euro    \\
+Tesseract      & Apache License 2.0        & 0 \euro      \\
+OpenCv         & BSD License               & 0 \euro      \\
+GlassFish Free & CDDL y GPL License        & 0 \euro      \\
+Jersey         & CDDL y GPL License        & 0 \euro      \\
+SQLite         & -                         & 0\euro    \\
+OrmLite        & Open source license (ISC) & 0 \euro     \\
+SimpleCropView & Apache License 2.0        & 0 \euro   \\
+\bottomrule 
+\end{tabular}
+\label{herramientas}
+\caption{Tabla de herramientas}
+\end{table}

@@ -1,0 +1,44 @@
+\apendice{Especificación de Requisitos}
+
+\section{Introducción}
+
+El objetivo de esta sección es definir las funcionalidades de la aplicación que se está desarrollando.
+
+\section{Objetivos generales}
+
+\section{Catalogo de requisitos}
+
+\section{Especificación de requisitos}
+
+\subsection{Requisitos funcionales}
+
+\begin{itemize}
+	\item \textbf{RF1. Registrar tique: }Permite al usuario cargar una imagen, ya sea a través de la cámara del dispositivo o de la galería.Esta imagen se envía al servidor, que una vez procesada devuelve un JSON con los productos encontrados, o devuelve un código de excepción si se ha producido algún error. Los productos devueltos se deben poder editar antes de guardarse en la base de datos del dispositivo.
+	\item \textbf{RF2. Consultar tiques: }El usuario puede realizar diferentes consultas a la base de datos en relación a los tiques que ha registrado. En ellas puede seleccionar los tiques que se encuentren en un rango de fechas, o entre un rango de precio, que viene dado por el importe total del tique.
+	\item \textbf{RF3. Consultar Productos: }El usuario puede realizar diferentes consultas a la base de datos en relación a los productos de los tiques que ha registrado. En ellas puede seleccionar los productos que se hayan registrado entre dos fechas, el precio unitario de producto en un rango de precio y filtrar productos asociados a una categoría. Siendo estas:
+	\begin{itemize}
+		\item Bebidas Alcohólicas.
+		\item Carnes.
+		\item Comida Rápida.
+		\item Ensaladas.
+		\item Otros.
+		\item Pasta.
+		\item Pescados.
+		\item Platos Calientes.
+		\item Platos Combinados.
+		\item Postres.
+		\item Raciones.
+		\item Refrescos.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Requisitos no funcionales}
+
+\begin{itemize}
+	\item \textbf{RNF1. Facilidad de uso: } Se debe implementar una navegación entre las vistas sencilla e intuitiva.
+	\item \textbf{RNF2. Extensible: } Debe estar pensado para que se pueda añadir nuevas funcionalidades, y nuevas vistas de la forma mas fácil posible.
+\end{itemize}
+
+
+
+

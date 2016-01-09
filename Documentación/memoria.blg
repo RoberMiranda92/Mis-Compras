@@ -1,0 +1,80 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: memoria.aux
+A level-1 auxiliary file: ./tex/1_Introduccion.aux
+A level-1 auxiliary file: ./tex/2_Objetivos_del_proyecto.aux
+A level-1 auxiliary file: ./tex/3_Conceptos_teoricos.aux
+A level-1 auxiliary file: ./tex/4_Tecnicas_y_herramientas.aux
+A level-1 auxiliary file: ./tex/5_Aspectos_relevantes_del_desarrollo_del_proyecto.aux
+A level-1 auxiliary file: ./tex/6_Trabajos_relacionados.aux
+A level-1 auxiliary file: ./tex/7_Conclusiones_Lineas_de_trabajo_futuras.aux
+The style file: plain.bst
+Database file #1: bibliografia.bib
+Warning--entry type for "OperadoresMorfologicos" isn't style-file defined
+--line 1 of file bibliografia.bib
+Warning--entry type for "ocr" isn't style-file defined
+--line 8 of file bibliografia.bib
+Warning--entry type for "tique" isn't style-file defined
+--line 15 of file bibliografia.bib
+Warning--entry type for "versionesAndroid" isn't style-file defined
+--line 60 of file bibliografia.bib
+Warning--entry type for "localVScloud" isn't style-file defined
+--line 67 of file bibliografia.bib
+Warning--entry type for "json" isn't style-file defined
+--line 89 of file bibliografia.bib
+Warning--entry type for "menta" isn't style-file defined
+--line 104 of file bibliografia.bib
+Warning--entry type for "improvequality" isn't style-file defined
+--line 111 of file bibliografia.bib
+Warning--to sort, need author or key in ocr
+Warning--to sort, need author or key in OperadoresMorfologicos
+Warning--to sort, need author or key in tique
+Warning--to sort, need author or key in json
+Warning--to sort, need author or key in versionesAndroid
+Warning--to sort, need author or key in localVScloud
+Warning--to sort, need author or key in menta
+Warning--to sort, need author or key in improvequality
+Warning--empty publisher in scrum
+Warning--empty year in scrum
+You've used 16 entries,
+            2118 wiz_defined-function locations,
+            550 strings with 5711 characters,
+and the built_in function-call counts, 2860 in all, are:
+= -- 245
+> -- 64
+< -- 0
++ -- 32
+- -- 16
+* -- 97
+:= -- 396
+add.period$ -- 31
+call.type$ -- 16
+change.case$ -- 55
+chr.to.int$ -- 0
+cite$ -- 26
+duplicate$ -- 117
+empty$ -- 361
+format.name$ -- 16
+if$ -- 655
+int.to.chr$ -- 0
+int.to.str$ -- 16
+missing$ -- 2
+newline$ -- 66
+num.names$ -- 16
+pop$ -- 138
+preamble$ -- 1
+purify$ -- 40
+quote$ -- 0
+skip$ -- 133
+stack$ -- 0
+substring$ -- 80
+swap$ -- 16
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 62
+warning$ -- 10
+while$ -- 16
+width$ -- 18
+write$ -- 119
+(There were 18 warnings)

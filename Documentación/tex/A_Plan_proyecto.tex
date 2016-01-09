@@ -1,0 +1,211 @@
+\apendice{Manuales}
+
+\section{Introducción}
+
+\section{Planificación temporal}
+
+A continuación se realiza una breve explicación de las tareas realizadas en cada iteración.
+
+\subsection{Iteración 1 [28/10/2015 - 04/11/2015]}
+Esta iteración dura una semana. En ella se realiza principalmente 3 tareas.
+Se inicializan los proyectos de Servidor y Cliente de manera independiente y se trabaja en la forma de mandar la imagen del cliente al servidor. Se empieza a pensar en el modelo de datos.
+
+
+\tablaSmall{Tareas de la primera iteración}{l c c c c}{primeraIteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Creación del modelo de datos & 1 & 10 \\
+Creación del Servidor  & 1 & 1  \\
+Creación del Cliente  &1 & 1 \\
+Envío de imágenes Cliente al Servidor.  & 6 & 8  \\
+}
+
+\subsection{Iteración 2 [04/11/2015 - 11/11/2015]}
+Esta iteración dura una semana. En ella se empieza a desarrollar el tratamiento de la imagen, se decide cambiar de librería, ImageJ a OpenCv.Se termina el desarrollo del modelo de la iteración anterior y se empieza el desarrollo de la Base de Datos.
+
+\tablaSmall{Tareas de la segunda iteración}{l c c c c}{segundaIteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Creación del modelo de datos & 3 & 3\\
+Creación de el Sqlite  & 8 & 10  \\
+Inclusión de las librerías Open CV Servidor  &10 & 14 \\
+}
+\imagen{sprint2}{Gráfico Burndown Iteración 2}
+
+\cleardoublepage
+
+\subsection{Iteración 3 [11/11/2015 - 18/11/2015]}
+Esta iteración dura una semana. En ella se desarrolla el sistema para cortar la imagen antes de enviarla al servidor.
+
+\tablaSmall{Tareas de la tercera iteración}{l c c c c}{terceraIteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Creacion del modelo de datos & 5 &2.
+Crop de la imagen para el procesado en el servidor. & 3 & 7\\
+Diseño de layouts & 10 & 8  \\
+}
+\imagen{sprint3}{Gráfico Burndown Iteración 3}
+
+
+
+\cleardoublepage
+
+\subsection{Iteración 4 [18/11/2015 - 02/12/2015]}
+Esta iteración dura dos semanas. En ella se desarrolla el sistema para alinear la imagen y obtener las lineas de producto a partir de el recorte, para poder enviarlo al tesseract. El el gráfico Burndown se muestra que no se añadieron las horas, por ello, es una linea plana. 
+
+\tablaSmall{Tareas de la cuarta iteración}{l c c c c}{cuartateracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Algoritmo de Deskewing & 10 & 13\\
+Obtención de Productos  & 10 & 10  \\
+Binarización Correcta de los productos  & 10 & 10  \\
+Inclusión Tesseract  & 4 & 20  \\
+}
+\imagen{sprint4}{Gráfico Burndown Iteración 4}
+
+\cleardoublepage
+
+\subsection{Iteración 5 [02/12/2015 - 16/12/2015]}
+Esta iteración dura dos semanas. En ella se busca e implementa la forma de corregir los errores que se producen al pasar la imagen a texto por tesseract.
+Se empieza a trabajar en el envió de los productos al cliente.
+
+\tablaSmall{Tareas de la quinta iteración}{l c c c c}{quintaiteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Corrección de números linea producto & 10 & 9\\
+Creación de JSON  & 4 & 2  \\
+Corrección de productos & 4 & 6  \\
+}
+\imagen{sprint5}{Gráfico Burndown Iteración 5}
+
+\cleardoublepage
+
+\subsection{Iteración 6 [16/12/2015 - 23/12/2015]}
+Esta iteración dura una semana. En ella se desarrolla trabaja en la inserción de los tiques en el cliente. Se desarrolla tanto la vista como la funcionalidad. Se empieza a trabajar en la vista de filtro de productos
+
+\tablaSmall{Tareas de la sexta iteración}{l c c c c}{sextaiteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Conexión correcta con el servidor & 2 & 2\\
+Diseño de Guardado de productos  & 14 & 10  \\
+Diseño de Visionado de productos por filtros & 15 & 20  \\
+}
+\imagen{sprint6}{Gráfico Burndown Iteración 6}
+
+\cleardoublepage
+
+
+\subsection{Iteración 7 [23/12/2015 - 30/12/2015]}
+Esta iteración dura una semana. En ella se desarrolla tanto la vista de productos y las compras por filtro. Se añade en la ventana principal el sistema de gráficos por categoría.
+
+\tablaSmall{Tareas de la séptima iteración}{l c c c c}{septimaiteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Diseño de la pantalla principal & 11 & 4\\
+Desarrollo de pantalla de tiques & 8 & 5  \\
+}
+\imagen{sprint7}{Gráfico Burndown Iteración 7}
+
+\cleardoublepage
+
+
+\subsection{Iteración 8 [31/12/2015 - 06/01/2016]}
+Esta iteración dura una semana. Esta iteracción tiene poca carga de trabajo dado que se encuentra durante las fiestas de navidad , año nuevo y reyes.
+
+\tablaSmall{Tareas de la octava iteración}{l c c c c}{octavaiteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Implementación vista Detalle de tique & 4 & 3\\
+}
+\imagen{sprint8}{Gráfico Burndown Iteración 8}
+
+\cleardoublepage
+
+
+\subsection{Iteración 9 [06/01/2016 - 13/01/2016]}
+Esta iteración dura una semana. Esta iteracción se desarrolla el envío y guardado de las correcciones del usuario en el servidor.
+
+\tablaSmall{Tareas de la novena iteración}{l c c c c}{novenaiteracion}
+{ \multicolumn{1}{l}{Historia} & Horas Estimadas & Horas Reales\\}{ 
+Envío de correcciones & 8 & -\\
+}
+\imagen{sprint9}{Gráfico Burndown Iteración 9}
+
+\cleardoublepage
+
+\section{Estudio de viabilidad}
+En esta sección del proyecto, se comprueba si el proyecto es rentable para ello, se tendrán en cuenta varios aspectos:
+\begin{itemize}
+	\item La viabilidad económica.
+	\item La viabilidad legal.
+\end{itemize}
+
+\subsection{Viabilidad económica}
+
+
+\subsubsection{Costes de Personal}
+El presente trabajo se ha desarrollado durante 3 meses,  una jornada laboral consta de 8 horas diarias de trabajo,y cada mes se trabajan de media unos 20 días, el salario que se determina para un programador en este proyecto es de 13\euro/hora, dado que se necesitan conocimientos que no se ven en la carrera por lo tanto coste para el personal seria de :
+
+\begin{center}
+11\euro/hora * 8 horas/día = 88\euro/día.
+
+88\euro/día * 20 días/mes = 1760\euro/mes.
+
+1760 \euro/mes * 3 meses = 5280\euro.
+\end{center}
+
+\subsubsection{Costes de Seguridad Social}
+La ley de Seguridad Social marca que un porcentaje de sueldos deben ser abonado al estado en concepto de impuestos,se calcula un 23,60\% por contingencias comunes, mas un 6,70\% en concepto de desempleo en contrato de duración determinada a tiempo completo mas un 0,60\% en concepto de formación profesional. Todo ello hace un total de 30,9\% \cite{seguridad} .
+Los gastos de la Seguridad Social se calcula multiplicando el salario bruto por el porcentaje del tipo de cotización.
+
+\begin{center}
+$5280 \euro * 30,9\% = 1631.52\euro$
+\end{center}
+
+\subsubsection{Costes en Hardware}
+Este coste viene dado por los elementos físicos necesarios para el desarrollo del proyecto, en este caso se puede agrupar en :
+
+\begin{itemize}
+	\item Ordenador portátil : 1200\euro.
+	\item Dispositivo Android: 350\euro.
+	\item Ordenador para servidor: 500\euro.
+\end{itemize}
+Se ha considerado que a partir de los 4 años el harware esta obsoleto y que el coste residual es 0 por lo tanto la amortización es:
+
+\textit{CA = Valor de adquisición - Valor residual / Meses de vida útil}
+	\begin{equation}
+	CA= \frac{\left (  1200\euro+350\euro+500\euro - 0\right )}{48 meses}*3 meses=128.125\euro
+	\end{equation}
+
+\subsubsection{Costes en Software}
+Los costes software se determinan por el coste de las licencia de cada herramienta por el numero de estas adquiridas. En la tabla \ref{tabla:licenciaherramientas} se puede ver un desglose del precio herramienta/licencia.
+
+\tablaSmall{Tabla de licencia de herramientas}{l c c c c}{licenciaherramientas}
+{ \multicolumn{1}{l}{Herramienta} & Numero de Licencias & \euro/licencia & Total  \\}{ 
+Windows 7 & 1 & 120\euro & 120\euro \\
+NetBeans & 1 & Gratis & 0\euro \\
+Android Studio &1 & Gratis & 0\euro \\
+SourceTree  &1 & Gratis & 0\euro \\
+Tesseract &1 & Gratis & 0\euro \\
+OpenCv &1 & Gratis & 0\euro \\
+GlassFish Free &1 & Gratis & 0\euro \\
+Jersey &1 & Gratis & 0\euro \\
+OrmLite &1 & Gratis & 0\euro \\
+SimpleCropView &1 & Gratis & 0\euro \\
+} 
+
+El coste de amortización del software se calcula igual que el de hardware, sin embargo la vida útil del software la consideraremos como 2.
+
+\begin{equation}
+	CA= \frac{\left (  120\euro - 0\right )}{24 meses}*3 meses=15\euro
+	\end{equation}
+
+
+Si sumamos todos los costes que se han calculado:
+
+\tablaSmall{Tabla de costes}{l c c c c}{costesProyecto}
+{ \multicolumn{1}{l}{Coste} & Importe(\euro) \\}{ 
+Costes de Personal & 5280\euro \\
+Costes de Seguridad Social & 1631.52\euro \\
+Costes en Hardware &128.125\euro \\
+Costes en Software &15\euro\\
+
+} 
+
+\cleardoublepage
+
+\subsection{Viabilidad legal}
+
+
