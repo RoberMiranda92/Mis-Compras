@@ -1,2 +1,6 @@
+# Trabajo Final de Grado de Roberto Miranda Pérez
+ #
+## Alumno de Ingeniería Informática de la Universidad de Burgos.
+ ##
 En el presente trabajo se desarrolla un sistema capaz de obtener los productos(nombre , precio, cantidad) a partir de una imagen de un tique de compra. El problema se aborda mediante la manipulación de la imagen para después transformarla en texto mediante un proceso llamado OCR, o en castellano reconocimiento óptico de caracteres, que permita almacenar su información en un dispositivo móvil. La automatización de este proceso,permite el ahorro de tiempo y esfuerzo para los usuarios que desean llevar una contabilidad electrónica de sus gastos, ya que hoy en día, el proceso para almacenar estos tiques se debe realizar de forma manual.
 El presente trabajo ha sido desarrollado en dos partes, una parte cliente que se encarga de la toma de imágenes y mostrar la información al usuario, y una parte servidor, la cual se encarga del procesado de la imagen y su transformación a texto para después enviarla al cliente.
