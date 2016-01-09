@@ -1,0 +1,60 @@
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <string name="app_name">Mis Compras</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Configuración</string>
+    <string name="title_activity_addProducts">Productos</string>
+    <string name="title_activity_ticketDetail">Detalle Tique</string>
+
+
+    <string name="summary">Resumen</string>
+    <string name="products">Productos</string>
+    <string name="historial">Compras</string>
+    <string name="tools">Configuración</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="photLoading">"Cargando..."</string>
+    <string name="loading">"Subiendo..."</string>
+    <!--Menus-->
+    <string name="filters">Filtros</string>
+
+
+    <!--Formatos-->
+    <string name="format_cantidad"><xliff:g id="amount">%d</xliff:g>x<xliff:g id="name">%s</xliff:g></string>
+    <string name="format_total">Total: <xliff:g id="total">%.2f</xliff:g>€</string>
+    <string name="format_productPrice">Precio: <xliff:g id="price">%.2f</xliff:g>€</string>
+    <string name="format_importe">Importe: <xliff:g id="totalImport">%.2f</xliff:g>€</string>
+    <string name="format_percentage"><xliff:g id="percentage">%.2f</xliff:g></string>
+    <string name="percent_sign">&#x0025;</string>
+    <string name="format_importeTotal"><xliff:g id="totalImport">%.2f</xliff:g>€</string>
+    <string name="format_comra">Compra Nº: <xliff:g id="numero">%d</xliff:g></string>
+    <string name="format_articulos">Número de articulos: <xliff:g id="articulos">%d</xliff:g></string>
+    <string name="format_date"><xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
+    <string name="format_date2">Fecha: <xliff:g id="day">%d</xliff:g>/<xliff:g id="month">%d</xliff:g>/<xliff:g id="year">%d</xliff:g></string>
+
+
+    <string name="pref_ip_display_name">Dirección IP</string>
+    <string name="pref_ip_key">ip</string>
+    <string name="pref_ip_default">192.168.1.1</string>
+
+    <!--Errors-->
+    <string name="errorPrices">El price máximo debe ser mayor que el price mínimo</string>
+    <string name="filterDialogTitile">Selecione el Filtro</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="productsEmpty">No se encontraron Productos</string>
+    <string name="ticketEmpty">No se encontraron Compras</string>
+    <string name="errorDates">La fecha de fin debe ser mayor que la fecha de inicio</string>
+    <string name="errorInsert">\"Error al insertar los datos\"</string>
+    <string name="insertCorrect">Actualización correcta</string>
+    <string name="errorProcessProducts">Error al procesar algunos productos</string>
+
+    <string name="category_message">Cambie las categories de los products pulsando en ellas</string>
+    <string name="emptyFields">Los campos no pueden estar vacios</string>
+    <string name="emptyList">Lista Vacia</string>
+    <string name="saveProducts">Productos guardados correctamente</string>
+
+</resources>

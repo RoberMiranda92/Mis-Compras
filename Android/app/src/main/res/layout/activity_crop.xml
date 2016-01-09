@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowsBackground"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".view.activity.CropActivity">
+
+    <com.isseiaoki.simplecropview.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:padding="16dp"
+        custom:cropMode="ratio_free"
+        custom:frameColor="@color/colorAccent"
+        custom:handleColor="@color/colorAccent"
+        custom:handleSize="8dp"
+        custom:touchPadding="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <Button
+            android:id="@+id/button_cancelar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="Cancelar"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textColor="#FFFFFF" />
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/windowsBackground" />
+
+        <Button
+            android:textColorHint="@color/colorPrimaryDark"
+            android:id="@+id/button_recortar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="Recortar"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+</LinearLayout>

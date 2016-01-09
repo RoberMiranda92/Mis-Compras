@@ -1,0 +1,126 @@
+#
+# generated on 2016/01/09 08:27:00
+#
+# --table-start--
+dataClass=com.ubu.miscompras.model.Ticket
+tableName=ticket
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=purchaseDate
+columnName=fecha_compra
+dataPersister=DATE_LONG
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=productAmount
+columnName=numero_articulos
+defaultValue=0
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=total
+columnName=importe_total
+defaultValue=0
+canBeNull=false
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.ubu.miscompras.model.Product
+tableName=producto
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+columnName=nombre
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=category
+columnName=id_categoria
+foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.ubu.miscompras.model.Category
+tableName=categoria
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+columnName=nombre
+canBeNull=false
+unique=true
+# --field-end--
+# --field-start--
+fieldName=productos
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.ubu.miscompras.model.ProductLine
+tableName=lineaproducto
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=ticket
+columnName=id_ticket
+canBeNull=false
+foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
+# --field-end--
+# --field-start--
+fieldName=product
+columnName=id_producto
+canBeNull=false
+foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
+# --field-end--
+# --field-start--
+fieldName=amount
+columnName=cantidad
+defaultValue=1
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=price
+columnName=precio
+defaultValue=0
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=totalImport
+columnName=importe
+defaultValue=0
+canBeNull=false
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

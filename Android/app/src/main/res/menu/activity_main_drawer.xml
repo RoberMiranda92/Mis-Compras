@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/summary"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/summary" />
+        <item
+            android:id="@+id/products"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/products" />
+        <item
+            android:id="@+id/tickets"
+            android:icon="@drawable/ic_bill_black_24dp"
+            android:title="@string/historial" />
+        <item
+            android:id="@+id/config"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/tools" />
+    </group>
+</menu>

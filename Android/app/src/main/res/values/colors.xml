@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3b5998</color>
+    <color name="colorPrimaryDark">#0e1f56</color>
+    <color name="colorAccent">#3b5998</color>
+    <color name="colorAccentHint">#0e1f56</color>
+    <color name="windowsBackground">#d3d3d3</color>
+    <color name="textColorPrimary">#3b5998</color>
+    <color name="textColorSecondary">#1b1c20</color>
+    <color name="black">#000000</color>
+    <color name="red">#dd4b39</color>
+    <color name="green">#4CAF50</color>
+    <color name="white">#ffffff</color>
+    <color name="lightBlue">#adb9d3</color>
+    <color name="transparent">#00FFFFFF</color>
+
+
+</resources>
