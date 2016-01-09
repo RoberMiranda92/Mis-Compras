@@ -5,14 +5,11 @@ import android.os.Build;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.ubu.miscompras.BuildConfig;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.interactors.TicketGetterByDateInteractor;
-import com.ubu.miscompras.model.interactors.TicketGetterByPriceInteractor;
-import com.ubu.miscompras.presenter.OnLoadComplete;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 import com.ubu.miscompras.view.activity.App;
 
 import org.junit.After;
@@ -25,7 +22,6 @@ import org.robolectric.annotation.Config;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -89,19 +85,19 @@ public class TicketGetterByPriceInteractorTest {
     public void productGetterByDateTest() {
 
 
-        TicketGetterByPriceInteractor task = new TicketGetterByPriceInteractor(new OnLoadComplete() {
+        TicketGetterByPriceInteractor task = new TicketGetterByPriceInteractor(new IOnLoadComplete() {
             @Override
             public void showError() {
                 Assert.fail("productGetterByDateTest fail");
             }
 
             @Override
-            public void loadCompleteCategoria(List<Categoria> items) {
+            public void loadCompleteCategoria(List<Category> items) {
 
             }
 
             @Override
-            public void loadCompleteTicketProducto(List<LineaProducto> items) {
+            public void loadCompleteTicketProducto(List<ProductLine> items) {
 
             }
 

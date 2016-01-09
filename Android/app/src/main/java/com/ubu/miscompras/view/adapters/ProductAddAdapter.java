@@ -1,5 +1,6 @@
 package com.ubu.miscompras.view.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,31 +13,46 @@ import com.ubu.miscompras.model.Category;
 import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.utils.Utils;
-import com.ubu.miscompras.view.activity.TicketDetail;
+import com.ubu.miscompras.view.activity.IOnItemClick;
 
 import java.util.List;
 
 /**
- * Adaptador de la lista de productos que se muestra en el la vista de detalle de tiques.
+ * Adaptador para la lista de productos que se muestran a la hora de
+ * guardar nuevos en la base de datos.
  *
  * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class TicketDetailAdapter extends RecyclerView.Adapter<TicketDetailAdapter.ViewHolderHolderProducts> {
+public class ProductAddAdapter extends RecyclerView.Adapter<ProductAddAdapter.ViewHolderProducts> {
 
-    private TicketDetail mView;
+    private Context contex;
+    private IOnItemClick mView;
     private List<ProductLine> itemData;
 
+    /**
+     * Constructor de la clase.
+     *
+     * @param mView vista.
+     */
+    public ProductAddAdapter(IOnItemClick mView) {
+        this.mView = mView;
+        this.contex = mView.getContext();
 
-    public TicketDetailAdapter(TicketDetail ticketDetail) {
-        this.mView = ticketDetail;
     }
 
     @Override
-    public ViewHolderHolderProducts onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderProducts onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_product, parent, false);
 
-        ViewHolderHolderProducts holder = new ViewHolderHolderProducts(itemLayoutView);
+        itemLayoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mView.onItemClick(v);
+            }
+        });
+
+        ViewHolderProducts holder = new ViewHolderProducts(itemLayoutView);
 
         return holder;
 
@@ -44,22 +60,27 @@ public class TicketDetailAdapter extends RecyclerView.Adapter<TicketDetailAdapte
 
 
     @Override
-    public void onBindViewHolder(ViewHolderHolderProducts holder, int position) {
+    public void onBindViewHolder(ViewHolderProducts holder, int position) {
 
-        ProductLine productLine = itemData.get(position);
+        ProductLine linea = itemData.get(position);
 
-        int amount = productLine.getAmount();
-        double price = productLine.getPrice();
-        double total = productLine.getTotalImport();
-        Product product = productLine.getProduct();
-        Category categegory = product.getCategory();
+        int cant = linea.getAmount();
+        double precio = linea.getPrice();
+        double importe = linea.getTotalImport();
+        Product product = linea.getProduct();
+        Category category = product.getCategory();
 
 
-        holder.textViewDest.setText(mView.getString(R.string.format_cantidad, amount, product.getName()));
-        holder.textViewPrice.setText(mView.getString(R.string.format_productPrice, price));
-        holder.textViewTotal.setText(mView.getString(R.string.format_importe, total));
-        if (categegory != null)
-            holder.imageViewIcon.setImageResource(Utils.getCategoryIcon(categegory.getId()));
+        if (precio * cant != importe)
+            holder.textViewTotal.setTextColor(contex.getResources().getColor(R.color.red));
+        else
+            holder.textViewTotal.setTextColor(contex.getResources().getColor(R.color.green));
+
+        holder.textViewDest.setText(contex.getString(R.string.format_cantidad, cant, product.getName()));
+        holder.textViewPrice.setText(contex.getString(R.string.format_productPrice, precio));
+        holder.textViewTotal.setText(contex.getString(R.string.format_importe, importe));
+        if (category != null)
+            holder.imageViewIcon.setImageResource(Utils.getCategoryIcon(category.getId()));
         else
             holder.imageViewIcon.setImageResource(Utils.getCategoryIcon(Category.OTROS));
 
@@ -114,15 +135,15 @@ public class TicketDetailAdapter extends RecyclerView.Adapter<TicketDetailAdapte
     }
 
     /**
-     * Holder de la lista.
+     * Holder que hace referencia a los elementos que contiene la fila.
      */
-    public static class ViewHolderHolderProducts extends RecyclerView.ViewHolder {
+    public static class ViewHolderProducts extends RecyclerView.ViewHolder {
         public TextView textViewDest;
         public TextView textViewPrice;
         public TextView textViewTotal;
         public ImageView imageViewIcon;
 
-        public ViewHolderHolderProducts(View itemLayoutView) {
+        public ViewHolderProducts(View itemLayoutView) {
             super(itemLayoutView);
 
             textViewDest = (TextView) itemLayoutView.findViewById(R.id.textView_Descripcion);

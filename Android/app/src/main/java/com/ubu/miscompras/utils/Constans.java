@@ -10,7 +10,7 @@ public class Constans {
 
     public static final String DATABASE_NAME = "db.sqlite";
 
-    public static final String PROTOCOL= "http://";
+    public static final String PROTOCOL = "http://";
 
     public static final String PORT = ":8080";
 
@@ -19,4 +19,8 @@ public class Constans {
 
     public static int CONNECTION_TIMEOUT = 10000;
     public static int SOCKET_TIMEOUT = 30000;
+
+    public static int RESUMEN_POSITION_FRAGMENT = 0;
+    public static int PODUCTS_POSITION_FRAGMENT = 1;
+    public static int HISTORIAL_POSITION_FRAGMENT = 2;
 }

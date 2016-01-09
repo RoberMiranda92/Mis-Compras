@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.presenter.SplashActivityPresenter;
 import com.ubu.miscompras.utils.Constans;
 
@@ -20,15 +20,14 @@ import java.util.List;
 import java.util.TimerTask;
 
 /**
- * Created by RobertoMiranda on 6/11/15.
+ * Activity que muestra la imagen de splash al inicio de la aplicación.
+ *
  */
 public class SplashActivity extends AppCompatActivity {
 
     private static final long DELAY_TIME = 300;
-    private static final String DATABASE_NAME = "db.sqlite";
-    private static String DATABASE_PATH = "/data/data/" + Constans.PACKAGE_NAME + "/databases/";
     private SplashActivityPresenter presenter;
-    //private static String DATABASE_NAME = Constans.DATABASE_NAME;
+    private static String DATABASE_NAME = Constans.DATABASE_NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (!checkDataBase()) {
             String[] categories = getResources().getStringArray(R.array.CategoryItems);
-            presenter.insertCategories(new ArrayList<String>(Arrays.asList(categories)));
+            presenter.insertCategories(new ArrayList<>(Arrays.asList(categories)));
         }
 
 
@@ -64,16 +63,15 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Comprueba si el fichero de la base de datos existe.
+     *
+     * @return true si exite, falso si no existe.
+     */
     private boolean checkDataBase() {
-        File path = new File(DATABASE_PATH);
-        if (!path.exists())
-            path.mkdir();
+        File  databaseFile = this.getDatabasePath(DATABASE_NAME);
 
-        String pathDB = DATABASE_PATH + DATABASE_NAME;
-        File databaseFile = new File(pathDB);
-
-        return databaseFile.exists() ? true : false;
+        return databaseFile.exists();
     }
 
     public void showError() {
@@ -86,12 +84,12 @@ public class SplashActivity extends AppCompatActivity {
         Toast.makeText(this, getString(R.string.insertCorrect), Toast.LENGTH_SHORT).show();
     }
 
-    public void setTicketProducto(List<LineaProducto> ticketProducto) {
+    public void setTicketProducto(List<ProductLine> ticketProducto) {
 
         float total = 0;
 
-        for (LineaProducto l : ticketProducto)
-            total += l.getImporte();
+        for (ProductLine l : ticketProducto)
+            total += l.getTotalImport();
 
 
         SharedPreferences sharedPref =getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);

@@ -29,38 +29,39 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.presenter.ProductoFragmentPresenter;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.ProductLine;
+import com.ubu.miscompras.presenter.ProductFragmentPresenter;
 import com.ubu.miscompras.utils.VerticalDividerItemDecorator;
 import com.ubu.miscompras.view.adapters.CategoryAdapter;
-import com.ubu.miscompras.view.adapters.ProductsShowAdapter;
+import com.ubu.miscompras.view.adapters.ProductsAdapter;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment donde el usuario puede ver los productos adquiridos
+ * según los diferentes filtros.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class ProductosFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, Animation.AnimationListener {
+public class ProductFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, Animation.AnimationListener {
 
 
     private static EditText editTextStartDate;
     private static EditText editTextEndDate;
-    private FloatingActionButton botonBuscar;
-    private int filtro = 0;
-    private LinearLayout linearFechas;
-    private LinearLayout linearPrecios;
-    private LinearLayout linearCategorias;
-    private Spinner spinerCategorias;
+    private FloatingActionButton searchButton;
+    private int selected = 0;
+    private LinearLayout linearDate;
+    private LinearLayout linearPrice;
+    private LinearLayout linearCategory;
+    private Spinner categorySpinner;
     private Animation slide_down;
     private Animation slide_up;
     private LinearLayout currentLinearLayout;
-    private AppBarLayout rectangulo;
-    private ProductoFragmentPresenter presenter;
-    private List<Categoria> categorias;
+    private AppBarLayout appBarLayout;
+    private ProductFragmentPresenter presenter;
     private CategoryAdapter categoryAdapter;
     private int categorySelected;
     private EditText editTextMinPrice;
@@ -68,18 +69,22 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     private Date startDate;
     private Date endDate;
     private RecyclerView recyclerView_list;
-    private ProductsShowAdapter recyclerView_Adapter;
+    private ProductsAdapter recyclerView_Adapter;
     private Animation fade_close;
     private Animation fade_open;
     private boolean isDialogShowing = false;
 
-    public ProductosFragment() {
+    public final int DATE_FILTER_POSITION = 0;
+    private final int PRICE_FILTER_POSITION = 1;
+    private final int CATEGORY_FILTER_POSITION = 2;
+
+
+    public ProductFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        presenter = new ProductoFragmentPresenter(this);
-
+        presenter = new ProductFragmentPresenter(this);
 
         slide_down = AnimationUtils.loadAnimation(getContext(),
                 R.anim.slide_down);
@@ -103,9 +108,9 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         View mView = inflater.inflate(R.layout.fragment_productos, container, false);
 
 
-        linearFechas = (LinearLayout) mView.findViewById(R.id.linear_fechas);
-        linearPrecios = (LinearLayout) mView.findViewById(R.id.linear_precios);
-        linearCategorias = (LinearLayout) mView.findViewById(R.id.linear_categorias);
+        linearDate = (LinearLayout) mView.findViewById(R.id.linear_fechas);
+        linearPrice = (LinearLayout) mView.findViewById(R.id.linear_precios);
+        linearCategory = (LinearLayout) mView.findViewById(R.id.linear_categorias);
 
         editTextStartDate = (EditText) mView.findViewById(R.id.editText_startDate);
         editTextEndDate = (EditText) mView.findViewById(R.id.editText_endDate);
@@ -116,30 +121,29 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         editTextMinPrice = (EditText) mView.findViewById(R.id.editText_minPrice);
         editTextMaxPrice = (EditText) mView.findViewById(R.id.editText_maxPrice);
 
-        botonBuscar = (FloatingActionButton) mView.findViewById(R.id.buton_search);
+        searchButton = (FloatingActionButton) mView.findViewById(R.id.buton_search);
 
         editTextStartDate.setOnClickListener(this);
         editTextEndDate.setOnClickListener(this);
-        botonBuscar.setOnClickListener(this);
+        searchButton.setOnClickListener(this);
 
 
-        spinerCategorias = (Spinner) mView.findViewById(R.id.spinner_categorias);
-        spinerCategorias.setOnItemSelectedListener(this);
+        categorySpinner = (Spinner) mView.findViewById(R.id.spinner_categorias);
+        categorySpinner.setOnItemSelectedListener(this);
 
 
-        rectangulo = (AppBarLayout) mView.findViewById(R.id.AppBarLayout_fragmentProductos);
+        appBarLayout = (AppBarLayout) mView.findViewById(R.id.AppBarLayout_fragmentProductos);
         slide_up.setAnimationListener(this);
         slide_down.setAnimationListener(this);
 
 
-        recyclerView_Adapter = new ProductsShowAdapter(getContext());
+        recyclerView_Adapter = new ProductsAdapter(getContext());
         recyclerView_list = (RecyclerView) mView.findViewById(R.id.recyclerView_listProductos);
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView_list.addItemDecoration(new VerticalDividerItemDecorator(1, false));
 
 
         switchFilter(0);
-
 
         return mView;
 
@@ -151,7 +155,6 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         super.onResume();
         getActivity().setTitle(getString(R.string.products));
         presenter.onResume();
-
 
     }
 
@@ -176,25 +179,42 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
+    /**
+     * Este método esconde el panel de filtros con una animación.
+     */
     public void hideFilter() {
-        rectangulo.setVisibility(View.GONE);
-        rectangulo.startAnimation(slide_up);
+        appBarLayout.setVisibility(View.GONE);
+        appBarLayout.startAnimation(slide_up);
     }
 
+    /**
+     * Este método esconde el botón de busqueda con una animación.
+     */
     public void hideButton() {
-        botonBuscar.startAnimation(fade_close);
+        searchButton.startAnimation(fade_close);
     }
 
+    /**
+     * Este método muestra el boton de busqueda con una animación.
+     */
     public void showButton() {
 
-        botonBuscar.startAnimation(fade_open);
+        searchButton.startAnimation(fade_open);
     }
 
+    /**
+     * Este metodo muestra el panel de filtros con una animación
+     */
     public void showfilter() {
-        rectangulo.startAnimation(slide_down);
+        appBarLayout.setVisibility(View.VISIBLE);
+        appBarLayout.startAnimation(slide_down);
     }
 
-
+    /**
+     * Este método coloca la fecha en el TextView de fechaInicio.
+     *
+     * @param startDate fecha de inicio.
+     */
     public void setStartDate(Date startDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
@@ -207,7 +227,11 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
-
+    /**
+     * Este método coloca la fecha en el TextView de fechaFin.
+     *
+     * @param endDate fecha de fin.
+     */
     public void setEndDate(Date endDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(endDate);
@@ -219,13 +243,16 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
+    /**
+     * Este metodo muestra el dialogo de seleción de filtros.
+     */
     private void showDialog() {
         if (!isDialogShowing) {
             final int[] tempSelection = new int[1];
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
             dialog.setTitle(getString(R.string.filterDialogTitile));
             CharSequence[] secuence = getResources().getStringArray(R.array.filterDialogItems);
-            dialog.setSingleChoiceItems(secuence, filtro, new DialogInterface.OnClickListener() {
+            dialog.setSingleChoiceItems(secuence, selected, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     tempSelection[0] = which;
@@ -235,7 +262,7 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
             dialog.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    filtro = tempSelection[0];
+                    selected = tempSelection[0];
                     hideFilter();
                     hideButton();
                     isDialogShowing = false;
@@ -256,43 +283,63 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
-    private void switchFilter(int filtro) {
+    /**
+     * Este método cambia el filtro selecionado.
+     *
+     * @param filter filtro selecionado.
+     */
+    private void switchFilter(int filter) {
 
-
-        switch (filtro) {
-            case 0:
-                currentLinearLayout = linearFechas;
+        switch (filter) {
+            case DATE_FILTER_POSITION:
+                currentLinearLayout = linearDate;
                 recyclerView_Adapter.enableDatesFilter();
                 break;
-            case 1:
-                currentLinearLayout = linearPrecios;
+            case PRICE_FILTER_POSITION:
+                currentLinearLayout = linearPrice;
                 recyclerView_Adapter.enablePricesFilter();
                 break;
-            case 2:
-                currentLinearLayout = linearCategorias;
+            case CATEGORY_FILTER_POSITION:
+                currentLinearLayout = linearCategory;
                 recyclerView_Adapter.enableCategoryFilter();
                 break;
         }
-        rectangulo.setExpanded(true);
+        appBarLayout.setExpanded(true);
     }
 
-    public void setCategorias(List<Categoria> categorias) {
-        categoryAdapter = new CategoryAdapter(getContext(), R.layout.item_category, categorias);
-        spinerCategorias.setAdapter(categoryAdapter);
+    /**
+     * Este método muestra una lista de categories en el filtro de categories.
+     *
+     * @param categories Lista de categories
+     */
+    public void setCategorias(List<Category> categories) {
+        categoryAdapter = new CategoryAdapter(getContext(), R.layout.item_category, categories);
+        categorySpinner.setAdapter(categoryAdapter);
     }
 
-    public void setProductLines(List<LineaProducto> items) {
-        recyclerView_Adapter.setProducts(items);
+    /**
+     * Este metodo muestra la lista de productos.
+     *
+     * @param productLines lita de productos
+     */
+    public void setProductLines(List<ProductLine> productLines) {
+        recyclerView_Adapter.setProducts(productLines);
         recyclerView_list.setAdapter(recyclerView_Adapter);
         recyclerView_Adapter.notifyDataSetChanged();
 
 
     }
 
+    /**
+     * Este método esconde la lista.
+     */
     public void hideList() {
         recyclerView_list.setVisibility(View.GONE);
     }
 
+    /**
+     * Este método muestra la lista.
+     */
     public void showList() {
         recyclerView_list.setVisibility(View.VISIBLE);
     }
@@ -313,23 +360,23 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
         switch (v.getId()) {
             case R.id.buton_search:
                 hideKeyboard();
-                if (currentLinearLayout == linearCategorias)
+                if (currentLinearLayout == linearCategory)
                     presenter.getProductosByCategoria(categoryAdapter.getItem(categorySelected));
-                if (currentLinearLayout == linearFechas) {
+                if (currentLinearLayout == linearDate) {
                     presenter.getProductosByDate(startDate, endDate);
                 }
-                if (currentLinearLayout == linearPrecios) {
+                if (currentLinearLayout == linearPrice) {
 
                     presenter.getProductosByPrice(editTextMinPrice.getText().toString(),
                             editTextMaxPrice.getText().toString());
                 }
                 break;
             case R.id.editText_startDate:
-                presenter.showStartDialog(startDate);
+                showStartDateDialog(startDate);
                 break;
 
             case R.id.editText_endDate:
-                presenter.showEndDateDialog(endDate);
+                showEndDateDialog(endDate);
                 break;
 
 
@@ -337,7 +384,11 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
-
+    /**
+     * Este método muestra el dialogo de seleción de la fecha de inicio.
+     *
+     * @param date fecha selecionada.
+     */
     public void showStartDateDialog(Date date) {
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -353,14 +404,18 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
-                presenter.setStartDate(calendar.getTime());
+                setStartDate(calendar.getTime());
             }
         }, year, month, day).show();
 
 
     }
 
-
+    /**
+     * Este método muestra el dialogo de seleción de la fecha de fin.
+     *
+     * @param date fecha selecionada.
+     */
     public void showEndDateDialog(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -376,17 +431,17 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
-                presenter.setEndDate(calendar.getTime());
+                setEndDate(calendar.getTime());
             }
         }, year, month, day).show();
 
 
     }
 
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 
+    /**
+     * Este método esconde el teclado.
+     */
     public void hideKeyboard() {
 
         try {
@@ -405,9 +460,9 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     public void onAnimationStart(Animation animation) {
 
         if (animation.equals(slide_down)) {
-            switchFilter(filtro);
-            showButton();
+            switchFilter(selected);
             currentLinearLayout.setVisibility(View.VISIBLE);
+            showButton();
         }
     }
 
@@ -415,22 +470,21 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     public void onAnimationEnd(Animation animation) {
 
         if (animation.equals(fade_close)) {
-            botonBuscar.setVisibility(View.GONE);
+            searchButton.setVisibility(View.GONE);
         }
 
         if (animation.equals(fade_open)) {
-            botonBuscar.setVisibility(View.VISIBLE);
+            searchButton.setVisibility(View.VISIBLE);
         }
 
 
         if (animation.equals(slide_up)) {
             currentLinearLayout.setVisibility(View.GONE);
-            rectangulo.startAnimation(slide_down);
-
+            appBarLayout.startAnimation(slide_down);
         }
-        if (animation.equals(slide_down)) {
-            rectangulo.setVisibility(View.VISIBLE);
 
+        if (animation.equals(slide_down)) {
+            appBarLayout.setVisibility(View.VISIBLE);
         }
 
     }
@@ -438,6 +492,35 @@ public class ProductosFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onAnimationRepeat(Animation animation) {
 
+    }
+
+    /**
+     * Este método muestra el error de fechas.
+     */
+    public void showErrorDate() {
+        Toast.makeText(getContext(), getString(R.string.errorDates), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Este método muestra el error de productos.
+     */
+    public void showPricesError() {
+        Toast.makeText(getContext(), getString(R.string.errorPrices), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Este metodo muestra el mesaje de lista vacia.
+     */
+    public void showEmptyListMessage() {
+        Toast.makeText(getContext(), getString(R.string.ticketEmpty), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Este metodo muestra el mensaje de campos vacios.
+     */
+    public void showEmptyFieldMessage() {
+
+        Toast.makeText(getContext(), getString(R.string.emptyFields), Toast.LENGTH_SHORT).show();
     }
 }
 

@@ -4,12 +4,11 @@ import android.os.Build;
 
 
 import com.ubu.miscompras.BuildConfig;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.ProductLine;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.presenter.OnFinishedListener;
-import com.ubu.miscompras.model.interactors.ProductInsertIterator;
+import com.ubu.miscompras.presenter.IOnFinishedListener;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -33,17 +32,17 @@ import static org.hamcrest.core.Is.is;
 public class ProductInsertInteractorTest {
 
 
-    List<LineaProducto> productLines;
+    List<ProductLine> productLines;
     private Boolean testResult=false;
 
     @Before
     public void setUp() {
-        Categoria c = new Categoria("Carne");
-        Producto p = new Producto("Jamon", c);
+        Category c = new Category("Carne");
+        Product p = new Product("Jamon", c);
         Ticket t = new Ticket(new Date());
 
-        LineaProducto linea1 = new LineaProducto(t, p, 1, 1.0, 1.0);
-        LineaProducto linea2 = new LineaProducto(t, p, 1, 1.0, 1.0);
+        ProductLine linea1 = new ProductLine(t, p, 1, 1.0, 1.0);
+        ProductLine linea2 = new ProductLine(t, p, 1, 1.0, 1.0);
 
         productLines= new ArrayList<>();
         productLines.add(linea1);
@@ -58,7 +57,7 @@ public class ProductInsertInteractorTest {
     @Test
     public void productInsertTest() {
 
-        ProductInsertIterator task = new ProductInsertIterator(new OnFinishedListener() {
+        ProductInsertIterator task = new ProductInsertIterator(new IOnFinishedListener() {
             @Override
             public void onFinished(Boolean result) {
                 testResult = result;

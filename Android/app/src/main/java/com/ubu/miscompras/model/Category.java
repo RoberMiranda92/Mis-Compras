@@ -10,10 +10,12 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Collection;
 
 /**
- * Created by RobertoMiranda on 2/11/15.
+ * Clase que implementa una linea de Producto.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 @DatabaseTable(tableName = "categoria")
-public class Categoria implements Parcelable{
+public class Category implements Parcelable {
 
     public static final int BEBIDAS_ALCOHOLICAS = 1;
     public static final int REFRESCOS = 2;
@@ -36,53 +38,73 @@ public class Categoria implements Parcelable{
     private int id;
 
     @DatabaseField(columnName = NOMBRE_FIELD, unique = true, canBeNull = false)
-    private String nombre;
+    private String name;
 
     @ForeignCollectionField(eager = true)
-    private Collection<Producto> productos;
+    private Collection<Product> productos;
 
-    private Categoria() {
+    private Category() {
 
     }
 
-    public Categoria(String nombre) {
-        this.nombre = nombre;
+    public Category(String nombre) {
+        this.name = nombre;
     }
 
-    protected Categoria(Parcel in) {
+    protected Category(Parcel in) {
         id = in.readInt();
-        nombre = in.readString();
+        name = in.readString();
     }
 
-    public static final Creator<Categoria> CREATOR = new Creator<Categoria>() {
+    public static final Creator<Category> CREATOR = new Creator<Category>() {
         @Override
-        public Categoria createFromParcel(Parcel in) {
-            return new Categoria(in);
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
         }
 
         @Override
-        public Categoria[] newArray(int size) {
-            return new Categoria[size];
+        public Category[] newArray(int size) {
+            return new Category[size];
         }
     };
 
+    /**
+     * Este método devuelce el id de la categoria.
+     *
+     * @return id de la categoria.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Este método establece la id de la categoria.
+     *
+     * @param id id d ela categoria.
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    /**
+     * Este método devuelve el nombre de la categoria.
+     *
+     * @return nombre de la categoria.
+     */
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    /**
+     * Este método establece el nombre de la categoria.
+     *
+     * @param name nombre de la categoria.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Collection<Producto> getProductos() {
+    public Collection<Product> getProductos() {
         return productos;
     }
 
@@ -91,11 +113,11 @@ public class Categoria implements Parcelable{
     public boolean equals(Object other) {
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof Categoria)) return false;
-        Categoria otherMyClass = (Categoria) other;
+        if (!(other instanceof Category)) return false;
+        Category otherMyClass = (Category) other;
 
 
-        if (!otherMyClass.getNombre().equals(this.getNombre())) {
+        if (!otherMyClass.getName().equals(this.getName())) {
             return false;
         }
         return true;
@@ -109,6 +131,6 @@ public class Categoria implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(nombre);
+        dest.writeString(name);
     }
 }

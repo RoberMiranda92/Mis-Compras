@@ -6,12 +6,12 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.presenter.OnLoadComplete;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,13 +26,13 @@ public class TicketGetterByDateInteractor extends AsyncTask<Void, Void, List<Tic
 
     private final Date starDate;
     private final Date endDate;
-    private final OnLoadComplete presenter;
+    private final IOnLoadComplete presenter;
     private DataBaseHelper db;
-    private Dao<LineaProducto, Integer> lineaProductoDao;
+    private Dao<ProductLine, Integer> lineaProductoDao;
     private Dao<Ticket, Integer> ticketDao;
-    private Dao<Producto, Integer> productoDao;
+    private Dao<Product, Integer> productoDao;
 
-    public TicketGetterByDateInteractor(OnLoadComplete presenter, Date startDate, Date endDate) {
+    public TicketGetterByDateInteractor(IOnLoadComplete presenter, Date startDate, Date endDate) {
         this.starDate = startDate;
         this.endDate = endDate;
         this.presenter = presenter;

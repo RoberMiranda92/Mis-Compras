@@ -1,38 +1,45 @@
 package com.ubu.miscompras.utils;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.model.Categoria;
+import com.ubu.miscompras.model.Category;
 
 /**
- * Created by RobertoMiranda on 20/12/15.
+ * Clase de utilidades.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public class Utils {
 
-
+    /**
+     * Este método id del icono asociado a una Categoria.
+     *
+     * @param idCategory id de la categoria.
+     * @return id del icono de la categoria.
+     */
     public static int getCategoryIcon(int idCategory) {
 
         switch (idCategory) {
-            case Categoria.BEBIDAS_ALCOHOLICAS:
+            case Category.BEBIDAS_ALCOHOLICAS:
                 return R.drawable.ic_alcoholic_drink;
-            case Categoria.REFRESCOS:
+            case Category.REFRESCOS:
                 return R.drawable.ic_glass;
-            case Categoria.COMIDARAPIDA:
+            case Category.COMIDARAPIDA:
                 return R.drawable.ic_fast_food;
-            case Categoria.ENSALADAS:
+            case Category.ENSALADAS:
                 return R.drawable.ic_salad;
-            case Categoria.CARNE:
+            case Category.CARNE:
                 return R.drawable.ic_meat;
-            case Categoria.PESCADO:
+            case Category.PESCADO:
                 return R.drawable.ic_fish;
-            case Categoria.PASTA:
+            case Category.PASTA:
                 return R.drawable.ic_pasta;
-            case Categoria.PLATOS_CALIENTES:
+            case Category.PLATOS_CALIENTES:
                 return R.drawable.ic_hot;
-            case Categoria.RACIONES:
+            case Category.RACIONES:
                 return R.drawable.ic_racion;
-            case Categoria.POSTRES:
+            case Category.POSTRES:
                 return R.drawable.ic_cake;
-            case Categoria.PLATOS_COMBINADOS:
+            case Category.PLATOS_COMBINADOS:
                 return R.drawable.ic_meal;
             default:
                 return R.drawable.ic_other;

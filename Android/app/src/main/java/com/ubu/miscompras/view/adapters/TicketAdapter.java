@@ -8,18 +8,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.view.activity.OnItemClick;
 import com.ubu.miscompras.model.Ticket;
+import com.ubu.miscompras.view.activity.IOnItemClick;
 
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 29/12/15.
+ * Adaptador de la lista de tiques.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.ViewHolderProductos> {
+public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolderTicket> {
 
-    private OnItemClick mView;
+    private IOnItemClick mView;
     private Context context;
     private List<Ticket> itemData;
 
@@ -27,14 +29,14 @@ public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.Vi
     private boolean prices = false;
 
 
-    public TicketShowAdapter(OnItemClick activity) {
+    public TicketAdapter(IOnItemClick activity) {
         this.mView = activity;
         this.context = activity.getContext();
 
     }
 
     @Override
-    public ViewHolderProductos onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderTicket onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ticket, parent, false);
 
 
@@ -45,25 +47,25 @@ public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.Vi
             }
         });
 
-        ViewHolderProductos holder = new ViewHolderProductos(itemLayoutView);
+        ViewHolderTicket holder = new ViewHolderTicket(itemLayoutView);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderProductos holder, int position) {
+    public void onBindViewHolder(ViewHolderTicket holder, int position) {
         Ticket ticket = itemData.get(position);
 
         int num = ticket.getId();
-        int can = ticket.getnArticulos();
+        int amount = ticket.getProductAmount();
         double total = ticket.getTotal();
 
 
         holder.textViewDest.setText(context.getString(R.string.format_comra, num));
-        holder.textViewArticulos.setText(context.getString(R.string.format_articulos, can));
+        holder.textViewArticulos.setText(context.getString(R.string.format_articulos, amount));
 
         Calendar cal = Calendar.getInstance();
         cal.clear();
-        cal.setTime(ticket.getFecha_compra());
+        cal.setTime(ticket.getPurchaseDate());
 
         if (dates) {
             holder.textViewMain.setText(context.getString(R.string.format_date,
@@ -88,30 +90,43 @@ public class TicketShowAdapter extends RecyclerView.Adapter<TicketShowAdapter.Vi
         this.itemData = products;
     }
 
-
+    /**
+     * Este método activa el campo de fechas, y desactiva el resto.
+     */
     public void enableDatesFilter() {
         this.dates = true;
         this.prices = false;
     }
 
+    /**
+     * Este método activa el campo de precios, y desactiva el resto.
+     */
     public void enablePricesFilter() {
         this.dates = false;
         this.prices = true;
     }
 
+    /**
+     * Este método devuelve el ticket de la posición dada.
+     *
+     * @param itemPosition posición en la lista.
+     * @return ticket en la posición dada.
+     */
     public Ticket getItemAt(int itemPosition) {
         return itemData.get(itemPosition);
     }
 
-
-    public class ViewHolderProductos extends RecyclerView.ViewHolder {
+    /**
+     * Holder de la lista.
+     */
+    public class ViewHolderTicket extends RecyclerView.ViewHolder {
 
         public TextView textViewArticulos;
         public TextView textViewDest;
         public TextView textViewTotal;
         public TextView textViewMain;
 
-        public ViewHolderProductos(View itemLayoutView) {
+        public ViewHolderTicket(View itemLayoutView) {
             super(itemLayoutView);
 
             textViewDest = (TextView) itemLayoutView.findViewById(R.id.textView_Descripcion);

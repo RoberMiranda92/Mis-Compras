@@ -6,12 +6,12 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.field.DataType;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.Product;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
-import com.ubu.miscompras.presenter.OnLoadComplete;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,25 +20,25 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 18/12/15.
  */
-public class ProductGetterByCategoryInterator extends AsyncTask<Void, Void, List<LineaProducto>> {
+public class ProductGetterByCategoryInterator extends AsyncTask<Void, Void, List<ProductLine>> {
 
 
-    private OnLoadComplete presenter;
-    private Dao<LineaProducto, Integer> lineaProductoDao;
+    private IOnLoadComplete presenter;
+    private Dao<ProductLine, Integer> lineaProductoDao;
     private DataBaseHelper db;
-    private Categoria categoria;
-    private Dao<Producto, Integer> productoDao;
+    private Category category;
+    private Dao<Product, Integer> productoDao;
 
-    public ProductGetterByCategoryInterator(OnLoadComplete presenter, Categoria categoria) {
+    public ProductGetterByCategoryInterator(IOnLoadComplete presenter, Category category) {
 
-        this.categoria = categoria;
+        this.category = category;
         this.presenter = presenter;
 
         db = OpenHelperManager.getHelper(App.getAppContext(), DataBaseHelper.class);
 
         try {
-            lineaProductoDao = db.getTicketProductoDAO();
-            productoDao = db.getProductoDAO();
+            lineaProductoDao = db.getProductLineDAO();
+            productoDao = db.getProductDAO();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,12 +46,13 @@ public class ProductGetterByCategoryInterator extends AsyncTask<Void, Void, List
     }
 
     @Override
-    public void onPostExecute(List<LineaProducto> items) {
+    public void onPostExecute(List<ProductLine> items) {
 
         if (items != null)
             presenter.loadCompleteTicketProducto(items);
-        else
+        else {
             presenter.showError();
+        }
 
         if(db.isOpen())
             db.close();
@@ -60,32 +61,32 @@ public class ProductGetterByCategoryInterator extends AsyncTask<Void, Void, List
 
 
     @Override
-    protected List<LineaProducto> doInBackground(Void... params) {
+    protected List<ProductLine> doInBackground(Void... params) {
 
-        List<LineaProducto> products = new ArrayList<>();
+        List<ProductLine> products = new ArrayList<>();
 
         try {
             GenericRawResults<Object[]> rawResults =
                     lineaProductoDao.queryRaw(
-                            "SELECT SUM(" + LineaProducto.TABLE_NAME + "." + LineaProducto.CANTIDAD + ")AS Cantidad," +
-                                    "SUM(" + LineaProducto.TABLE_NAME + "." + LineaProducto.IMPORTE + ")AS Importe," +
-                                    LineaProducto.PRECIO + "," + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME +
-                                    " FROM " + LineaProducto.TABLE_NAME + " JOIN " + Producto.TABLE_NAME +
-                                    " ON " + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME +
-                                    "=" + Producto.TABLE_NAME + "." + Producto.ID_FIELD_NAME + " JOIN " + Categoria.TABLE_NAME +
-                                    " ON " + Producto.TABLE_NAME + "." + Producto.CATEGORIA_FIELD__ID + "=" + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD +
-                                    " WHERE " + Categoria.TABLE_NAME + "." + Categoria.ID_FIELD + "=? GROUP BY " + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME +
-                                    "," + LineaProducto.TABLE_NAME + "." + LineaProducto.PRECIO +
-                                    " ORDER BY " + Producto.TABLE_NAME + "." + Producto.NOMBRE_FIELD_NAME,
-                            new DataType[]{DataType.INTEGER, DataType.DOUBLE, DataType.DOUBLE, DataType.INTEGER}, String.valueOf(categoria.getId()));
+                            "SELECT SUM(" + ProductLine.TABLE_NAME + "." + ProductLine.CANTIDAD + ")AS Cantidad," +
+                                    "SUM(" + ProductLine.TABLE_NAME + "." + ProductLine.IMPORTE + ")AS Importe," +
+                                    ProductLine.PRECIO + "," + Product.TABLE_NAME + "." + Product.ID_FIELD_NAME +
+                                    " FROM " + ProductLine.TABLE_NAME + " JOIN " + Product.TABLE_NAME +
+                                    " ON " + ProductLine.TABLE_NAME + "." + ProductLine.PRODUCTO_ID_FIELD_NAME +
+                                    "=" + Product.TABLE_NAME + "." + Product.ID_FIELD_NAME + " JOIN " + Category.TABLE_NAME +
+                                    " ON " + Product.TABLE_NAME + "." + Product.CATEGORIA_FIELD__ID + "=" + Category.TABLE_NAME + "." + Category.ID_FIELD +
+                                    " WHERE " + Category.TABLE_NAME + "." + Category.ID_FIELD + "=? GROUP BY " + ProductLine.TABLE_NAME + "." + ProductLine.PRODUCTO_ID_FIELD_NAME +
+                                    "," + ProductLine.TABLE_NAME + "." + ProductLine.PRECIO +
+                                    " ORDER BY " + Product.TABLE_NAME + "." + Product.NOMBRE_FIELD_NAME,
+                            new DataType[]{DataType.INTEGER, DataType.DOUBLE, DataType.DOUBLE, DataType.INTEGER}, String.valueOf(category.getId()));
 
 
             for (Object[] resultArray : rawResults) {
                 int cant = (int) resultArray[0];
                 double importe = (double) resultArray[1];
                 double precio = (double) resultArray[2];
-                Producto p = productoDao.queryForId((int) resultArray[3]);
-                LineaProducto t = new LineaProducto(p, cant, precio, importe);
+                Product p = productoDao.queryForId((int) resultArray[3]);
+                ProductLine t = new ProductLine(p, cant, precio, importe);
                 products.add(t);
             }
             rawResults.close();

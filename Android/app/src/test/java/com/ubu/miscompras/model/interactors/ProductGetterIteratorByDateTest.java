@@ -5,14 +5,13 @@ import android.os.Build;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.ubu.miscompras.BuildConfig;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.Product;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.presenter.OnLoadComplete;
-import com.ubu.miscompras.model.interactors.ProductGetterByDateInteractor;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -38,10 +37,10 @@ import static org.hamcrest.core.Is.is;
 public class ProductGetterIteratorByDateTest {
 
     private DataBaseHelper helper;
-    private Dao<LineaProducto, Integer> lineaProductosDao;
-    private Categoria categoria;
-    private List<LineaProducto> productLines;
-    private List<LineaProducto> productByDate;
+    private Dao<ProductLine, Integer> lineaProductosDao;
+    private Category category;
+    private List<ProductLine> productLines;
+    private List<ProductLine> productByDate;
     private Date startDate;
     private Date endDate;
 
@@ -51,11 +50,11 @@ public class ProductGetterIteratorByDateTest {
 
             Calendar cal = Calendar.getInstance();
             productByDate = new ArrayList<>();
-            categoria = new Categoria("Carne");
-            Producto p1 = new Producto("Jamon", categoria);
-            Producto p2 = new Producto("Lomo", categoria);
-            Producto p3 = new Producto("Chorizo", categoria);
-            Producto p4 = new Producto("Salami", categoria);
+            category = new Category("Carne");
+            Product p1 = new Product("Jamon", category);
+            Product p2 = new Product("Lomo", category);
+            Product p3 = new Product("Chorizo", category);
+            Product p4 = new Product("Salami", category);
 
             Ticket t1 = new Ticket(new Date());
 
@@ -63,15 +62,15 @@ public class ProductGetterIteratorByDateTest {
 
             Ticket t2 = new Ticket(cal.getTime());
 
-            LineaProducto linea1 = new LineaProducto(t1, p1, 1, 1.0, 1.0);
-            LineaProducto linea2 = new LineaProducto(t1, p2, 1, 2.0, 2.0);
-            LineaProducto linea3 = new LineaProducto(t1, p3, 1, 3.0, 2.0);
-            LineaProducto linea4 = new LineaProducto(t1, p4, 1, 4.0, 2.0);
+            ProductLine linea1 = new ProductLine(t1, p1, 1, 1.0, 1.0);
+            ProductLine linea2 = new ProductLine(t1, p2, 1, 2.0, 2.0);
+            ProductLine linea3 = new ProductLine(t1, p3, 1, 3.0, 2.0);
+            ProductLine linea4 = new ProductLine(t1, p4, 1, 4.0, 2.0);
 
-            LineaProducto linea5 = new LineaProducto(t2, p1, 1, 1.0, 1.0);
-            LineaProducto linea6 = new LineaProducto(t2, p2, 1, 2.0, 2.0);
-            LineaProducto linea7 = new LineaProducto(t2, p3, 1, 3.0, 2.0);
-            LineaProducto linea8 = new LineaProducto(t2, p4, 1, 4.0, 2.0);
+            ProductLine linea5 = new ProductLine(t2, p1, 1, 1.0, 1.0);
+            ProductLine linea6 = new ProductLine(t2, p2, 1, 2.0, 2.0);
+            ProductLine linea7 = new ProductLine(t2, p3, 1, 3.0, 2.0);
+            ProductLine linea8 = new ProductLine(t2, p4, 1, 4.0, 2.0);
 
             productLines = new ArrayList<>();
             productLines.add(linea1);
@@ -80,7 +79,7 @@ public class ProductGetterIteratorByDateTest {
             productLines.add(linea4);
 
             helper = OpenHelperManager.getHelper(App.getAppContext(), DataBaseHelper.class);
-            lineaProductosDao = helper.getTicketProductoDAO();
+            lineaProductosDao = helper.getProductLineDAO();
 
             lineaProductosDao.create(linea1);
             lineaProductosDao.create(linea2);
@@ -121,19 +120,19 @@ public class ProductGetterIteratorByDateTest {
     public void productGetterByDateTest() {
 
 
-        ProductGetterByDateInteractor task = new ProductGetterByDateInteractor(new OnLoadComplete() {
+        ProductGetterByDateInteractor task = new ProductGetterByDateInteractor(new IOnLoadComplete() {
             @Override
             public void showError() {
                 Assert.fail("productGetterByDateTest fail");
             }
 
             @Override
-            public void loadCompleteCategoria(List<Categoria> items) {
+            public void loadCompleteCategoria(List<Category> items) {
 
             }
 
             @Override
-            public void loadCompleteTicketProducto(List<LineaProducto> items) {
+            public void loadCompleteTicketProducto(List<ProductLine> items) {
                 productByDate = items;
             }
 

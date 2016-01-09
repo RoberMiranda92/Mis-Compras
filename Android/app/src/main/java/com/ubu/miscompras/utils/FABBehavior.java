@@ -6,16 +6,17 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Method;
 
 /**
- * Created by RobertoMiranda on 19/12/15.
+ * Clase que controla la animación de ocultación de un FabBUtton dentro de un CoordinatorLayout.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class FABBehavior extends FloatingActionButton.Behavior{
+public class FABBehavior extends FloatingActionButton.Behavior {
 
     public FABBehavior(Context context, AttributeSet attributeSet) {
 
@@ -44,9 +45,7 @@ public class FABBehavior extends FloatingActionButton.Behavior{
 
                 if (point <= (int) method.invoke(appBarLayout)) {
                     child.hide();
-                    Log.d("Scroll","hide");
                 } else {
-                    Log.d("Scroll","show");
                     child.show();
                 }
                 return true;

@@ -8,10 +8,8 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.presenter.OnLoadComplete;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,11 +23,11 @@ public class TicketGetterByPriceInteractor extends AsyncTask<Void, Void, List<Ti
 
     private final double minPrice;
     private final double maxPrice;
-    private final OnLoadComplete presenter;
+    private final IOnLoadComplete presenter;
     private DataBaseHelper db;
     private Dao<Ticket, Integer> ticketDao;
 
-    public TicketGetterByPriceInteractor(OnLoadComplete presenter, double minPrice, double maxPrice) {
+    public TicketGetterByPriceInteractor(IOnLoadComplete presenter, double minPrice, double maxPrice) {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.presenter = presenter;

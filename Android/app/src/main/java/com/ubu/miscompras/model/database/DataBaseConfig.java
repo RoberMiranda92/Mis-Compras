@@ -3,10 +3,10 @@ package com.ubu.miscompras.model.database;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.ProductLine;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.sql.SQLException;
  */
 public class DataBaseConfig extends OrmLiteConfigUtil {
 
-    private static final Class<?>[] classes = new Class[]{Ticket.class, Producto.class, Categoria.class, LineaProducto.class};
+    private static final Class<?>[] classes = new Class[]{Ticket.class, Product.class, Category.class, ProductLine.class};
 
     public static void main(String[] args) throws IOException, SQLException {
 

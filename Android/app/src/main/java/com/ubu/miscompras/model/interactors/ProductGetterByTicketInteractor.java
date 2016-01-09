@@ -7,12 +7,12 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.field.DataType;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.presenter.OnLoadComplete;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,31 +21,31 @@ import java.util.List;
 /**
  * Created by RobertoMiranda on 5/1/16.
  */
-public class ProductGetterByTicketInteractor extends AsyncTask<Void, Void, List<LineaProducto>> {
+public class ProductGetterByTicketInteractor extends AsyncTask<Void, Void, List<ProductLine>> {
 
 
     private Ticket ticket;
     private DataBaseHelper db;
-    private OnLoadComplete presenter;
-    private Dao<LineaProducto, Integer> lineaProductoDao;
-    private Dao<Producto, Integer> productoDao;
+    private IOnLoadComplete presenter;
+    private Dao<ProductLine, Integer> lineaProductoDao;
+    private Dao<Product, Integer> productoDao;
 
-    public ProductGetterByTicketInteractor(OnLoadComplete presenter, Ticket ticket) {
+    public ProductGetterByTicketInteractor(IOnLoadComplete presenter, Ticket ticket) {
 
         this.presenter = presenter;
         this.ticket = ticket;
         db = OpenHelperManager.getHelper(App.getAppContext(), DataBaseHelper.class);
 
         try {
-            lineaProductoDao = db.getTicketProductoDAO();
-            productoDao = db.getProductoDAO();
+            lineaProductoDao = db.getProductLineDAO();
+            productoDao = db.getProductDAO();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onPostExecute(List<LineaProducto> items) {
+    public void onPostExecute(List<ProductLine> items) {
 
         if (items != null)
             presenter.loadCompleteTicketProducto(items);
@@ -59,20 +59,20 @@ public class ProductGetterByTicketInteractor extends AsyncTask<Void, Void, List<
 
 
     @Override
-    protected List<LineaProducto> doInBackground(Void... params) {
+    protected List<ProductLine> doInBackground(Void... params) {
 
-        List<LineaProducto> items = new ArrayList<>();
+        List<ProductLine> items = new ArrayList<>();
         try {
             GenericRawResults<Object[]> rawResults =
                     lineaProductoDao.queryRaw(
-                            "SELECT SUM(" + LineaProducto.TABLE_NAME + "." + LineaProducto.CANTIDAD + ") AS Cantidad," +
-                                    "SUM(" + LineaProducto.TABLE_NAME + "." + LineaProducto.IMPORTE + ") AS Importe," +
-                                    LineaProducto.PRECIO + "," + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME +
-                                    " FROM " + LineaProducto.TABLE_NAME +
-                                    " WHERE " + LineaProducto.TABLE_NAME + "." + LineaProducto.TICKET_ID_FIELD_NAME +
-                                    " = ? GROUP BY " + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME +
-                                    "," + LineaProducto.TABLE_NAME + "." + LineaProducto.PRECIO +
-                                    " ORDER BY " + LineaProducto.TABLE_NAME + "." + LineaProducto.PRODUCTO_ID_FIELD_NAME,
+                            "SELECT SUM(" + ProductLine.TABLE_NAME + "." + ProductLine.CANTIDAD + ") AS Cantidad," +
+                                    "SUM(" + ProductLine.TABLE_NAME + "." + ProductLine.IMPORTE + ") AS Importe," +
+                                    ProductLine.PRECIO + "," + ProductLine.TABLE_NAME + "." + ProductLine.PRODUCTO_ID_FIELD_NAME +
+                                    " FROM " + ProductLine.TABLE_NAME +
+                                    " WHERE " + ProductLine.TABLE_NAME + "." + ProductLine.TICKET_ID_FIELD_NAME +
+                                    " = ? GROUP BY " + ProductLine.TABLE_NAME + "." + ProductLine.PRODUCTO_ID_FIELD_NAME +
+                                    "," + ProductLine.TABLE_NAME + "." + ProductLine.PRECIO +
+                                    " ORDER BY " + ProductLine.TABLE_NAME + "." + ProductLine.PRODUCTO_ID_FIELD_NAME,
                             new DataType[]{DataType.INTEGER, DataType.DOUBLE, DataType.DOUBLE, DataType.INTEGER}, String.valueOf(ticket.getId()));
 
 
@@ -80,9 +80,9 @@ public class ProductGetterByTicketInteractor extends AsyncTask<Void, Void, List<
                 int cant = (int) resultArray[0];
                 double importe = (double) resultArray[1];
                 double precio = (double) resultArray[2];
-                Producto p = productoDao.queryForId((int) resultArray[3]);
+                Product p = productoDao.queryForId((int) resultArray[3]);
                 Ticket t = ticket;
-                LineaProducto linea = new LineaProducto(p, cant, precio, importe);
+                ProductLine linea = new ProductLine(p, cant, precio, importe);
                 linea.setTicket(t);
                 items.add(linea);
             }

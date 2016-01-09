@@ -15,30 +15,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.view.adapters.ProductosAddAdapter;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.ProductLine;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.presenter.AddProductsPresenter;
 import com.ubu.miscompras.utils.VerticalDividerItemDecorator;
-import com.ubu.miscompras.view.customViews.EditProdutDialog;
+import com.ubu.miscompras.view.adapters.ProductAddAdapter;
+import com.ubu.miscompras.view.customViews.EditProductDialog;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 15/12/15.
+ * Activity que se encarga de mostrar al usuario la ventana que permite añadir
+ * las nuevas lineas de producto.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class AddProductsActivity extends AppCompatActivity implements View.OnClickListener, OnItemClick, OnEditableItem {
+public class AddProductsActivity extends AppCompatActivity implements View.OnClickListener, IOnItemClick, IOnEditableItem {
 
 
-    private RecyclerView recyclerView_productos;
-    private ProductosAddAdapter recyclerView_Adapter;
+    private RecyclerView recyclerView_productLine;
+    private ProductAddAdapter recyclerView_Adapter;
     private FloatingActionButton saveButton;
-    private TextView textView_fecha;
+    private TextView textView_date;
     private TextView textView_total;
     private AddProductsPresenter presenter;
-    private boolean disable = false;
-    private List<Categoria> categorias;
+    private List<Category> categoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +61,18 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        recyclerView_Adapter = new ProductosAddAdapter(this);
-        recyclerView_productos = (RecyclerView) findViewById(R.id.recyclerView_AddProductos);
-        recyclerView_productos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView_productos.addItemDecoration(new VerticalDividerItemDecorator(1, false));
-        recyclerView_productos.setAdapter(recyclerView_Adapter);
+        recyclerView_Adapter = new ProductAddAdapter(this);
+        recyclerView_productLine = (RecyclerView) findViewById(R.id.recyclerView_AddProductos);
+        recyclerView_productLine.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView_productLine.addItemDecoration(new VerticalDividerItemDecorator(1, false));
+        recyclerView_productLine.setAdapter(recyclerView_Adapter);
 
 
         saveButton = (FloatingActionButton) findViewById(R.id.FloattingButton_saveProducts);
         saveButton.setOnClickListener(this);
 
 
-        textView_fecha = (TextView) findViewById(R.id.textView_fechaCompra);
+        textView_date = (TextView) findViewById(R.id.textView_fechaCompra);
         textView_total = (TextView) findViewById(R.id.textView_totalCompra);
 
         presenter = new AddProductsPresenter(this);
@@ -94,26 +98,44 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         int id = item.getItemId();
 
         if (id == R.id.newProduct) {
-            createNewProdcut();
+            createNewProductLine();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void createNewProdcut() {
-        LineaProducto newLinea = new LineaProducto(new Producto(""), 0, 0, 0);
+    /**
+     * Este método crea una nueva linea de producto vacia.
+     */
+    private void createNewProductLine() {
+        ProductLine newProductLine = new ProductLine(new Product(""), 0, 0, 0);
         int position = recyclerView_Adapter.getItemCount();
         FragmentManager fm = getSupportFragmentManager();
-        EditProdutDialog editNameDialog = EditProdutDialog.newInstance(categorias, newLinea, position);
-        editNameDialog.show(fm, "fragment_edit_name");
+        EditProductDialog editProductDialog = EditProductDialog.newInstance(categoryList, newProductLine, position);
+        editProductDialog.show(fm, "fragment_edit_dialog");
     }
 
-
-    public void setDate(String date) {
-        textView_fecha.setText(date);
+    /**
+     * Este método coloca la fecha en el TexView de Fecha.
+     *
+     * @param date fecha a colocar
+     */
+    public void setDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        textView_date.setText(getString(R.string.format_date, day, month + 1, year));
     }
 
+    /**
+     * Este método coloca el total en el textView de Importe Total
+     *
+     * @param total a colocar
+     */
     public void setTotal(double total) {
         textView_total.setText(getString(R.string.format_total, total));
     }
@@ -130,20 +152,28 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onItemClick(View v) {
-        int itemPosition = recyclerView_productos.getChildPosition(v);
-        LineaProducto item = recyclerView_Adapter.getItemAt(itemPosition);
+        int itemPosition = recyclerView_productLine.getChildPosition(v);
+        ProductLine item = recyclerView_Adapter.getItemAt(itemPosition);
         FragmentManager fm = getSupportFragmentManager();
-        EditProdutDialog editNameDialog = EditProdutDialog.newInstance(categorias, item, itemPosition);
+        EditProductDialog editNameDialog = EditProductDialog.newInstance(categoryList, item, itemPosition);
         editNameDialog.show(fm, "fragment_edit_name");
     }
 
-    public void setItems(List<LineaProducto> items) {
-        recyclerView_Adapter.setProducts(items);
+    /**
+     * Este método coloca las lineas de producto en la lista.
+     *
+     * @param productLinesList lineas de producto de la lista.
+     */
+    public void setItems(List<ProductLine> productLinesList) {
+        recyclerView_Adapter.setProducts(productLinesList);
         recyclerView_Adapter.notifyDataSetChanged();
-        calculateTotal();
+        setTotal(calculateTotal());
 
     }
 
+    /**
+     * Muestra el mensaje de edición.
+     */
     public void showEditMessage() {
         Toast.makeText(this, getString(R.string.category_message), Toast.LENGTH_LONG).show();
     }
@@ -153,42 +183,55 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         int id = v.getId();
         switch (id) {
             case R.id.FloattingButton_saveProducts:
-                    presenter.saveProducts(recyclerView_Adapter.getItems());
-                    presenter.uploadProducts(recyclerView_Adapter.getItems());
+                presenter.saveProducts(recyclerView_Adapter.getItems());
+                presenter.uploadProducts(recyclerView_Adapter.getItems());
                 break;
 
         }
     }
 
-
+    /**
+     * Este mñetodo muestra un mesaje de error al procesar incorrectamente los productos.
+     */
     public void showErrorMensage() {
-        Toast.makeText(this, "Error al procesar algunos productos", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.errorProcessProducts), Toast.LENGTH_SHORT).show();
     }
 
-    public void end(){
+    /**
+     * Este metodo finaliza la actividad.
+     */
+    public void end() {
         super.finish();
     }
 
-    public void setCategories(List<Categoria> items) {
-        this.categorias = items;
+    /**
+     * Este método coloca la lista de categorias.
+     *
+     * @param categoryList lista de categorias.
+     */
+    public void setCategories(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
     @Override
-    public void OnEditItem(LineaProducto productLine, int position) {
+    public void OnEditItem(ProductLine productLine, int position) {
         recyclerView_Adapter.setItemAt(productLine, position);
         recyclerView_Adapter.notifyDataSetChanged();
-        calculateTotal();
+        setTotal(calculateTotal());
     }
 
-    private void calculateTotal() {
+    /**
+     * Este método recalcula el total acumulado del importe de las lineas de producto.
+     */
+    private double calculateTotal() {
 
-        List<LineaProducto> lines = recyclerView_Adapter.getItems();
+        List<ProductLine> lines = recyclerView_Adapter.getItems();
         double total = 0;
 
-        for (LineaProducto l : lines) {
-            total += l.getImporte();
+        for (ProductLine l : lines) {
+            total += l.getTotalImport();
         }
-        setTotal(total);
+        return total;
     }
 
     @Override
@@ -196,7 +239,14 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Muestra el mensaje de lista vacia.
+     */
     public void showEmptyMessage() {
-        Toast.makeText(this, "Lista Vacia", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.emptyList), Toast.LENGTH_SHORT).show();
+    }
+
+    public void showOkMessage() {
+        Toast.makeText(this, getString(R.string.saveProducts), Toast.LENGTH_SHORT).show();
     }
 }

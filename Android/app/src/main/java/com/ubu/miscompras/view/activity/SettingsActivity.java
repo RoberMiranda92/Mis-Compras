@@ -7,7 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.view.fragment.SettingsFragment;
 
-
+/**
+ * Activity que maneja la pantalla de configuración.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
+ */
 public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {

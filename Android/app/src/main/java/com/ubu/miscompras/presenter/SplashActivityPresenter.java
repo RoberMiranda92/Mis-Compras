@@ -1,18 +1,20 @@
 package com.ubu.miscompras.presenter;
 
-import com.ubu.miscompras.view.activity.SplashActivity;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.model.interactors.CaregoryInsertInteractor;
 import com.ubu.miscompras.model.interactors.ProductGetterInteractor;
+import com.ubu.miscompras.view.activity.SplashActivity;
 
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 20/12/15.
+ * Presenter encargado de la SplashActivity.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class SplashActivityPresenter implements OnFinishedListener, OnLoadComplete {
+public class SplashActivityPresenter implements IOnFinishedListener, IOnLoadComplete {
 
 
     private SplashActivity mView;
@@ -27,9 +29,13 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
         task.execute();
     }
 
-
-    public void insertCategories(List<String> categories) {
-        CaregoryInsertInteractor task = new CaregoryInsertInteractor(this, categories);
+    /**
+     * Este método comunica llama al interactor que insterta las categorias en la base de datos.
+     *
+     * @param categoryList lista de categprias.
+     */
+    public void insertCategories(List<String> categoryList) {
+        CaregoryInsertInteractor task = new CaregoryInsertInteractor(this, categoryList);
         task.execute();
 
 
@@ -52,12 +58,12 @@ public class SplashActivityPresenter implements OnFinishedListener, OnLoadComple
     }
 
     @Override
-    public void loadCompleteCategoria(List<Categoria> items) {
+    public void loadCompleteCategoria(List<Category> items) {
 
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<LineaProducto> items) {
+    public void loadCompleteTicketProducto(List<ProductLine> items) {
         mView.setTicketProducto(items);
     }
 

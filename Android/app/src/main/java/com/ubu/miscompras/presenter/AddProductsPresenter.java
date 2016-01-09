@@ -1,26 +1,26 @@
 package com.ubu.miscompras.presenter;
 
-import com.ubu.miscompras.view.activity.AddProductsActivity;
-import com.ubu.miscompras.model.Producto;
-import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.ProductLine;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
 import com.ubu.miscompras.model.interactors.ProductInsertIterator;
 import com.ubu.miscompras.model.interactors.UploadProductLineInteractor;
+import com.ubu.miscompras.view.activity.AddProductsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 16/12/15.
+ * Presenter encargado de la vista de añadir produtos {@link AddProductsActivity}
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete {
+public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplete {
 
 
     private AddProductsActivity mainView;
@@ -34,13 +34,12 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     @Override
     public void onResume() {
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
-        mainView.setDate(dateFormat.format(cal.getTime()));
+        mainView.setDate(cal.getTime());
         getCategories();
 
         if (!json.isEmpty()) {
-            List<LineaProducto> lineas = getProdcutFromJson(json);
+            List<ProductLine> lineas = getProdcutFromJson(json);
             mainView.setItems(lineas);
             mainView.showEditMessage();
 
@@ -49,6 +48,11 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
 
     }
 
+    /**
+     * Este método comunica a su vista que muestre un mensaje de error;
+     *
+     * @param message mensaje a mostrar.
+     */
     public void showError(String message) {
         mainView.showMessage(message);
 
@@ -60,7 +64,7 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<LineaProducto> items) {
+    public void loadCompleteTicketProducto(List<ProductLine> items) {
 
     }
 
@@ -86,19 +90,29 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
 
     }
 
-    public void saveProducts(List<LineaProducto> lineasDeProducto) {
-        if(!lineasDeProducto.isEmpty()){
-        ProductInsertIterator iterator = new ProductInsertIterator(this,lineasDeProducto);
-        iterator.execute();}
-        else{
+    /**
+     * Este método llama al interactor para guardar los productos en la BD.
+     *
+     * @param lineasDeProducto lineas de producto a guardar.
+     */
+    public void saveProducts(List<ProductLine> lineasDeProducto) {
+        if (!lineasDeProducto.isEmpty()) {
+            ProductInsertIterator iterator = new ProductInsertIterator(this, lineasDeProducto);
+            iterator.execute();
+        } else {
             mainView.showEmptyMessage();
         }
 
     }
 
-
-    private ArrayList<LineaProducto> getProdcutFromJson(String ArrayJson) {
-        ArrayList<LineaProducto> lineasProducto = new ArrayList<>();
+    /**
+     * Este método trasforma un Json en linea de producto.
+     *
+     * @param ArrayJson json.
+     * @return lista de lineas de producto.
+     */
+    private ArrayList<ProductLine> getProdcutFromJson(String ArrayJson) {
+        ArrayList<ProductLine> lineasProducto = new ArrayList<>();
         try {
             JSONArray array = new JSONArray(ArrayJson);
 
@@ -111,8 +125,8 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
                 String precio = arrayLineasProducto.getString("precio");
                 String importe = arrayLineasProducto.getString("total");
                 try {
-                    Producto producto = new Producto(nombre);
-                    LineaProducto lineaDeProducto = new LineaProducto(producto,
+                    Product product = new Product(nombre);
+                    ProductLine lineaDeProducto = new ProductLine(product,
                             Integer.parseInt(cantidad), Double.parseDouble(precio),
                             Double.parseDouble(importe));
                     lineasProducto.add(lineaDeProducto);
@@ -131,26 +145,31 @@ public class AddProductsPresenter implements OnFinishedListener, OnLoadComplete 
     @Override
     public void onFinished(Boolean result) {
         if (result) {
-            mainView.showMessage("Productos guardados correctamente");
+            mainView.showOkMessage();
             mainView.end();
         } else
             mainView.showMessage("Error al guardar los productos");
     }
 
-    public void uploadProducts(List<LineaProducto> items) {
+    /**
+     * Este mñetodo llama a un interactor para guardar las lineas de producto en el servidor.
+     *
+     * @param items
+     */
+    public void uploadProducts(List<ProductLine> items) {
 
         StringBuilder builder = new StringBuilder();
 
-        for(int i=0;i<items.size();i++){
-            if(i!=items.size()-1){
-                builder.append(items.get(i).getProducto().getNombre());
+        for (int i = 0; i < items.size(); i++) {
+            if (i != items.size() - 1) {
+                builder.append(items.get(i).getProduct().getName());
                 builder.append(",");
-            }else{
-                builder.append(items.get(i).getProducto().getNombre());
+            } else {
+                builder.append(items.get(i).getProduct().getName());
             }
         }
 
-        UploadProductLineInteractor task = new UploadProductLineInteractor(this,builder.toString());
+        UploadProductLineInteractor task = new UploadProductLineInteractor(this, builder.toString());
         task.execute();
 
     }

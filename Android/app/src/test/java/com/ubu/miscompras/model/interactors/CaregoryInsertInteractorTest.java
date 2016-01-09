@@ -7,9 +7,8 @@ import android.os.Build;
 import com.j256.ormlite.dao.Dao;
 import com.ubu.miscompras.BuildConfig;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.presenter.OnFinishedListener;
-import com.ubu.miscompras.model.interactors.CaregoryInsertInteractor;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.presenter.IOnFinishedListener;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -35,7 +34,7 @@ public class CaregoryInsertInteractorTest {
     String[] names ={"Carne","Verduras","Refrescos"};
     List<String> categories;
     private DataBaseHelper helper;
-    private Dao<Categoria, Integer> categoriaDao;
+    private Dao<Category, Integer> categoriaDao;
     @Before
     public void setUp() {
         categories = new ArrayList<>();
@@ -51,7 +50,7 @@ public class CaregoryInsertInteractorTest {
     @Test
     public void categoryInsertTest(){
 
-        CaregoryInsertInteractor task = new CaregoryInsertInteractor(new OnFinishedListener() {
+        CaregoryInsertInteractor task = new CaregoryInsertInteractor(new IOnFinishedListener() {
 
 
             @Override

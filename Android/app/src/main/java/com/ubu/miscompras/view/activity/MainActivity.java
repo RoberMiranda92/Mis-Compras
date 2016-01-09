@@ -15,13 +15,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.utils.Constans;
 import com.ubu.miscompras.view.fragment.MainFragment;
-import com.ubu.miscompras.view.fragment.ProductosFragment;
+import com.ubu.miscompras.view.fragment.ProductFragment;
 import com.ubu.miscompras.view.fragment.TicketFragment;
 
 import java.util.HashMap;
 
-
+/**
+ * Activity Principal de la aplicación.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,12 +60,13 @@ public class MainActivity extends AppCompatActivity
 
         stack = new HashMap<>();
 
-        stack.put(0,new MainFragment());
-        stack.put(1,new ProductosFragment());
-        stack.put(2,new TicketFragment());
+        stack.put(Constans.RESUMEN_POSITION_FRAGMENT, new MainFragment());
+        stack.put(Constans.PODUCTS_POSITION_FRAGMENT, new ProductFragment());
+        stack.put(Constans.HISTORIAL_POSITION_FRAGMENT, new TicketFragment());
+
         navigationView.setCheckedItem(R.id.summary);
 
-        fragment = stack.get(0);
+        fragment = stack.get(Constans.RESUMEN_POSITION_FRAGMENT);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.main_fragment_container, fragment);
@@ -76,11 +82,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
 
-        if (selectedFragment == 0) {
+        if (selectedFragment == Constans.RESUMEN_POSITION_FRAGMENT) {
             super.onBackPressed();
         } else {
-            fragment = new MainFragment();
-            selectedFragment = 0;
+            fragment = stack.get(Constans.RESUMEN_POSITION_FRAGMENT);
+            selectedFragment = Constans.RESUMEN_POSITION_FRAGMENT;
             navigationView.getMenu().getItem(selectedFragment).setChecked(true);
             changeFragment(fragment);
         }
@@ -93,15 +99,15 @@ public class MainActivity extends AppCompatActivity
         fragment.onPause();
         switch (id) {
             case R.id.summary:
-                fragment = stack.get(0);
+                fragment = stack.get(Constans.RESUMEN_POSITION_FRAGMENT);
                 selectedFragment = 0;
                 break;
             case R.id.products:
-                fragment = stack.get(1);
+                fragment = stack.get(Constans.PODUCTS_POSITION_FRAGMENT);
                 selectedFragment = 1;
                 break;
             case R.id.tickets:
-                fragment =  stack.get(2);
+                fragment = stack.get(Constans.HISTORIAL_POSITION_FRAGMENT);
                 selectedFragment = 2;
                 break;
             case R.id.config:
@@ -120,11 +126,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Este método cambia el fragment de la vista.
+     *
+     * @param fragment fragment a cambiar.
+     */
     private void changeFragment(Fragment fragment) {
 
         if (fragment != null && currentFragment != selectedFragment) {
             currentFragment = selectedFragment;
-            if(fragment.isAdded())
+            if (fragment.isAdded())
                 fragment.onResume();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.main_fragment_container, fragment);
@@ -134,6 +145,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Este método inicia la actividad de configuración.
+     */
     private void startSettingsActivity() {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);

@@ -7,8 +7,8 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.presenter.OnFinishedListener;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.presenter.IOnFinishedListener;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,17 +22,17 @@ public class CaregoryInsertInteractor extends AsyncTask<Void, Void, Boolean> {
 
 
     private List<String> categories;
-    private Dao<Categoria, Integer> categoriaDao;
+    private Dao<Category, Integer> categoriaDao;
     private DataBaseHelper db;
-    private OnFinishedListener presenter;
+    private IOnFinishedListener presenter;
 
-    public CaregoryInsertInteractor(OnFinishedListener presenter, List<String> categories) {
+    public CaregoryInsertInteractor(IOnFinishedListener presenter, List<String> categories) {
         this.presenter = presenter;
         this.categories = categories;
         db = OpenHelperManager.getHelper(App.getAppContext(), DataBaseHelper.class);
 
         try {
-            categoriaDao = db.getCategoriaDAO();
+            categoriaDao = db.getCategoryDAO();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class CaregoryInsertInteractor extends AsyncTask<Void, Void, Boolean> {
 
                     for (String name : categories) {
 
-                        categoriaDao.create(new Categoria(name));
+                        categoriaDao.create(new Category(name));
 
                     }
                     return null;

@@ -1,5 +1,5 @@
 #
-# generated on 2015/12/29 12:20:07
+# generated on 2016/01/09 08:27:00
 #
 # --table-start--
 dataClass=com.ubu.miscompras.model.Ticket
@@ -11,13 +11,13 @@ columnName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=fecha_compra
+fieldName=purchaseDate
 columnName=fecha_compra
 dataPersister=DATE_LONG
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=nArticulos
+fieldName=productAmount
 columnName=numero_articulos
 defaultValue=0
 canBeNull=false
@@ -32,7 +32,7 @@ canBeNull=false
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ubu.miscompras.model.Producto
+dataClass=com.ubu.miscompras.model.Product
 tableName=producto
 # --table-fields-start--
 # --field-start--
@@ -41,12 +41,12 @@ columnName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=nombre
+fieldName=name
 columnName=nombre
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=categoria
+fieldName=category
 columnName=id_categoria
 foreign=true
 foreignAutoRefresh=true
@@ -56,7 +56,7 @@ foreignAutoCreate=true
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ubu.miscompras.model.Categoria
+dataClass=com.ubu.miscompras.model.Category
 tableName=categoria
 # --table-fields-start--
 # --field-start--
@@ -65,7 +65,7 @@ columnName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=nombre
+fieldName=name
 columnName=nombre
 canBeNull=false
 unique=true
@@ -79,7 +79,7 @@ foreignCollectionEager=true
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ubu.miscompras.model.LineaProducto
+dataClass=com.ubu.miscompras.model.ProductLine
 tableName=lineaproducto
 # --table-fields-start--
 # --field-start--
@@ -96,7 +96,7 @@ foreignAutoRefresh=true
 foreignAutoCreate=true
 # --field-end--
 # --field-start--
-fieldName=producto
+fieldName=product
 columnName=id_producto
 canBeNull=false
 foreign=true
@@ -104,19 +104,19 @@ foreignAutoRefresh=true
 foreignAutoCreate=true
 # --field-end--
 # --field-start--
-fieldName=cantidad
-columnName=cantidadt
+fieldName=amount
+columnName=cantidad
 defaultValue=1
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=precio
+fieldName=price
 columnName=precio
 defaultValue=0
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=importe
+fieldName=totalImport
 columnName=importe
 defaultValue=0
 canBeNull=false

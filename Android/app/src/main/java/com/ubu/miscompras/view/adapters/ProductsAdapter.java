@@ -9,52 +9,54 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.ProductLine;
+import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.model.Ticket;
 
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 19/12/15.
+ * Adaptador para las listas de productos.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class ProductsShowAdapter extends RecyclerView.Adapter<ProductsShowAdapter.ViewHolderProductos> {
+public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolderProducts> {
 
     private Context context;
-    private List<LineaProducto> itemData;
+    private List<ProductLine> itemData;
 
     private boolean dates = false;
     private boolean prices = false;
     private boolean category = false;
 
 
-    public ProductsShowAdapter(Context context) {
+    public ProductsAdapter(Context context) {
         this.context = context;
 
     }
 
     @Override
-    public ViewHolderProductos onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderProducts onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
 
 
-        ViewHolderProductos holder = new ViewHolderProductos(itemLayoutView);
+        ViewHolderProducts holder = new ViewHolderProducts(itemLayoutView);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderProductos holder, int position) {
-        LineaProducto linea = itemData.get(position);
+    public void onBindViewHolder(ViewHolderProducts holder, int position) {
+        ProductLine linea = itemData.get(position);
 
-        int cant = linea.getCantidad();
-        double precio = linea.getPrecio();
-        double importe = linea.getImporte();
-        Producto producto = linea.getProducto();
+        int cant = linea.getAmount();
+        double precio = linea.getPrice();
+        double importe = linea.getTotalImport();
+        Product product = linea.getProduct();
         Ticket ticket = linea.getTicket();
 
 
-        holder.textViewDest.setText(context.getString(R.string.format_cantidad, cant, producto.getNombre()));
+        holder.textViewDest.setText(context.getString(R.string.format_cantidad, cant, product.getName()));
         holder.textViewPrice.setVisibility(View.VISIBLE);
         holder.textViewPrice.setText(context.getString(R.string.format_productPrice, precio));
         holder.textViewTotal.setText(context.getString(R.string.format_importe, importe));
@@ -62,14 +64,13 @@ public class ProductsShowAdapter extends RecyclerView.Adapter<ProductsShowAdapte
         if (dates) {
             Calendar cal = Calendar.getInstance();
             cal.clear();
-            cal.setTime(ticket.getFecha_compra());
-
+            cal.setTime(ticket.getPurchaseDate());
             holder.textViewMain.setText(context.getString(R.string.format_date,
                     cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)));
         }
 
         if (category) {
-            holder.textViewMain.setText(producto.getCategoria().getNombre());
+            holder.textViewMain.setText(product.getCategory().getName());
         }
 
         if (prices) {
@@ -84,37 +85,53 @@ public class ProductsShowAdapter extends RecyclerView.Adapter<ProductsShowAdapte
         return itemData.size();
     }
 
-    public void setProducts(List<LineaProducto> products) {
-        this.itemData = products;
+    /**
+     * Este método coloca la lista asociada al adaptador.
+     *
+     * @param productLines lista de lineas de producto
+     */
+    public void setProducts(List<ProductLine> productLines) {
+        this.itemData = productLines;
     }
 
-
+    /**
+     * Este método activa el campo de fechas, y desactiva el resto.
+     */
     public void enableDatesFilter() {
         this.dates = true;
         this.category = false;
         this.prices = false;
     }
 
+    /**
+     * Este método activa el campo de precios, y desactiva el resto.
+     */
     public void enablePricesFilter() {
         this.dates = false;
         this.category = false;
         this.prices = true;
     }
 
+    /**
+     * Este método activa el campo de categorias, y desactiva el resto.
+     */
     public void enableCategoryFilter() {
         this.dates = false;
         this.category = true;
         this.prices = false;
     }
 
-    public class ViewHolderProductos extends RecyclerView.ViewHolder {
+    /**
+     * Holder de la lista.
+     */
+    public class ViewHolderProducts extends RecyclerView.ViewHolder {
         public TextView textViewDest;
         public TextView textViewPrice;
         public TextView textViewTotal;
         public TextView textViewMain;
         public ImageView imageViewIcon;
 
-        public ViewHolderProductos(View itemLayoutView) {
+        public ViewHolderProducts(View itemLayoutView) {
             super(itemLayoutView);
 
             textViewDest = (TextView) itemLayoutView.findViewById(R.id.textView_Descripcion);

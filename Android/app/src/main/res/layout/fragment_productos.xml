@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/windowsBackground"
     android:fitsSystemWindows="true"
-    tools:context=".view.fragment.ProductosFragment">
+    tools:context=".view.fragment.ProductFragment">
 
     <android.support.design.widget.AppBarLayout
         android:orientation="vertical"

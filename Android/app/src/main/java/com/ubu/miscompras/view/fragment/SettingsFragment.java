@@ -9,7 +9,9 @@ import android.preference.PreferenceManager;
 import com.ubu.miscompras.R;
 
 /**
- * Created by RobertoMiranda on 15/12/15.
+ * Fragment de la configuración.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -35,11 +37,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     }
 
     private void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
-
-        // Trigger the listener immediately with the preference's
-        // current value.
         onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())

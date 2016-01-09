@@ -1,36 +1,37 @@
 package com.ubu.miscompras.view.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.isseiaoki.simplecropview.CropImageView;
 import com.ubu.miscompras.R;
+import com.ubu.miscompras.presenter.CropPresenter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 
 /**
- * Created by RobertoMiranda on 12/11/15.
+ * Activity que muestra la imagen que se va a recortar antes de mandarla al servidor.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class CropActivity extends Activity {
+public class CropActivity extends Activity implements View.OnClickListener {
 
 
-    private static final int MAX_IMAGE_HEIGHT = 3872;
-    private static final int MAX_IMAGE_WIDTH = 2592;
     private CropImageView cropImageView;
+    private CropPresenter presenter;
+    private Uri imageUri;
+    private ProgressDialog barProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstannceState) {
@@ -39,125 +40,65 @@ public class CropActivity extends Activity {
         Intent data = getIntent();
 
 
-        Uri imageUri = data.getData();
+        imageUri = data.getData();
         setContentView(R.layout.activity_crop);
 
 
         cropImageView = (CropImageView) findViewById(R.id.cropImageView);
 
 
-        Button botonRecortar = (Button) findViewById(R.id.button_recortar);
-        Button botonCancelar = (Button) findViewById(R.id.button_cancelar);
-        botonRecortar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bitmap imagenRecortada = cropImageView.getCroppedBitmap();
-                Uri imageUri = getImageUri(getBaseContext(), imagenRecortada);
-                Intent intent = new Intent();
-                intent.setData(imageUri);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
+        Button acceptButton = (Button) findViewById(R.id.button_recortar);
+        Button cancelButton = (Button) findViewById(R.id.button_cancelar);
+        acceptButton.setOnClickListener(this);
 
-        botonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                setResult(RESULT_CANCELED, intent);
-                finish();
-            }
-        });
+        cancelButton.setOnClickListener(this);
 
-        setImage(imageUri);
+        presenter = new CropPresenter(this);
     }
 
-    private void setImage(Uri imageUri) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onStart(imageUri);
 
-        Bitmap rotatedBitMap = null;
-
-        try {
-            rotatedBitMap = getCorrectlyOrientedImage(this, imageUri);
-            cropImageView.setImageBitmap(rotatedBitMap);
-        } catch (IOException e) {
-            e.printStackTrace();
-            cropImageView.setImageURI(imageUri);
-        }
     }
 
 
-    public Bitmap getCorrectlyOrientedImage(Context context, Uri photoUri) throws IOException {
-        InputStream is = context.getContentResolver().openInputStream(photoUri);
-        BitmapFactory.Options dbo = new BitmapFactory.Options();
-        dbo.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(is, null, dbo);
-        is.close();
+    @Override
+    public void onClick(View v) {
 
-        int rotatedWidth, rotatedHeight;
-        int orientation = getOrientation(context, photoUri);
+        int id = v.getId();
 
-        if (orientation == 90 || orientation == 270) {
-            rotatedWidth = dbo.outHeight;
-            rotatedHeight = dbo.outWidth;
-        } else {
-            rotatedWidth = dbo.outWidth;
-            rotatedHeight = dbo.outHeight;
+        if (id == R.id.button_recortar) {
+            Bitmap imagenRecortada = cropImageView.getCroppedBitmap();
+            Uri imageUri = getImageUri(getBaseContext(), imagenRecortada);
+            Intent intent = new Intent();
+            intent.setData(imageUri);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        if (id == R.id.button_cancelar) {
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+            finish();
         }
 
-        Bitmap srcBitmap;
-        is = context.getContentResolver().openInputStream(photoUri);
-        if (rotatedWidth > MAX_IMAGE_WIDTH || rotatedHeight > MAX_IMAGE_HEIGHT) {
-            float widthRatio = ((float) rotatedWidth) / ((float) MAX_IMAGE_WIDTH);
-            float heightRatio = ((float) rotatedHeight) / ((float) MAX_IMAGE_HEIGHT);
-            float maxRatio = Math.max(widthRatio, heightRatio);
+    }
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = (int) maxRatio;
-            options.inJustDecodeBounds = false;
-            srcBitmap = BitmapFactory.decodeStream(is, null, options);
-
-        } else {
-            srcBitmap = BitmapFactory.decodeStream(is);
-        }
-        is.close();
-
-    /*
-     * if the orientation is not 0 (or -1, which means we don't know), we
-     * have to do a rotation.
+    /**
+     * Este método coloca el bitmap en su imageView.
+     *
+     * @param bitmap a colocar
      */
-
-        if (srcBitmap.getWidth() > MAX_IMAGE_WIDTH || srcBitmap.getHeight()> MAX_IMAGE_HEIGHT) {
-            float widthRatio = ((float) srcBitmap.getWidth()) / ((float) MAX_IMAGE_WIDTH);
-            float heightRatio = ((float) srcBitmap.getHeight()) / ((float) MAX_IMAGE_HEIGHT);
-            float maxRatio = Math.max(widthRatio, heightRatio);
-
-            srcBitmap = Bitmap.createScaledBitmap(srcBitmap, srcBitmap.getWidth() / (int) maxRatio,
-                    srcBitmap.getHeight() / (int) maxRatio, true);
-        }
-        if (orientation > 0) {
-            Matrix matrix = new Matrix();
-            matrix.postRotate(orientation);
-            srcBitmap = Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.getWidth(),
-                    srcBitmap.getHeight(), matrix, true);
-        }
-
-
-        return srcBitmap;
+    public void setBitmap(Bitmap bitmap) {
+        cropImageView.setImageBitmap(bitmap);
     }
 
-
-    public int getOrientation(Context context, Uri imageUri) {
-        try {
-            ExifInterface exif = new ExifInterface(imageUri.getPath());
-            int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-
-            if (rotation == ExifInterface.ORIENTATION_UNDEFINED)
-                return getRotationFromMediaStore(context, imageUri);
-            else return exifToDegrees(rotation);
-        } catch (IOException e) {
-            return 0;
-        }
-
+    /**
+     * Este método muestra un mesaje de error.
+     */
+    public void showError() {
+        Toast.makeText(this, "Imagen demasiado grande", Toast.LENGTH_SHORT).show();
     }
 
     private Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -173,51 +114,23 @@ public class CropActivity extends Activity {
         return Uri.parse(path);
     }
 
-    public static int getRotationFromMediaStore(Context context, Uri imageUri) {
-        String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
-        Cursor cursor = context.getContentResolver().query(imageUri, columns, null, null, null);
-        if (cursor == null) {
-            return 0;
-        }
-
-        cursor.moveToFirst();
-
-        int orientationColumnIndex = cursor.getColumnIndex(columns[1]);
-        return cursor.getInt(orientationColumnIndex);
+    /**
+     * Este método muestra el dialogo de progreso en la subida del fichero.
+     */
+    public void showProgresBar() {
+        barProgressDialog = new ProgressDialog(this, R.style.MyAlertDialog);
+        barProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        barProgressDialog.setIndeterminate(true);
+        barProgressDialog.show();
     }
 
-    private static int exifToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        } else {
-            return 0;
-        }
+    /**
+     * Este método esconde el dialogo de progreso de la subida del fichero.
+     */
+    public void hideProgressBar() {
+        if (barProgressDialog != null && barProgressDialog.isShowing())
+            barProgressDialog.dismiss();
+
     }
 
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
 }

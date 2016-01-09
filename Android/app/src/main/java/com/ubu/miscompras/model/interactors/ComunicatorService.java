@@ -2,14 +2,17 @@ package com.ubu.miscompras.model.interactors;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.presenter.MainFragmentPresenter;
 import com.ubu.miscompras.utils.AndroidMultiPartEntity;
 import com.ubu.miscompras.utils.Constans;
+import com.ubu.miscompras.view.activity.App;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,25 +37,26 @@ import java.io.IOException;
 /**
  * Created by RobertoMiranda on 2/11/15.
  */
-public class ComunicatorService extends AsyncTask<String, Integer, String> {
+public class ComunicatorService extends AsyncTask<Void, Integer, String> {
 
 
+    private Uri imageUri;
     private MainFragmentPresenter presenter;
     private Context context;
     private long totalSize = 0;
     private boolean error = false;
 
 
-    public ComunicatorService(MainFragmentPresenter presenter) {
+    public ComunicatorService(MainFragmentPresenter presenter, Uri imageUri) {
         this.presenter = presenter;
         this.context = App.getAppContext();
+        this.imageUri = imageUri;
     }
 
     @Override
-    protected String doInBackground(String... params) {
-        String filePath = params[0];
+    protected String doInBackground(Void... params) {
 
-        File imageFile = new File(filePath);
+        File imageFile = new File(getRealPathFromURI(imageUri));
         if (imageFile.exists()) {
             return uploadUserPhoto(imageFile);
         } else
@@ -159,5 +163,22 @@ public class ComunicatorService extends AsyncTask<String, Integer, String> {
         }
     }
 
+    private String getRealPathFromURI(Uri contentURI) {
+        String result = "";
+        try {
+            Cursor cursor = presenter.getContext().getContentResolver().query(contentURI, null, null, null, null);
+            if (cursor == null) {
+                result = contentURI.getPath();
+            } else {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                result = cursor.getString(idx); // Exception raised HERE
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 }

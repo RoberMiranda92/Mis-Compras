@@ -7,13 +7,12 @@ import android.os.Build;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.ubu.miscompras.BuildConfig;
+import com.ubu.miscompras.model.Category;
 import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Ticket;
-import com.ubu.miscompras.presenter.OnLoadComplete;
-import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
+import com.ubu.miscompras.presenter.IOnLoadComplete;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -36,18 +35,18 @@ import static org.hamcrest.core.Is.is;
 public class CategoryGetterInteractorTest {
 
     String[] names ={"Carne","Verduras","Refrescos"};
-    List<Categoria> categories;
+    List<Category> categories;
     private DataBaseHelper helper;
-    private Dao<Categoria, Integer> categoriaDao;
+    private Dao<Category, Integer> categoriaDao;
     @Before
     public void setUp() {
 
         helper = OpenHelperManager.getHelper(App.getAppContext(), DataBaseHelper.class);
         try {
-            categoriaDao = helper.getCategoriaDAO();
+            categoriaDao = helper.getCategoryDAO();
 
             for (String name : names) {
-                categoriaDao.create(new Categoria(name));
+                categoriaDao.create(new Category(name));
             }
         }catch (SQLException ex){
             Assert.fail(ex.getMessage());
@@ -65,19 +64,19 @@ public class CategoryGetterInteractorTest {
    @Test
     public void categoryGetterTest(){
 
-        CategoryGetterInteractor task = new CategoryGetterInteractor(new OnLoadComplete() {
+        CategoryGetterInteractor task = new CategoryGetterInteractor(new IOnLoadComplete() {
             @Override
             public void showError() {
                 Assert.fail("categoryGetterTest fail");
             }
 
             @Override
-            public void loadCompleteCategoria(List<Categoria> items) {
+            public void loadCompleteCategoria(List<Category> items) {
                 categories=items;
             }
 
             @Override
-            public void loadCompleteTicketProducto(List<LineaProducto> items) {
+            public void loadCompleteTicketProducto(List<ProductLine> items) {
 
             }
 

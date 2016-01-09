@@ -10,7 +10,9 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 /**
- * Created by RobertoMiranda on 8/11/15.
+ * Clase que implementa un tique.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 @DatabaseTable(tableName = "ticket")
 public class Ticket implements Parcelable {
@@ -25,10 +27,10 @@ public class Ticket implements Parcelable {
     private int id;
 
     @DatabaseField(columnName = FECHA_FIELD_NAME, dataType = DataType.DATE_LONG, canBeNull = false)
-    private Date fecha_compra;
+    private Date purchaseDate;
 
     @DatabaseField(columnName = N_ARTICULOS_FIELD_NAME, canBeNull = false, defaultValue = "0")
-    private int nArticulos;
+    private int productAmount;
 
 
     @DatabaseField(columnName = IMPORTE_TOTAL_FIELD_NAME, canBeNull = false, defaultValue = "0")
@@ -39,22 +41,27 @@ public class Ticket implements Parcelable {
 
     }
 
-    public Ticket(Date fecha_compra) {
-        this.fecha_compra = fecha_compra;
+    /**
+     * Constructor de la calse.
+     *
+     * @param purchaseDate fecha de compra del tique.
+     */
+    public Ticket(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public Ticket(Date fecha_compra, double importe, int nArticulos) {
-        this.fecha_compra = fecha_compra;
+    public Ticket(Date purchaseDate, double importe, int productAmount) {
+        this.purchaseDate = purchaseDate;
         this.total = importe;
-        this.nArticulos = nArticulos;
+        this.productAmount = productAmount;
     }
 
 
     protected Ticket(Parcel in) {
         id = in.readInt();
-        nArticulos = in.readInt();
+        productAmount = in.readInt();
         total = in.readDouble();
-        fecha_compra = new Date(in.readLong());
+        purchaseDate = new Date(in.readLong());
     }
 
     public static final Creator<Ticket> CREATOR = new Creator<Ticket>() {
@@ -69,26 +76,56 @@ public class Ticket implements Parcelable {
         }
     };
 
+    /**
+     * Este método devuelve el id del tique.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Este método estalece el id del tique.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    public Date getFecha_compra() {
-        return fecha_compra;
+    /**
+     * Este método devuelve la fecha de compra del tique.
+     *
+     * @return fecha de compra del tique.
+     */
+    public Date getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFecha_compra(Date fecha_compra) {
-        this.fecha_compra = fecha_compra;
+    /**
+     * Este método establece la fecha de compra del tique.
+     *
+     * @param purchaseDate fecha de compra del tique.
+     */
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
+    /**
+     * Este método devuelve el importe total del tique.
+     *
+     * @return
+     */
     public double getTotal() {
         return total;
     }
 
+    /**
+     * Este método establece el importe total del tique.
+     *
+     * @param total
+     */
     public void setTotal(double total) {
         this.total = total;
     }
@@ -101,9 +138,9 @@ public class Ticket implements Parcelable {
         Ticket ticket = (Ticket) o;
 
         if (id != ticket.id) return false;
-        if (nArticulos != ticket.nArticulos) return false;
+        if (productAmount != ticket.productAmount) return false;
         if (Double.compare(ticket.total, total) != 0) return false;
-        return fecha_compra.equals(ticket.fecha_compra);
+        return purchaseDate.equals(ticket.purchaseDate);
 
     }
 
@@ -112,19 +149,19 @@ public class Ticket implements Parcelable {
         int result;
         long temp;
         result = id;
-        result = 31 * result + fecha_compra.hashCode();
-        result = 31 * result + nArticulos;
+        result = 31 * result + purchaseDate.hashCode();
+        result = 31 * result + productAmount;
         temp = Double.doubleToLongBits(total);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
-    public int getnArticulos() {
-        return nArticulos;
+    public int getProductAmount() {
+        return productAmount;
     }
 
-    public void setnArticulos(int nArticulos) {
-        this.nArticulos = nArticulos;
+    public void setProductAmount(int productAmount) {
+        this.productAmount = productAmount;
     }
 
     @Override
@@ -135,8 +172,8 @@ public class Ticket implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeInt(nArticulos);
+        dest.writeInt(productAmount);
         dest.writeDouble(total);
-        dest.writeLong(fecha_compra.getTime());
+        dest.writeLong(purchaseDate.getTime());
     }
 }

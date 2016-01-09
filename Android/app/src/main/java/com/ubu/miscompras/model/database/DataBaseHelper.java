@@ -6,52 +6,52 @@ import android.database.sqlite.SQLiteDatabase;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.ubu.miscompras.model.Categoria;
-import com.ubu.miscompras.model.LineaProducto;
-import com.ubu.miscompras.model.Producto;
+import com.ubu.miscompras.model.Category;
+import com.ubu.miscompras.model.Product;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Ticket;
+import com.ubu.miscompras.utils.Constans;
 
 import java.sql.SQLException;
-import java.util.List;
 
 /**
- * Created by RobertoMiranda on 6/11/15.
+ * Clase que conecta con la Base de datos.
+ * Contiene los DAO(Data Acces Objects)
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
-    private static final String DATABASENAME = "db.sqlite";
+    private static final String DATABASE_NAME = Constans.DATABASE_NAME;
     private static final int DATABASE_VERSION = 1;
 
     private Dao<Ticket, Integer> ticketDAO = null;
     private RuntimeExceptionDao<Ticket, Integer> ticketRunTimeDAO = null;
 
-    private Dao<Producto, Integer> productoDAO = null;
-    private RuntimeExceptionDao<Producto, Integer> productoRunTimeDAO = null;
+    private Dao<Product, Integer> productDAO = null;
+    private RuntimeExceptionDao<Product, Integer> productoRunTimeDAO = null;
 
-    private Dao<Categoria, Integer> categoriaDAO = null;
-    private RuntimeExceptionDao<Categoria, Integer> categoriaRunTimeDAO = null;
+    private Dao<Category, Integer> categoryDAO = null;
+    private RuntimeExceptionDao<Category, Integer> categoriaRunTimeDAO = null;
 
-    private Dao<LineaProducto, Integer> ticketProductoDAO = null;
-    private RuntimeExceptionDao<LineaProducto, Integer> ticketProductoRunTimeDAO = null;
+    private Dao<ProductLine, Integer> productLineDAO = null;
+    private RuntimeExceptionDao<ProductLine, Integer> ticketProductoRunTimeDAO = null;
 
 
     public DataBaseHelper(Context context) {
-        super(context, DATABASENAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTableIfNotExists(connectionSource, Categoria.class);
+            TableUtils.createTableIfNotExists(connectionSource, Category.class);
             TableUtils.createTableIfNotExists(connectionSource, Ticket.class);
-            TableUtils.createTableIfNotExists(connectionSource, Producto.class);
-            TableUtils.createTableIfNotExists(connectionSource, LineaProducto.class);
+            TableUtils.createTableIfNotExists(connectionSource, Product.class);
+            TableUtils.createTableIfNotExists(connectionSource, ProductLine.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,6 +70,12 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    /**
+     * Este método devuelve el DAO asociado a los Tiques
+     *
+     * @return DAO asociado a los tiques.
+     * @throws SQLException error al obtener el DAO
+     */
     public Dao<Ticket, Integer> getTicketDAO() throws SQLException {
         if (ticketDAO == null) ticketDAO = getDao(Ticket.class);
         return ticketDAO;
@@ -81,47 +87,59 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         return ticketRunTimeDAO;
     }
 
-
-    public Dao<Producto, Integer> getProductoDAO() throws SQLException {
-        if (productoDAO == null) productoDAO = getDao(Producto.class);
-        return productoDAO;
+    /**
+     * Este método devuelve el DAO asociado a los Productos
+     *
+     * @return DAO asociado a los productos.
+     * @throws SQLException error al obtener el DAO
+     */
+    public Dao<Product, Integer> getProductDAO() throws SQLException {
+        if (productDAO == null) productDAO = getDao(Product.class);
+        return productDAO;
     }
 
 
-    public RuntimeExceptionDao<Producto, Integer> getProductoRunTimeDAO() {
+    public RuntimeExceptionDao<Product, Integer> getProductoRunTimeDAO() {
         if (productoRunTimeDAO == null)
-            productoRunTimeDAO = getRuntimeExceptionDao(Producto.class);
+            productoRunTimeDAO = getRuntimeExceptionDao(Product.class);
         return productoRunTimeDAO;
     }
 
-
-    public Dao<Categoria, Integer> getCategoriaDAO() throws SQLException {
-        if (categoriaDAO == null)
-            categoriaDAO = getDao(Categoria.class);
-        return categoriaDAO;
+    /**
+     * Este método devuelve el DAO asociado a las Categorias
+     *
+     * @return DAO asociado a las Categorias.
+     * @throws SQLException error al obtener el DAO
+     */
+    public Dao<Category, Integer> getCategoryDAO() throws SQLException {
+        if (categoryDAO == null)
+            categoryDAO = getDao(Category.class);
+        return categoryDAO;
     }
 
-    public void setCategoriaDAO(Dao<Categoria, Integer> categoriaDAO) {
-        this.categoriaDAO = categoriaDAO;
-    }
 
-    public RuntimeExceptionDao<Categoria, Integer> getCategoriaRunTimeDAO() {
+    public RuntimeExceptionDao<Category, Integer> getCategoriaRunTimeDAO() {
         if (categoriaRunTimeDAO == null)
-            categoriaRunTimeDAO = getRuntimeExceptionDao(Categoria.class);
+            categoriaRunTimeDAO = getRuntimeExceptionDao(Category.class);
         return categoriaRunTimeDAO;
     }
 
-
-    public Dao<LineaProducto, Integer> getTicketProductoDAO() throws SQLException {
-        if (ticketProductoDAO == null)
-            ticketProductoDAO = getDao(LineaProducto.class);
-        return ticketProductoDAO;
+    /**
+     * Este método devuelve el DAO asociado a las lineas de producto
+     *
+     * @return DAO asociado a las lineas de producto.
+     * @throws SQLException error al obtener el DAO
+     */
+    public Dao<ProductLine, Integer> getProductLineDAO() throws SQLException {
+        if (productLineDAO == null)
+            productLineDAO = getDao(ProductLine.class);
+        return productLineDAO;
     }
 
 
-    public RuntimeExceptionDao<LineaProducto, Integer> getTicketProductoRunTimeDAO() {
+    public RuntimeExceptionDao<ProductLine, Integer> getTicketProductoRunTimeDAO() {
         if (ticketProductoRunTimeDAO == null)
-            ticketProductoRunTimeDAO = getRuntimeExceptionDao(LineaProducto.class);
+            ticketProductoRunTimeDAO = getRuntimeExceptionDao(ProductLine.class);
         return ticketProductoRunTimeDAO;
     }
 
@@ -130,72 +148,13 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         super.close();
         ticketDAO = null;
         ticketRunTimeDAO = null;
-        productoDAO = null;
+        productDAO = null;
         productoRunTimeDAO = null;
-        categoriaDAO = null;
+        categoryDAO = null;
         categoriaRunTimeDAO = null;
-        ticketProductoDAO = null;
+        productLineDAO = null;
         ticketProductoRunTimeDAO = null;
 
 
-    }
-    
-    /*
-     * Convenience methods to build and run our prepared queries.
-	 */
-
-    private PreparedQuery<Ticket> ticketsForProductoQuery = null;
-    private PreparedQuery<Producto> productosForTicketQuery = null;
-
-    public List<Ticket> lookupTicketsForProducto(Producto producto) throws SQLException {
-        if (ticketsForProductoQuery == null) {
-            ticketsForProductoQuery = makeTicketsForProductoQuery();
-        }
-        ticketsForProductoQuery.setArgumentHolderValue(0, producto);
-        return ticketDAO.query(ticketsForProductoQuery);
-    }
-
-    public List<Producto> lookupProductosForTicket(Ticket ticket) throws SQLException {
-        if (productosForTicketQuery == null) {
-            productosForTicketQuery = makeProductosForTicketQuery();
-        }
-        productosForTicketQuery.setArgumentHolderValue(0, ticket);
-        return productoDAO.query(productosForTicketQuery);
-    }
-
-    /**
-     * Build our query for Ticket objects that match a Producto.
-     */
-    private PreparedQuery<Ticket> makeTicketsForProductoQuery() throws SQLException {
-        // build our inner query for ProductoTicket objects
-        QueryBuilder<LineaProducto, Integer> productoTicketQb = ticketProductoDAO.queryBuilder();
-        // just select the ticket-id field
-        productoTicketQb.selectColumns(LineaProducto.TICKET_ID_FIELD_NAME);
-        SelectArg productoSelectArg = new SelectArg();
-        // you could also just pass in producto1 here
-        productoTicketQb.where().eq(LineaProducto.TICKET_ID_FIELD_NAME, productoSelectArg);
-
-        // build our outer query for Ticket objects
-        QueryBuilder<Ticket, Integer> ticketQb = ticketDAO.queryBuilder();
-        // where the id matches in the ticket-id from the inner query
-        ticketQb.where().in(Ticket.ID_FIELD_NAME, productoTicketQb);
-        return ticketQb.prepare();
-    }
-
-    /**
-     * Build our query for Producto objects that match a Ticket
-     */
-    private PreparedQuery<Producto> makeProductosForTicketQuery() throws SQLException {
-        QueryBuilder<LineaProducto, Integer> productoTicketQb = ticketProductoDAO.queryBuilder();
-        // this time selecting for the producto-id field
-        productoTicketQb.selectColumns(LineaProducto.PRODUCTO_ID_FIELD_NAME);
-        SelectArg ticketSelectArg = new SelectArg();
-        productoTicketQb.where().eq(LineaProducto.TICKET_ID_FIELD_NAME, ticketSelectArg);
-
-        // build our outer query
-        QueryBuilder<Producto, Integer> productoQb = productoDAO.queryBuilder();
-        // where the producto-id matches the inner query's producto-id field
-        productoQb.where().in(Ticket.ID_FIELD_NAME, productoTicketQb);
-        return productoQb.prepare();
     }
 }
