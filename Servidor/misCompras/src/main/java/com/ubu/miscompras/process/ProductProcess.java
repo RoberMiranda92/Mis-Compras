@@ -6,6 +6,7 @@
 package com.ubu.miscompras.process;
 
 import com.ubu.miscompras.exceptions.MisComprasException;
+import com.ubu.miscompras.utils.Utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,25 +25,24 @@ import net.sourceforge.tess4j.TesseractException;
 
 /**
  * Esta clase se encarga de obtener el texto a partir de una lista de
- * imÃƒÂ¡genes
+ * imagenes
  *
- * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda PÃƒÂ©rez</a>
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Perez</a>
  */
 public class ProductProcess {
 
     private final Tesseract instance;
     private final ArrayList<File> files;
-    private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
-    private final String ruta = "diccionarios" + File.separator + "Diccionario.txt";
-    private final String csvFile = "diccionarios" + File.separator + "Ocurrencias.csv";
-    private String WINDOWS_SEPARATOR = "\\";
-    private String UNIX_SEPARATOR = "/";
+    private final HashMap<String, Integer> nWords = new HashMap<>();
+    private final String ruta = Utils.RUTA_DICCIONARIO;
+    private final String csvFile = Utils.RUTA_CSV;
+    private final String absolutePath;
 
     /**
      * Constructor de la clase que recibe como argumento una lista de
-     * imÃƒÂ¡genes para analizar el texto
+     * imgenes para analizar el texto
      *
-     * @param files lista de imÃƒÂ¡genes
+     * @param files lista de imagenes
      */
     public ProductProcess(ArrayList<File> files) {
 
@@ -62,9 +62,11 @@ public class ProductProcess {
             index = path.lastIndexOf(File.separator);
             path = path.substring(0, index);
         }
+        
+        absolutePath= path;
 
         try {
-            File diccionario = new File(path + File.separator + ruta);
+            File diccionario = new File(absolutePath+ File.separator + ruta);
             System.out.print(diccionario.getCanonicalPath());
             if (!diccionario.exists()) {
                 diccionario.createNewFile();
@@ -85,11 +87,11 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo devuelve el texto de una lista de archivos de imÃƒÂ¡gen.
+     * Este metodo devuelve el texto de una lista de archivos de imagen.
      *
      * @return texto obtenido
-     * @throws MisComprasException Devuelve una excepciÃƒÂ³n si la lista es nula
-     * o vacia. o si hay algÃƒÂºn error al procesar el texto.
+     * @throws MisComprasException Devuelve una excepcion si la lista es nula
+     * o vacia. o si hay algun error al procesar el texto.
      *
      */
     public String getText() throws MisComprasException {
@@ -112,7 +114,7 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo devuelve el producto de una linea de producto correguido
+     * Este metodo devuelve el producto de una linea de producto correguido
      *
      * @param lineaProducto linea de producto
      * @return producto de una linea de producto.
@@ -217,7 +219,7 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo devuelve el producto de una linea de producto.
+     * Este metodo devuelve el producto de una linea de producto.
      *
      * @param lineaProducto linea de producto
      * @return producto de una linea de producto
@@ -241,11 +243,11 @@ public class ProductProcess {
 
     /**
      * Este metodo elimina los espacios inecesarios que pueden encontrarse entre
-     * los nÃƒÂºmeros de una linea de producto
+     * los numeros de una linea de producto
      *
      *
-     * @param lineaProducto con espacios invÃƒÂ¡lidos
-     * @return linea de productos sin espacios invÃƒÂ¡lidos
+     * @param lineaProducto con espacios invalidos
+     * @return linea de productos sin espacios invalidos
      */
     private String deleteUnnecessarySpaces(String lineaProducto) {
 
@@ -266,8 +268,8 @@ public class ProductProcess {
      * Este metodo remplaza las letras de un nÃƒÂºmero por su corresponiente
      * valor del archivo csv facilitado.
      *
-     * @param n nÃƒÂºmero a transormar
-     * @return nÃƒÂºmero transofrmado de letras a numerico.
+     * @param n numero a transormar
+     * @return numero transofrmado de letras a numerico.
      */
     private String correctNumber(String n) {
         boolean isNumeric = true;
@@ -323,7 +325,7 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo devuelve las ocurrecias encontradas en el archivo csv para
+     * Este metodo devuelve las ocurrecias encontradas en el archivo csv para
      * un caracter
      *
      * @param character caracter del que se desean las ocurrencias
@@ -337,7 +339,7 @@ public class ProductProcess {
         String cvsSplitBy = ",";
 
         try {
-            br = new BufferedReader(new FileReader(csvFile));
+            br = new BufferedReader(new FileReader(absolutePath+ File.separator +csvFile));
             while ((row = br.readLine()) != null) {
                 String[] line = row.split(cvsSplitBy);
 
@@ -364,11 +366,11 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo sustituye una palabra por la palabra mas cercana segÃƒÂºn
+     * Este metodo sustituye una palabra por la palabra mas cercana segun
      * la distancia de levenshtein
      *
-     * @param word palabra a sustituir
-     * @return palabra mas cercana
+     * @param word palabra a sustituir.
+     * @return palabra mas cercana.
      */
     public final String correct(String word) {
         int maxDistance = Integer.MAX_VALUE;
@@ -399,7 +401,7 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo devuelve la distancia de levenshtein entre 2 palÃƒÂ¡bras
+     * Este metodo devuelve la distancia de levenshtein entre 2 palabras.
      *
      * @param str1 palabra 1
      * @param str2 palabra 2
@@ -411,7 +413,7 @@ public class ProductProcess {
     }
 
     /**
-     * Este mÃƒÂ©todo devuelve la distancia de levenshtein entre 2 palÃƒÂ¡bras
+     * Este metodoo devuelve la distancia de levenshtein entre 2 palabras.
      *
      * @param str1 palabra 1
      * @param str2 palabra 2

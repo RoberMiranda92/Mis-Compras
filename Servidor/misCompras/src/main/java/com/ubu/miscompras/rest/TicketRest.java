@@ -12,12 +12,23 @@ import com.ubu.miscompras.contract.ProductContract;
 import com.ubu.miscompras.exceptions.MisComprasException;
 import com.ubu.miscompras.process.ImageProcess;
 import com.ubu.miscompras.process.ProductProcess;
+import com.ubu.miscompras.utils.Utils;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,6 +36,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.json.JSONArray;
 
 /**
  *
@@ -33,8 +45,10 @@ import javax.ws.rs.core.Response;
  */
 @Path("/file")
 public class TicketRest {
-
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "\\Y:\\Desktop\\TrabajoFinaldeGrado\\Servidor\\misCompras\\target\\misCompras-1.0-SNAPSHOT\\images\\";
+    
+    private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
+    private final String ruta = Utils.RUTA_DICCIONARIO;
+    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "\\images\\";
     private String textoFinal;
     
     @GET
@@ -61,7 +75,7 @@ public class TicketRest {
         ContentDisposition headerOfFilePart = filePart.getContentDisposition();
         InputStream fileInputStream = istream;
 
-        String filePath = SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
+        String filePath = getTargetFolder() + SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
 
         saveFile(fileInputStream, filePath);
         istream.close();
@@ -70,25 +84,77 @@ public class TicketRest {
         ArrayList<File> productos = image.getProductsFileFromImage();
         
         ProductProcess p = new ProductProcess(productos);
-        StringBuilder response = new StringBuilder();
+        JSONArray array = new JSONArray();
         try {
             textoFinal = p.getText();
             String[] splitProducts = textoFinal.split("\n\n");
-            response.append("{");
             for (int i = 0; i < splitProducts.length; i++) {
-                response.append("\"producto" + i + "\":");
-                response.append(ProductContract.buildJSON(splitProducts[i]));
-                if (i != splitProducts.length - 1) {
-                    response.append(",");
-                }
+                array.put(ProductContract.buildJSON(splitProducts[i]));
             }
-            response.append("}");
-            return Response.status(Response.Status.OK).entity(response.toString()).build();
+            return Response.status(Response.Status.OK).entity(array.toString()).build();
 
         } catch (MisComprasException ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
 
+    }  
+    
+    
+    /**
+     * Este metodo Post que guarda una lista de nombres de producto en el 
+     * fichero de diccionario.
+     *
+     * @param body
+     * @param istream
+     * @return
+     */
+    @POST
+    @Path("/diccionario")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response saveDiccionary(String data){
+        
+        Writer fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+         try {
+            File diccionario = new File(getTargetFolder() + File.separator + ruta);
+            if (!diccionario.exists()) {
+                diccionario.createNewFile();
+            }
+
+            BufferedReader in = new BufferedReader(new FileReader(diccionario.getAbsolutePath()));
+            Pattern p = Pattern.compile("\\w+");
+            for (String temp = ""; temp != null; temp = in.readLine()) {
+                Matcher m = p.matcher(temp);
+                while (m.find()) {
+                    nWords.put((temp = m.group()), nWords.containsKey(temp) ? nWords.get(temp) + 1 : 1);
+                }
+            }
+            fileWriter = new FileWriter(diccionario,true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            
+            
+            String[] lines = data.split(",");
+            
+            for(String line : lines){
+                String[] words = line.split(" ");
+                for(String word : words){
+                    
+                    if(!nWords.containsKey(word)){
+                        bufferedWriter.write(line+System.getProperty("line.separator"));
+                    }
+                }
+            }
+            in.close();
+            bufferedWriter.close();
+            return Response.status(Response.Status.OK).entity("OK").build();
+        } catch (IOException ex) {
+            Logger.getLogger(ImageProcess.class.getName()).log(Level.SEVERE, null, ex);
+             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+         
+        
+      
     }
 
     /**
@@ -98,6 +164,13 @@ public class TicketRest {
      * @param serverLocation ruta donde se guarda el fichero
      */
     private void saveFile(InputStream uploadedInputStream, String serverLocation) {
+        
+        File f = new File (serverLocation);
+        
+        File parent = f.getParentFile();
+        
+        if(!parent.exists())
+            parent.mkdirs();
         try {
             OutputStream outpuStream = new FileOutputStream(new File(
                     serverLocation));
@@ -117,55 +190,15 @@ public class TicketRest {
         }
     }
 
-    /*private String htmlCode() {
+    private String getTargetFolder(){
+        File classPath = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
 
-     String code2 = this.getClass().getProtectionDomain().getCodeSource().toString();
-     String code = "<!DOCTYPE html>\n"
-     + "<html>\n"
-     + "<body>\n"
-     + "<table>"
-     + "<tr>"
-     + "<td><h2>Imagen original.</h2></td>"
-     + "<td><h2>Imagen Gris.</h2></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><img src=\"/misCompras/images/" + file.getName()
-     + "\" alt=\"Mountain View\"></td>"
-     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_GRAY"
-     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><h2>Imagen Binarizada.</h2></td>"
-     + "<td><h2>Recta Imagen.</h2></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_BINARIZADA"
-     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_RECTA"
-     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><h2>Deskewing.</h2></td>"
-     + "<td><h2>DILATE.</h2></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DESKEWING"
-     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_DILATE"
-     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><h2>Crop.</h2></td>"
-     + "<td><h2>Salida.</h2></td>"
-     + "</tr>"
-     + "<tr>"
-     + "<td><img src=\"/misCompras/images/" + Utils.filename(file) + "_CROP"
-     + Utils.extension(file) + "\" alt=\"Mountain View\"></td>"
-     + "<td><p>" + textoFinal + "</p></td>"
-     + "</tr>"
-     + "</table>"
-     + "</body>"
-     + "</html>";
-     return code;
-     }*/
+        String path = classPath.getAbsolutePath();
+         while (!path.endsWith("target")) {
+            int index;
+            index = path.lastIndexOf(File.separator);
+            path = path.substring(0, index);
+        }
+         return path;
+    }
 }
