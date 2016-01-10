@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -63,7 +64,7 @@ public class ProductProcess {
             path = path.substring(0, index);
         }
         
-        absolutePath= path;
+        absolutePath= URLDecoder.decode(path);
 
         try {
             File diccionario = new File(absolutePath+ File.separator + ruta);

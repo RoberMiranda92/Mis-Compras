@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -199,6 +200,6 @@ public class TicketRest {
             index = path.lastIndexOf(File.separator);
             path = path.substring(0, index);
         }
-         return path;
+         return URLDecoder.decode(path);
     }
 }
