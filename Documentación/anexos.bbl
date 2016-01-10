@@ -7,6 +7,13 @@ Download android studio and {SDK} tools {\textbar} android developers.
 Downloads - tesseract-ocr - an {OCR} engine that was developed at {HP} labs
   between 1985 and 1995... and now at google. - google project hosting.
 
+\bibitem{git}
+Git.
+
+\bibitem{origenesDesconocidos}
+Habilitar "orígenes desconocidos" en android para instalar apps fuera de
+  google play.
+
 \bibitem{java}
 Java {SE} development kit 7 - downloads {\textbar} oracle technology network
   {\textbar} oracle.

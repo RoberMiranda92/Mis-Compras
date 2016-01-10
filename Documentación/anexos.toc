@@ -39,15 +39,22 @@
 \contentsline {section}{\numberline {D.2}Estructura de directorios}{18}{section.Alph4.2}
 \contentsline {section}{\numberline {D.3}Manual del programador}{18}{section.Alph4.3}
 \contentsline {section}{\numberline {D.4}Instalaci\IeC {\'o}n, compilaci\IeC {\'o}n y ejecuci\IeC {\'o}n del proyecto}{18}{section.Alph4.4}
-\contentsline {subsubsection}{Instalaci\IeC {\'o}n del Entorno}{18}{section*.21}
+\contentsline {subsection}{Instalaci\IeC {\'o}n del Entorno.}{18}{section*.21}
 \contentsline {subsubsection}{Java JDK 7}{18}{section*.22}
 \contentsline {subsection}{NetBeans}{18}{section*.23}
 \contentsline {subsection}{Tesseract}{19}{section*.24}
 \contentsline {subsection}{Android Studio}{20}{section*.25}
+\contentsline {subsection}{Git}{20}{section*.26}
+\contentsline {subsection}{Importaci\IeC {\'o}n del proyecto.}{20}{section*.27}
 \contentsline {section}{\numberline {D.5}Pruebas del sistema}{20}{section.Alph4.5}
 \contentsline {appendix}{\chapternumberline {E}Documentaci\IeC {\'o}n de usuario}{21}{appendix.Alph5}
 \contentsline {section}{\numberline {E.1}Introducci\IeC {\'o}n}{21}{section.Alph5.1}
 \contentsline {section}{\numberline {E.2}Requisitos de usuarios}{21}{section.Alph5.2}
 \contentsline {section}{\numberline {E.3}Instalaci\IeC {\'o}n}{21}{section.Alph5.3}
-\contentsline {section}{\numberline {E.4}Manual del usuario}{21}{section.Alph5.4}
-\contentsline {chapter}{Bibliograf\'{\i }a}{22}{section*.27}
+\contentsline {section}{\numberline {E.4}Manual del usuario}{23}{section.Alph5.4}
+\contentsline {subsection}{Men\IeC {\'u} de opciones de la aplicaci\IeC {\'o}n. }{23}{section*.28}
+\contentsline {subsection}{A\IeC {\~n}adir Nuevo tique.}{24}{section*.29}
+\contentsline {subsection}{Vista de Resumen }{29}{section*.30}
+\contentsline {subsection}{Consulta de Productos }{31}{section*.31}
+\contentsline {subsection}{Consulta de Compras }{34}{section*.32}
+\contentsline {chapter}{Bibliograf\'{\i }a}{36}{section*.34}

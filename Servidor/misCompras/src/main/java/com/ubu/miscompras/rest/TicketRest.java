@@ -141,7 +141,7 @@ public class TicketRest {
                 for(String word : words){
                     
                     if(!nWords.containsKey(word)){
-                        bufferedWriter.write(line+System.getProperty("line.separator"));
+                        bufferedWriter.write(word+System.getProperty("line.separator"));
                     }
                 }
             }

@@ -152,9 +152,9 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
     }
 
     /**
-     * Este mñetodo llama a un interactor para guardar las lineas de producto en el servidor.
+     * Este metodo llama a un interactor para guardar las lineas de producto en el servidor.
      *
-     * @param items
+     * @param items lineas de producto que se quieren subir.
      */
     public void uploadProducts(List<ProductLine> items) {
 
