@@ -81,7 +81,7 @@ public class ProductProcessTest {
     public void getTextTest() {
         String productLine = "2 REFRESCOS 1.70 3.40\n\n";
 
-        File image = new File("test" + File.separator + "resources" + File.separator + "TicketPrueba.jpg");
+        File image = new File("src"+File.separator+"test" + File.separator + "resources" + File.separator + "TicketPrueba.jpg");
         String path = image.getAbsolutePath();
 
         ArrayList<File> files = new ArrayList<>();

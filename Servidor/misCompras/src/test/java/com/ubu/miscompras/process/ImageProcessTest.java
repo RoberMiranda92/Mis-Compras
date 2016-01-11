@@ -23,7 +23,7 @@ public class ImageProcessTest {
     @Test
     public void getProductsFileFromImageTest() {
 
-        File image = new File("test" + File.separator + "resources" + File.separator + "TicketPrueba2.jpg");
+        File image = new File("src"+File.separator+"test" + File.separator + "resources" + File.separator + "TicketPrueba2.jpg");
         String path = image.getAbsolutePath();
 
         ImageProcess i = new ImageProcess(path);
