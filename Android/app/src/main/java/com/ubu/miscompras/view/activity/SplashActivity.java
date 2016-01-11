@@ -1,10 +1,14 @@
 package com.ubu.miscompras.view.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -21,13 +25,14 @@ import java.util.TimerTask;
 
 /**
  * Activity que muestra la imagen de splash al inicio de la aplicación.
- *
  */
 public class SplashActivity extends AppCompatActivity {
 
     private static final long DELAY_TIME = 300;
     private SplashActivityPresenter presenter;
     private static String DATABASE_NAME = Constans.DATABASE_NAME;
+
+    public static int LOAD_STORAGE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
      * @return true si exite, falso si no existe.
      */
     private boolean checkDataBase() {
-        File  databaseFile = this.getDatabasePath(DATABASE_NAME);
+        File databaseFile = this.getDatabasePath(DATABASE_NAME);
 
         return databaseFile.exists();
     }
@@ -92,7 +97,7 @@ public class SplashActivity extends AppCompatActivity {
             total += l.getTotalImport();
 
 
-        SharedPreferences sharedPref =getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putFloat("importeTotal", total);
         editor.commit();
@@ -102,14 +107,23 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void start()
-    {
+    public void start() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        LOAD_STORAGE);
+            }
+        }
         new Handler().postDelayed(new TimerTask() {
             @Override
             public void run() {
                 startApp();
             }
-        },1500);
+        }, 1500);
     }
 
 }

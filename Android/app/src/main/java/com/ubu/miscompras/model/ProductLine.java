@@ -226,7 +226,6 @@ public class ProductLine implements Parcelable {
 
         ProductLine that = (ProductLine) o;
 
-        if (id != that.id) return false;
         if (amount != that.amount) return false;
         if (Double.compare(that.price, price) != 0) return false;
         if (Double.compare(that.totalImport, totalImport) != 0) return false;

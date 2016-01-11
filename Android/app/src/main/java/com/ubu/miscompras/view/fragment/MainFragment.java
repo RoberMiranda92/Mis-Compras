@@ -1,16 +1,19 @@
 package com.ubu.miscompras.view.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -236,7 +239,15 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
                     closeButtons();
                 break;
             case R.id.FloattingButton_addCamera:
-                startCameraIntent();
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(
+                            new String[]{Manifest.permission.CAMERA},
+                            LOAD_IMAGE_CAMERA);
+                } else {
+                    startCameraIntent();
+                }
                 closeButtons();
                 break;
             case R.id.FloattingButton_addImage:
@@ -259,7 +270,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
      * Este método lanza un intent para obtener una imagen de la camara.
      */
     private void startCameraIntent() {
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date now = new Date();
         fileName = formatter.format(now.getTime()) + ".jpg";
@@ -271,13 +281,33 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         } else {
             showError("Almacenamiento no disponible");
         }
+
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LOAD_IMAGE_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startCameraIntent();
+                } else {
+                    showError("Camara no disponible");
+                }
+                return;
+            }
+        }
+    }
+
 
     /**
      * Este método lanza la actividad de crop.
      *
      * @param imageUri uri de imagen a recortar.
      */
+
     private void startCropActivity(Uri imageUri) {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CropActivity.class);

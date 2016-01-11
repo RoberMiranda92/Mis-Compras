@@ -64,13 +64,13 @@ public class ProductGetterIteratorByDateTest {
 
             ProductLine linea1 = new ProductLine(t1, p1, 1, 1.0, 1.0);
             ProductLine linea2 = new ProductLine(t1, p2, 1, 2.0, 2.0);
-            ProductLine linea3 = new ProductLine(t1, p3, 1, 3.0, 2.0);
-            ProductLine linea4 = new ProductLine(t1, p4, 1, 4.0, 2.0);
+            ProductLine linea3 = new ProductLine(t1, p3, 1, 3.0, 3.0);
+            ProductLine linea4 = new ProductLine(t1, p4, 1, 4.0, 4.0);
 
             ProductLine linea5 = new ProductLine(t2, p1, 1, 1.0, 1.0);
             ProductLine linea6 = new ProductLine(t2, p2, 1, 2.0, 2.0);
-            ProductLine linea7 = new ProductLine(t2, p3, 1, 3.0, 2.0);
-            ProductLine linea8 = new ProductLine(t2, p4, 1, 4.0, 2.0);
+            ProductLine linea7 = new ProductLine(t2, p3, 1, 3.0, 3.0);
+            ProductLine linea8 = new ProductLine(t2, p4, 1, 4.0, 4.0);
 
             productLines = new ArrayList<>();
             productLines.add(linea1);
@@ -154,6 +154,9 @@ public class ProductGetterIteratorByDateTest {
         task.execute();
 
         Assert.assertThat("Error ProductGetterByDateTest", productByDate.size(), is(productLines.size()));
+        for (int i = 0; i < productLines.size(); i++) {
+            Assert.assertThat("ProductGetterByDateTest equals", productByDate.get(i), is(productLines.get(i)));
+        }
 
     }
 }

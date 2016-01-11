@@ -57,7 +57,7 @@ public class ProductGetterByPriceInteractorTest {
 
             ProductLine linea1 = new ProductLine(t, p1, 1, 1.0, 1.0);
             ProductLine linea2 = new ProductLine(t, p2, 1, 2.0, 2.0);
-            ProductLine linea3 = new ProductLine(t, p3, 1, 3.0, 2.0);
+            ProductLine linea3 = new ProductLine(t, p3, 2, 3.0, 6.0);
             ProductLine linea4 = new ProductLine(t, p4, 1, 4.0, 2.0);
 
             productLines = new ArrayList<>();

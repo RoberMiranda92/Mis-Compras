@@ -6,12 +6,12 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.ubu.miscompras.BuildConfig;
 import com.ubu.miscompras.model.Category;
-import com.ubu.miscompras.model.ProductLine;
-import com.ubu.miscompras.view.activity.App;
-import com.ubu.miscompras.model.database.DataBaseHelper;
 import com.ubu.miscompras.model.Product;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Ticket;
+import com.ubu.miscompras.model.database.DataBaseHelper;
 import com.ubu.miscompras.presenter.IOnLoadComplete;
+import com.ubu.miscompras.view.activity.App;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -71,7 +71,7 @@ public class ProductGetterByCategoryIteratorTest {
 
     @After
     public void tearDown() {
-        if(helper.isOpen())
+        if (helper.isOpen())
             helper.close();
 
         OpenHelperManager.releaseHelper();
@@ -84,7 +84,7 @@ public class ProductGetterByCategoryIteratorTest {
         ProductGetterByCategoryInterator task = new ProductGetterByCategoryInterator(new IOnLoadComplete() {
             @Override
             public void showError() {
-                    Assert.fail("productGetterByCategoryTest fail");
+                Assert.fail("productGetterByCategoryTest fail");
             }
 
             @Override
@@ -94,7 +94,7 @@ public class ProductGetterByCategoryIteratorTest {
 
             @Override
             public void loadCompleteTicketProducto(List<ProductLine> items) {
-                categoryProducts=items;
+                categoryProducts = items;
             }
 
             @Override
@@ -114,7 +114,10 @@ public class ProductGetterByCategoryIteratorTest {
         }, category);
         task.execute();
 
-        Assert.assertThat("productGetterByCategoryTest",categoryProducts.size(), is(productLines.size()));
+        Assert.assertThat("productGetterByCategoryTest", categoryProducts.size(), is(productLines.size()));
+        for (int i = 0; i < productLines.size(); i++) {
+            Assert.assertThat("productGetterByCategoryTest equals", categoryProducts.get(i), is(categoryProducts.get(i)));
+        }
 
     }
 }

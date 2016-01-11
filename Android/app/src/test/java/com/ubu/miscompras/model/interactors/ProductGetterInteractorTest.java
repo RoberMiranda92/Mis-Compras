@@ -33,7 +33,7 @@ import static org.hamcrest.core.Is.is;
  */
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 @RunWith(RobolectricGradleTestRunner.class)
-public class ProductGetterInteractorTestTest {
+public class ProductGetterInteractorTest {
 
     private DataBaseHelper helper;
     private Dao<ProductLine, Integer> lineaProductosDao;
