@@ -1,4 +1,7 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{apache}
+Apache license, version 2.0.
 
 \bibitem{androidStudio}
 Download android studio and {SDK} tools {\textbar} android developers.
@@ -27,7 +30,15 @@ Java {SE} development kit 7 - downloads {\textbar} oracle technology network
 \bibitem{paqueteVisual}
 Paquetes redistribuibles de visual c++ para visual studio 2013.
 
+\bibitem{robolectric}
+Robolectric.
+
 \bibitem{seguridad}
 Seguridad social:trabajadores.
+
+\bibitem{apk}
+Wikipedia.
+\newblock Apk (formato) --- wikipedia{,} la enciclopedia libre, 2015.
+\newblock [Internet; descargado 10-enero-2016].
 
 \end{thebibliography}

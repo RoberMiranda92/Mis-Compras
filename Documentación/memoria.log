@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.16)  7 JAN 2016 16:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.16)  10 JAN 2016 17:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -914,7 +914,9 @@ LaTeX Warning: Label `fig:minipage1' multiply defined.
 LaTeX Warning: Label `fig:minipage2' multiply defined.
 
 ) (./tex/4_Tecnicas_y_herramientas.aux)
-(./tex/5_Aspectos_relevantes_del_desarrollo_del_proyecto.aux))
+(./tex/5_Aspectos_relevantes_del_desarrollo_del_proyecto.aux)
+(./tex/6_Trabajos_relacionados.aux)
+(./tex/7_Conclusiones_Lineas_de_trabajo_futuras.aux))
 \openout1 = `memoria.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 367.
@@ -989,14 +991,14 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-<./img/cabecera.pdf, id=92, 617.67549pt x 135.51413pt>
+<./img/cabecera.pdf, id=128, 617.67549pt x 135.51413pt>
 File: ./img/cabecera.pdf Graphic file (type pdf)
 
 <use ./img/cabecera.pdf>
 Package pdftex.def Info: ./img/cabecera.pdf used on input line 369.
 (pdftex.def)             Requested size: 369.0pt x 80.95758pt.
 
-<./img/escudoInfor.pdf, id=93, 618.11432pt x 737.07487pt>
+<./img/escudoInfor.pdf, id=129, 618.11432pt x 737.07487pt>
 File: ./img/escudoInfor.pdf Graphic file (type pdf)
 
 <use ./img/escudoInfor.pdf>
@@ -1214,29 +1216,29 @@ Package spanish Warning: Replacing `OT1/cmr/bx/sc' by
 (spanish)                faked small caps on input line 5.
 
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 52.
 [3
 
 ])
@@ -1550,10 +1552,6 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 5.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 5.
-
-
-LaTeX Warning: Citation `wiki:artificial' on page 5 undefined on input line 9.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 12.
 Package babel Info: Redefining spanish shorthand >>
@@ -1567,9 +1565,7 @@ Package babel Info: Redefining spanish shorthand "!
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 12.
 
-LaTeX Warning: Citation `ocr' on page 5 undefined on input line 15.
-
-<./img/desviacion_1.png, id=530, 517.935pt x 123.46124pt>
+<./img/desviacion_1.png, id=586, 517.935pt x 123.46124pt>
 File: ./img/desviacion_1.png Graphic file (type png)
 
 <use ./img/desviacion_1.png>
@@ -1604,21 +1600,21 @@ Package babel Info: Redefining spanish shorthand "?
 
 
 ]
-<./img/inclinacion1.png, id=537, 602.25pt x 368.37625pt>
+<./img/inclinacion1.png, id=595, 602.25pt x 368.37625pt>
 File: ./img/inclinacion1.png Graphic file (type png)
 
 <use ./img/inclinacion1.png>
 Package pdftex.def Info: ./img/inclinacion1.png used on input line 30.
 (pdftex.def)             Requested size: 166.04887pt x 101.56514pt.
 
-<./img/inclinacion2.png, id=538, 602.25pt x 282.05376pt>
+<./img/inclinacion2.png, id=596, 602.25pt x 282.05376pt>
 File: ./img/inclinacion2.png Graphic file (type png)
 
 <use ./img/inclinacion2.png>
 Package pdftex.def Info: ./img/inclinacion2.png used on input line 36.
 (pdftex.def)             Requested size: 166.04887pt x 77.76514pt.
 
-<./img/lineas1.png, id=540, 347.04657pt x 98.61844pt>
+<./img/lineas1.png, id=598, 347.04657pt x 98.61844pt>
 File: ./img/lineas1.png Graphic file (type png)
  <use ./img/lineas1.png>
 Package pdftex.def Info: ./img/lineas1.png used on input line 48.
@@ -1663,11 +1659,7 @@ Package babel Info: Redefining spanish shorthand "!
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 78.
 
-
-LaTeX Warning: Citation `OperadoresMorfologicos' on page 7 undefined on input l
-ine 79.
-
-<./img/operadorMorfologico.png, id=553, 429.605pt x 175.65625pt>
+<./img/operadorMorfologico.png, id=612, 429.605pt x 175.65625pt>
 File: ./img/operadorMorfologico.png Graphic file (type png)
 
 <use ./img/operadorMorfologico.png>
@@ -1714,7 +1706,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 85.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 85.
- <./img/erodeAndDilate.png, id=566, 733.23938pt x 311.66437pt>
+ <./img/erodeAndDilate.png, id=626, 733.23938pt x 311.66437pt>
 File: ./img/erodeAndDilate.png Graphic file (type png)
 
 <use ./img/erodeAndDilate.png>
@@ -1757,10 +1749,6 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 95.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 95.
-
-
-LaTeX Warning: Citation `wiki:Hough' on page 9 undefined on input line 97.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 105.
 Package babel Info: Redefining spanish shorthand >>
@@ -1773,10 +1761,6 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 105.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 105.
-
-LaTeX Warning: Citation `wiki:Levenshtein' on page 9 undefined on input line 10
-6.
-
 
 Overfull \hbox (30.27805pt too wide) detected at line 124
 [] [] []
@@ -1819,29 +1803,25 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 141.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 141.
-
-
-LaTeX Warning: Citation `tique' on page 10 undefined on input line 143.
-
-<./img/tique1.jpg, id=584, 221.1462pt x 404.712pt>
+ <./img/tique1.jpg, id=650, 221.1462pt x 404.712pt>
 File: ./img/tique1.jpg Graphic file (type jpg)
  <use ./img/tique1.jpg>
 Package pdftex.def Info: ./img/tique1.jpg used on input line 152.
 (pdftex.def)             Requested size: 166.04887pt x 303.88525pt.
 
-<./img/tique2.jpg, id=585, 221.1462pt x 404.712pt>
+<./img/tique2.jpg, id=651, 221.1462pt x 404.712pt>
 File: ./img/tique2.jpg Graphic file (type jpg)
  <use ./img/tique2.jpg>
 Package pdftex.def Info: ./img/tique2.jpg used on input line 158.
 (pdftex.def)             Requested size: 166.04887pt x 303.88525pt.
 
-<./img/tique3.jpg, id=586, 221.1462pt x 430.7292pt>
+<./img/tique3.jpg, id=652, 221.1462pt x 430.7292pt>
 File: ./img/tique3.jpg Graphic file (type jpg)
  <use ./img/tique3.jpg>
 Package pdftex.def Info: ./img/tique3.jpg used on input line 164.
 (pdftex.def)             Requested size: 166.04887pt x 323.42073pt.
 
-<./img/tique4.jpg, id=587, 1390.19376pt x 2723.17375pt>
+<./img/tique4.jpg, id=653, 1390.19376pt x 2723.17375pt>
 File: ./img/tique4.jpg Graphic file (type jpg)
  <use ./img/tique4.jpg>
 Package pdftex.def Info: ./img/tique4.jpg used on input line 170.
@@ -1913,12 +1893,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 189.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 189.
-
-
-LaTeX Warning: Citation `wiki:Cliente-servidor' on page 12 undefined on input l
-ine 191.
-
-<./img/client_server.jpg, id=601, 794.97pt x 291.0875pt>
+ <./img/client_server.jpg, id=669, 794.97pt x 291.0875pt>
 File: ./img/client_server.jpg Graphic file (type jpg)
 
 <use ./img/client_server.jpg>
@@ -1963,10 +1938,6 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 213.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 213.
-
-
-LaTeX Warning: Citation `wiki:rest' on page 13 undefined on input line 214.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 220.
 Package babel Info: Redefining spanish shorthand >>
@@ -1979,9 +1950,6 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 220.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 220.
-
-LaTeX Warning: Citation `json' on page 13 undefined on input line 222.
-
 )
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 479.
@@ -2010,35 +1978,32 @@ Package babel Info: Redefining spanish shorthand "?
  [13]
 \openout2 = `./tex/4_Tecnicas_y_herramientas.aux'.
 
- (./tex/4_Tecnicas_y_herramientas.tex
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 5.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 5.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 5.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 5.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 5.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 5.
 
-
-LaTeX Warning: Citation `scrum' on page 14 undefined on input line 6.
-
+(./tex/4_Tecnicas_y_herramientas.tex
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 1.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 1.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 1.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 1.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 1.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 1.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 5.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 5.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 5.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 5.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 5.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 5.
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 15.
 Package babel Info: Redefining spanish shorthand >>
@@ -2075,7 +2040,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 29.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 29.
-[14
+ [14
 
 
 
@@ -2130,9 +2095,6 @@ Package babel Info: Redefining spanish shorthand "!
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 88.
  [16]
-
-LaTeX Warning: Citation `wiki:JAX-RS' on page 17 undefined on input line 93.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 119.
 Package babel Info: Redefining spanish shorthand >>
@@ -2157,12 +2119,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 119.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 119.
-[17]
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 122.
-
-)
+ [17])
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 480.
 Package babel Info: Redefining spanish shorthand >>
@@ -2190,7 +2147,8 @@ Package babel Info: Redefining spanish shorthand "?
  [18]
 \openout2 = `./tex/5_Aspectos_relevantes_del_desarrollo_del_proyecto.aux'.
 
- (./tex/5_Aspectos_relevantes_del_desarrollo_del_proyecto.tex
+
+(./tex/5_Aspectos_relevantes_del_desarrollo_del_proyecto.tex
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand >>
@@ -2256,28 +2214,28 @@ Package babel Info: Redefining spanish shorthand "?
 
 
 ]
-<./img/Original1.jpg, id=677, 2168.1pt x 2500.34125pt>
+<./img/Original1.jpg, id=754, 2168.1pt x 2500.34125pt>
 File: ./img/Original1.jpg Graphic file (type jpg)
 
 <use ./img/Original1.jpg>
 Package pdftex.def Info: ./img/Original1.jpg used on input line 34.
 (pdftex.def)             Requested size: 166.04887pt x 191.48532pt.
 
-<./img/Recortada1.jpg, id=678, 1855.93375pt x 418.56375pt>
+<./img/Recortada1.jpg, id=755, 1855.93375pt x 418.56375pt>
 File: ./img/Recortada1.jpg Graphic file (type jpg)
 
 <use ./img/Recortada1.jpg>
 Package pdftex.def Info: ./img/Recortada1.jpg used on input line 40.
 (pdftex.def)             Requested size: 166.04887pt x 37.44557pt.
 
-<./img/Original2.jpg, id=679, 1770.615pt x 2143.00626pt>
+<./img/Original2.jpg, id=756, 1770.615pt x 2143.00626pt>
 File: ./img/Original2.jpg Graphic file (type jpg)
 
 <use ./img/Original2.jpg>
 Package pdftex.def Info: ./img/Original2.jpg used on input line 45.
 (pdftex.def)             Requested size: 166.04887pt x 200.97174pt.
 
-<./img/Recortada2.jpg, id=680, 1739.49875pt x 291.0875pt>
+<./img/Recortada2.jpg, id=757, 1739.49875pt x 291.0875pt>
 File: ./img/Recortada2.jpg Graphic file (type jpg)
 
 <use ./img/Recortada2.jpg>
@@ -2310,8 +2268,16 @@ Package babel Info: Redefining spanish shorthand "?
  [20 <./img/Original1.jpg> <./img/Recortada1.jpg> <./img/Original2.jpg> <./img/
 Recortada2.jpg>]
 
+Package caption Warning: \label without proper \caption on input line 77.
+See the caption package documentation for explanation.
+
+
 LaTeX Warning: Reference `tesseractingles' on page 21 undefined on input line 6
 1.
+
+
+Package caption Warning: \label without proper \caption on input line 94.
+See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `tesseractespa' on page 21 undefined on input line 61.
@@ -2329,17 +2295,12 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 100.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 100.
-<./img/cuotaAndroid.jpg, id=685, 612.2875pt x 193.72375pt>
+<./img/cuotaAndroid.jpg, id=764, 612.2875pt x 193.72375pt>
 File: ./img/cuotaAndroid.jpg Graphic file (type jpg)
 
 <use ./img/cuotaAndroid.jpg>
 Package pdftex.def Info: ./img/cuotaAndroid.jpg used on input line 105.
 (pdftex.def)             Requested size: 332.09775pt x 105.07335pt.
-
-
-LaTeX Warning: Reference `fig:cuotaAndroid' on page 21 undefined on input line 
-107.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 109.
 Package babel Info: Redefining spanish shorthand >>
@@ -2364,18 +2325,10 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 109.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 109.
-[21
+ [21
 
  <./img/cuotaAndroid.jpg>]
-
-LaTeX Warning: Reference `fig:versionesAndroid' on page 22 undefined on input l
-ine 109.
-
-
-LaTeX Warning: Citation `versionesAndroid' on page 22 undefined on input line 1
-09.
-
-<./img/versionesAndroid.png, id=695, 794.97pt x 452.69125pt>
+<./img/versionesAndroid.png, id=773, 794.97pt x 452.69125pt>
 File: ./img/versionesAndroid.png Graphic file (type png)
 
 <use ./img/versionesAndroid.png>
@@ -2393,88 +2346,92 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 115.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 115.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 123.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 123.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 123.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 123.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 123.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 123.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 126.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 126.
+ [22 <./img/versionesAndroid.png>]
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 129.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 129.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 129.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 129.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 129.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 129.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 132.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 132.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 132.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 132.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 132.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 132.
 
 
-LaTeX Warning: Citation `localVScloud' on page 22 undefined on input line 118.
-
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 123.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 123.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 123.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 123.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 123.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 123.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 126.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 126.
-[22 <./img/versionesAndroid.png>]
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 129.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 129.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 129.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 129.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 129.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 129.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 132.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 132.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 132.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 132.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 132.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 132.
+Package caption Warning: \label without proper \caption on input line 77.
+See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `tesseractingles' on page 23 undefined on input line 1
 34.
 
 
+Package caption Warning: \label without proper \caption on input line 94.
+See the caption package documentation for explanation.
+
+
 LaTeX Warning: Reference `tesseractespa' on page 23 undefined on input line 134
 .
 
-<./img/tiqueBinarizado.jpg, id=705, 1737.49126pt x 863.225pt>
+<./img/tiqueBinarizado.jpg, id=786, 1737.49126pt x 863.225pt>
 File: ./img/tiqueBinarizado.jpg Graphic file (type jpg)
 
 <use ./img/tiqueBinarizado.jpg>
 Package pdftex.def Info: ./img/tiqueBinarizado.jpg used on input line 139.
 (pdftex.def)             Requested size: 166.04887pt x 82.49458pt.
 
-<./img/tiqueDilatado.jpg, id=706, 1737.49126pt x 863.225pt>
+<./img/tiqueDilatado.jpg, id=787, 1737.49126pt x 863.225pt>
 File: ./img/tiqueDilatado.jpg Graphic file (type jpg)
 
 <use ./img/tiqueDilatado.jpg>
@@ -2505,7 +2462,7 @@ Package babel Info: Redefining spanish shorthand "!
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 152.
  [23 <./img/tiqueBinarizado.jpg> <./img/tiqueDilatado.jpg>] <./img/tiqueCortado
-.jpg, id=715, 1737.49126pt x 863.225pt>
+.jpg, id=792, 1737.49126pt x 863.225pt>
 File: ./img/tiqueCortado.jpg Graphic file (type jpg)
 
 <use ./img/tiqueCortado.jpg>
@@ -2525,8 +2482,8 @@ Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 155.
 
 
-LaTeX Warning: Citation `improvequality' on page 24 undefined on input line 157
-.
+Package caption Warning: \label without proper \caption on input line 182.
+See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `tablaCsv' on page 24 undefined on input line 186.
@@ -2642,13 +2599,6 @@ Overfull \hbox (1.59439pt too wide) in paragraph at lines 28--29
  google . com / store / apps / details ? id = com .
  []
 
-
-LaTeX Warning: Reference `tabla:herramientasportipodeuso' on page 27 undefined 
-on input line 38.
-
-
-LaTeX Warning: Citation `menta' on page 27 undefined on input line 40.
-
 )
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 482.
@@ -2690,10 +2640,6 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-
-
-LaTeX Warning: Reference `lineasFuturas' on page 28 undefined on input line 5.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 16.
 Package babel Info: Redefining spanish shorthand >>
@@ -2718,15 +2664,12 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 16.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 16.
-[28
+ [28
 
 
 
 ]
-
-LaTeX Warning: Reference `fig:vecinos' on page 29 undefined on input line 18.
-
-<./img/vecinos.png, id=758, 108.405pt x 70.76437pt>
+<./img/vecinos.png, id=837, 108.405pt x 70.76437pt>
 File: ./img/vecinos.png Graphic file (type png)
  <use ./img/vecinos.png>
 Package pdftex.def Info: ./img/vecinos.png used on input line 19.
@@ -2873,15 +2816,9 @@ LaTeX Info: Redefining \% on input line 28.
 (./tex/7_Conclusiones_Lineas_de_trabajo_futuras.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 489.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 489.
+Package rerunfilecheck Info: File `memoria.out' has not changed.
+(rerunfilecheck)             Checksum: 6143ED9E8130C658D00A85D78C8A520B;2072.
 
-
-Package rerunfilecheck Warning: File `memoria.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `memoria.out':
-(rerunfilecheck)             Before: 22B2CB2BD9CD8F2BCBD32CD5109BA877;1412
-(rerunfilecheck)             After:  6143ED9E8130C658D00A85D78C8A520B;2072.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -2894,47 +2831,35 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 489.
  ) 
 Here is how much of TeX's memory you used:
- 12384 strings out of 493089
- 179668 string characters out of 6134841
- 312107 words of memory out of 5000000
- 15502 multiletter control sequences out of 15000+600000
+ 12397 strings out of 493089
+ 180055 string characters out of 6134841
+ 317205 words of memory out of 5000000
+ 15515 multiletter control sequences out of 15000+600000
  13581 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 47i,17n,47p,907b,672s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{table.caption.48} has been referenced but does no
-t exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{figure.caption.52} has been referenced but does not
- exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{chapter*.49} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{chapter*.43} has been referenced but does not exist
-, replaced by a fixed one
-
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr
-/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loca
-l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/
-texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/te
-xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texl
-ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
-/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texliv
-e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
-/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2
-015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/20
-15/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
-5/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb>
-Output written on memoria.pdf (42 pages, 10466900 bytes).
+ 47i,17n,47p,907b,699s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></us
+r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/
+local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/lo
+cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/
+2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb>
+Output written on memoria.pdf (42 pages, 10469456 bytes).
 PDF statistics:
- 887 PDF objects out of 1000 (max. 8388607)
- 781 compressed objects within 8 object streams
- 150 named destinations out of 1000 (max. 500000)
- 292 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 950 PDF objects out of 1000 (max. 8388607)
+ 843 compressed objects within 9 object streams
+ 146 named destinations out of 1000 (max. 500000)
+ 364 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,0 +1,187 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ProductGetterByPriceInteractor</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.ubu.miscompras.model.interactors</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ProductGetterByPriceInteractor (com.ubu.miscompras.model.interactors)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductGetterByPriceInteractor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (30/ 36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.ubu.miscompras.model.interactors;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.AsyncTask;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import com.j256.ormlite.android.apptools.OpenHelperManager;
+<i>6</i>&nbsp;import com.j256.ormlite.dao.Dao;
+<i>7</i>&nbsp;import com.j256.ormlite.dao.GenericRawResults;
+<i>8</i>&nbsp;import com.j256.ormlite.field.DataType;
+<i>9</i>&nbsp;import com.ubu.miscompras.model.Category;
+<i>10</i>&nbsp;import com.ubu.miscompras.model.Product;
+<i>11</i>&nbsp;import com.ubu.miscompras.model.ProductLine;
+<i>12</i>&nbsp;import com.ubu.miscompras.view.activity.App;
+<i>13</i>&nbsp;import com.ubu.miscompras.model.database.DataBaseHelper;
+<i>14</i>&nbsp;import com.ubu.miscompras.presenter.IOnLoadComplete;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import java.sql.SQLException;
+<i>17</i>&nbsp;import java.util.ArrayList;
+<i>18</i>&nbsp;import java.util.List;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;/**
+<i>21</i>&nbsp; * Created by RobertoMiranda on 18/12/15.
+<i>22</i>&nbsp; */
+<i>23</i>&nbsp;public class ProductGetterByPriceInteractor extends AsyncTask&lt;Void, Void, List&lt;ProductLine&gt;&gt; {
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    private final double minPrice;
+<i>27</i>&nbsp;    private final double maxPrice;
+<i>28</i>&nbsp;    private final IOnLoadComplete presenter;
+<i>29</i>&nbsp;    private final DataBaseHelper db;
+<i>30</i>&nbsp;    private Dao&lt;ProductLine, Integer&gt; lineaProductoDao;
+<i>31</i>&nbsp;    private Dao&lt;Product, Integer&gt; productoDao;
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;    public ProductGetterByPriceInteractor(IOnLoadComplete presenter, double minPrice, double maxPrice) {</b>
+<b class="fc"><i>34</i>&nbsp;        this.minPrice = minPrice;</b>
+<b class="fc"><i>35</i>&nbsp;        this.maxPrice = maxPrice;</b>
+<b class="fc"><i>36</i>&nbsp;        this.presenter = presenter;</b>
+<i>37</i>&nbsp;
+<b class="fc"><i>38</i>&nbsp;        db = OpenHelperManager.getHelper(App.getAppContext(), DataBaseHelper.class);</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;        try {
+<b class="fc"><i>41</i>&nbsp;            productoDao = db.getProductDAO();</b>
+<b class="fc"><i>42</i>&nbsp;            lineaProductoDao = db.getProductLineDAO();</b>
+<i>43</i>&nbsp;
+<b class="nc"><i>44</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>45</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i>46</i>&nbsp;        }</b>
+<b class="fc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    @Override
+<i>51</i>&nbsp;    public void onPostExecute(List&lt;ProductLine&gt; items) {
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;        if (items != null)</b>
+<b class="fc"><i>54</i>&nbsp;            presenter.loadCompleteTicketProducto(items);</b>
+<i>55</i>&nbsp;        else
+<b class="nc"><i>56</i>&nbsp;            presenter.showError();</b>
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;        if(db.isOpen())</b>
+<b class="fc"><i>59</i>&nbsp;            db.close();</b>
+<b class="fc"><i>60</i>&nbsp;        OpenHelperManager.releaseHelper();</b>
+<b class="fc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    @Override
+<i>65</i>&nbsp;    protected List&lt;ProductLine&gt; doInBackground(Void... params) {
+<b class="fc"><i>66</i>&nbsp;        List&lt;ProductLine&gt; items = new ArrayList&lt;&gt;();</b>
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;        try {
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;            GenericRawResults&lt;Object[]&gt; rawResults =</b>
+<b class="fc"><i>71</i>&nbsp;                    lineaProductoDao.queryRaw(</b>
+<i>72</i>&nbsp;                            &quot;SELECT SUM(&quot; + ProductLine.TABLE_NAME + &quot;.&quot; + ProductLine.CANTIDAD + &quot;)AS Cantidad,&quot; +
+<i>73</i>&nbsp;                                    &quot;SUM(&quot; + ProductLine.TABLE_NAME + &quot;.&quot; + ProductLine.IMPORTE + &quot;)AS Importe,&quot; +
+<i>74</i>&nbsp;                                    ProductLine.PRECIO + &quot;,&quot; + Product.TABLE_NAME + &quot;.&quot; + Product.ID_FIELD_NAME +
+<i>75</i>&nbsp;                                    &quot; FROM &quot; + ProductLine.TABLE_NAME + &quot; JOIN &quot; + Product.TABLE_NAME +
+<i>76</i>&nbsp;                                    &quot; ON &quot; + ProductLine.TABLE_NAME + &quot;.&quot; + ProductLine.PRODUCTO_ID_FIELD_NAME +
+<i>77</i>&nbsp;                                    &quot;=&quot; + Product.TABLE_NAME + &quot;.&quot; + Product.ID_FIELD_NAME + &quot; JOIN &quot; + Category.TABLE_NAME +
+<i>78</i>&nbsp;                                    &quot; ON &quot; + Product.TABLE_NAME + &quot;.&quot; + Product.CATEGORIA_FIELD__ID + &quot;=&quot; + Category.TABLE_NAME + &quot;.&quot; + Category.ID_FIELD +
+<i>79</i>&nbsp;                                    &quot; WHERE &quot; + ProductLine.TABLE_NAME + &quot;.&quot; + ProductLine.PRECIO +
+<i>80</i>&nbsp;                                    &quot; BETWEEN ? AND ? GROUP BY &quot; + ProductLine.TABLE_NAME + &quot;.&quot; + ProductLine.PRODUCTO_ID_FIELD_NAME +
+<i>81</i>&nbsp;                                    &quot;,&quot; + ProductLine.TABLE_NAME + &quot;.&quot; + ProductLine.PRECIO +
+<i>82</i>&nbsp;                                    &quot; ORDER BY &quot; + ProductLine.PRECIO + &quot;,&quot; + Product.TABLE_NAME + &quot;.&quot; + Product.NOMBRE_FIELD_NAME,
+<b class="fc"><i>83</i>&nbsp;                            new DataType[]{DataType.INTEGER, DataType.DOUBLE, DataType.DOUBLE, DataType.INTEGER}, String.valueOf(minPrice), String.valueOf(maxPrice));</b>
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;
+<b class="fc"><i>86</i>&nbsp;            for (Object[] resultArray : rawResults) {</b>
+<b class="fc"><i>87</i>&nbsp;                int cant = (int) resultArray[0];</b>
+<b class="fc"><i>88</i>&nbsp;                double importe = (double) resultArray[1];</b>
+<b class="fc"><i>89</i>&nbsp;                double precio = (double) resultArray[2];</b>
+<b class="fc"><i>90</i>&nbsp;                Product p = productoDao.queryForId((int) resultArray[3]);</b>
+<b class="fc"><i>91</i>&nbsp;                ProductLine t = new ProductLine(p, cant, precio, importe);</b>
+<b class="fc"><i>92</i>&nbsp;                items.add(t);</b>
+<b class="fc"><i>93</i>&nbsp;            }</b>
+<b class="fc"><i>94</i>&nbsp;            rawResults.close();</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;
+<b class="nc"><i>97</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>98</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>99</i>&nbsp;            return null;</b>
+<b class="fc"><i>100</i>&nbsp;        }</b>
+<i>101</i>&nbsp;
+<b class="fc"><i>102</i>&nbsp;        return items;</b>
+<i>103</i>&nbsp;    }
+<i>104</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2016-01-11 16:08</div>
+</div>
+</body>
+</html>
