@@ -54,12 +54,14 @@ public class CropActivity extends Activity implements View.OnClickListener {
         cancelButton.setOnClickListener(this);
 
         presenter = new CropPresenter(this);
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
         presenter.onStart(imageUri);
+
 
     }
 

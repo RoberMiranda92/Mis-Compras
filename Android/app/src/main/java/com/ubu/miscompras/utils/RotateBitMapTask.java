@@ -9,6 +9,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.ubu.miscompras.presenter.CropPresenter;
 
@@ -17,12 +18,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by RobertoMiranda on 9/1/16.
+ * Tarea que devuelve coloca un bitmap, si es necesario se rescala.
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
 
-    private static final int MAX_IMAGE_HEIGHT = 3872;
-    private static final int MAX_IMAGE_WIDTH = 2592;
+    private static final int MAX_IMAGE_HEIGHT = 2144;
+    private static final int MAX_IMAGE_WIDTH = 3808;
 
     private CropPresenter presenter;
     private Uri imageUri;
@@ -42,6 +44,7 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Void... params) {
         InputStream is = null;
+        Bitmap srcBitmap;
         try {
             is = context.getContentResolver().openInputStream(imageUri);
 
@@ -61,17 +64,12 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
                 rotatedHeight = dbo.outHeight;
             }
 
-            Bitmap srcBitmap;
+
             is = context.getContentResolver().openInputStream(imageUri);
             if (rotatedWidth > MAX_IMAGE_WIDTH || rotatedHeight > MAX_IMAGE_HEIGHT) {
-                float widthRatio = ((float) rotatedWidth) / ((float) MAX_IMAGE_WIDTH);
-                float heightRatio = ((float) rotatedHeight) / ((float) MAX_IMAGE_HEIGHT);
-                float maxRatio = Math.max(widthRatio, heightRatio);
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = (int) maxRatio;
-                options.inJustDecodeBounds = false;
-                srcBitmap = BitmapFactory.decodeStream(is, null, options);
+
+                srcBitmap = resizeBitmap(BitmapFactory.decodeStream(is), MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
 
             } else {
                 srcBitmap = BitmapFactory.decodeStream(is);
@@ -79,14 +77,6 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
             is.close();
 
 
-            if (srcBitmap.getWidth() > MAX_IMAGE_WIDTH || srcBitmap.getHeight() > MAX_IMAGE_HEIGHT) {
-                float widthRatio = ((float) srcBitmap.getWidth()) / ((float) MAX_IMAGE_WIDTH);
-                float heightRatio = ((float) srcBitmap.getHeight()) / ((float) MAX_IMAGE_HEIGHT);
-                float maxRatio = Math.max(widthRatio, heightRatio);
-
-                srcBitmap = Bitmap.createScaledBitmap(srcBitmap, srcBitmap.getWidth() / (int) maxRatio,
-                        srcBitmap.getHeight() / (int) maxRatio, true);
-            }
             if (orientation > 0) {
                 Matrix matrix = new Matrix();
                 matrix.postRotate(orientation);
@@ -95,10 +85,10 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
             }
             return srcBitmap;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.d("Decode Bitmap", e.getMessage());
             return null;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("Decode Bitmap", e.getMessage());
             return null;
         }
 
@@ -143,7 +133,7 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
      * Obtiene el ángulo según el ángulo del exif de la imagen.
      *
      * @param exifOrientation orientaciñon del exif
-     * @return angulo de orientaciñon real.
+     * @return angulo de orientacion real.
      */
     private static int exifToDegrees(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
@@ -155,5 +145,20 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Este método hace un resecalado de un bitmap.
+     *
+     * @param bitmap bitmap a reescalar
+     * @param newWidth anchura deseada
+     * @param newHeight altura deseada.
+     * @return bitmap redimensionado
+     */
+    public Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        //Bitmap bitmap;
+        int height = (bitmap.getHeight() * newHeight / bitmap.getWidth());
+        Bitmap scale = Bitmap.createScaledBitmap(bitmap, newHeight, height, true);
+        return scale;
     }
 }
