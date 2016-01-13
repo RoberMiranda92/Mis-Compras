@@ -9,8 +9,8 @@ import java.io.File;
  */
 public class Utils {
     
-    public static String RUTA_DICCIONARIO= "diccionarios" + File.separator + "Diccionario.txt";
-    public static String RUTA_CSV = "diccionarios" + File.separator + "Ocurrencias.csv";
+    public static String DICCIONARY_FILE_NAME="Diccionario.txt";
+    public static String CSV_FILE_NAME = "Ocurrencias.csv";
     
     /**
      * Este método devuelve la extensión de un fichero.

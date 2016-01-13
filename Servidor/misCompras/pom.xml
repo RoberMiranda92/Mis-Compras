@@ -8,7 +8,6 @@
 
     <name>misCompras</name>
     
-    
     <repositories>
         <repository>
             <id>javaopencvbook</id>
@@ -49,17 +48,9 @@
             <version>3.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.javaopencvbook</groupId>
-            <artifactId>opencvjar-runtime</artifactId>
-            <version>3.0.0</version>
-            <classifier>natives-windows-x86</classifier>
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
             <artifactId>tess4j</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/tess4j.jar</systemPath>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -68,51 +59,23 @@
         </dependency>
     </dependencies>
     <build>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
         <resources>
             <resource>
                 <directory>/src/resources</directory>
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/test/resources</outputDirectory>
-                            <resources>          
-                                <resource>
-                                    <directory>src/test/resources</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>              
-                        </configuration>            
-                    </execution>
-                    <execution>
-                        <id>copy-resources-2</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/diccionarios/</outputDirectory> 
-                            <resources> 
-                                <resource> 
-                                    <directory>src/diccionarios</directory> 
-                                    <filtering>true</filtering> 
-                                </resource> 
-                            </resources> 
-                        </configuration> 
-                    </execution> 
-                </executions>
-            </plugin>
-  
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

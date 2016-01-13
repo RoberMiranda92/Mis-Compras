@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -35,9 +34,8 @@ public class ProductProcess {
     private final Tesseract instance;
     private final ArrayList<File> files;
     private final HashMap<String, Integer> nWords = new HashMap<>();
-    private final String ruta = Utils.RUTA_DICCIONARIO;
-    private final String csvFile = Utils.RUTA_CSV;
-    private final String absolutePath;
+    private final String csvFile;
+ 
 
     /**
      * Constructor de la clase que recibe como argumento una lista de
@@ -45,7 +43,7 @@ public class ProductProcess {
      *
      * @param files lista de imagenes
      */
-    public ProductProcess(ArrayList<File> files) {
+    public ProductProcess(ArrayList<File> files,String dicionaryPath,String csvPath) {
 
         this.files = files;
         instance = new Tesseract();
@@ -53,22 +51,10 @@ public class ProductProcess {
         instance.setPageSegMode(PSM_SINGLE_LINE);
         instance.setOcrEngineMode(OEM_TESSERACT_ONLY);
         instance.setTessVariable("tessedit_char_blacklist", "`?:");
+        this.csvFile=csvPath;
         
-        File classPath = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-
-        String path = classPath.getAbsolutePath();
-
-        while (!path.endsWith("target")) {
-            int index;
-            index = path.lastIndexOf(File.separator);
-            path = path.substring(0, index);
-        }
-        
-        absolutePath= URLDecoder.decode(path);
-
         try {
-            File diccionario = new File(absolutePath+ File.separator + ruta);
-            System.out.print(diccionario.getCanonicalPath());
+            File diccionario = new File(dicionaryPath);
             if (!diccionario.exists()) {
                 diccionario.createNewFile();
             }
@@ -85,6 +71,10 @@ public class ProductProcess {
         } catch (IOException ex) {
             Logger.getLogger(ImageProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setDicionaryFile(String path){
+        
     }
 
     /**
@@ -340,7 +330,7 @@ public class ProductProcess {
         String cvsSplitBy = ",";
 
         try {
-            br = new BufferedReader(new FileReader(absolutePath+ File.separator +csvFile));
+            br = new BufferedReader(new FileReader(csvFile));
             while ((row = br.readLine()) != null) {
                 String[] line = row.split(cvsSplitBy);
 

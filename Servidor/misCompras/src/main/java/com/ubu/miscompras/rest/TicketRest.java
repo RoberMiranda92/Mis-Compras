@@ -26,8 +26,6 @@ import java.io.Writer;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ws.rs.Consumes;
@@ -37,6 +35,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
 import org.json.JSONArray;
 
 /**
@@ -46,11 +47,13 @@ import org.json.JSONArray;
  */
 @Path("/file")
 public class TicketRest {
-    
+    @Context ServletContext context;
     private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
-    private final String ruta = Utils.RUTA_DICCIONARIO;
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "\\images\\";
+    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "//WEB-INF//images//";
+    private static final String SERVER_DICIONARY_LOCATION_FOLDER = "//WEB-INF//diccionarios//";
     private String textoFinal;
+    Logger logger = Logger.getLogger(getClass().getName());
+
     
     @GET
     @Path("/test")
@@ -71,43 +74,51 @@ public class TicketRest {
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@FormDataParam("file") FormDataBodyPart body, @FormDataParam("file") InputStream istream) throws IOException {
-        System.out.print(System.getProperty("java.library.path"));
+      
+        
+
         FormDataBodyPart filePart = body;
         ContentDisposition headerOfFilePart = filePart.getContentDisposition();
         InputStream fileInputStream = istream;
-
-        String filePath = getTargetFolder() + SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
-
-        saveFile(fileInputStream, filePath);
+        
+        String file = headerOfFilePart.getFileName();
+        String[] tokens = file.split("\\.(?=[^\\.]+$)");
+        
+        String imageFilePath =context.getRealPath(SERVER_UPLOAD_LOCATION_FOLDER)+File.separator+tokens[0]+File.separator + file; 
+        
+        saveFile(fileInputStream, imageFilePath);
         istream.close();
 
-        ImageProcess image = new ImageProcess(filePath);
+        ImageProcess image = new ImageProcess(imageFilePath);
         ArrayList<File> productos = image.getProductsFileFromImage();
         
-        ProductProcess p = new ProductProcess(productos);
+        String diccionarioFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.CSV_FILE_NAME;
+        String csvFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.DICCIONARY_FILE_NAME;
+      
+        
+        ProductProcess p = new ProductProcess(productos,diccionarioFilePath,csvFilePath);
         JSONArray array = new JSONArray();
         try {
             textoFinal = p.getText();
             String[] splitProducts = textoFinal.split("\n\n");
-            for (int i = 0; i < splitProducts.length; i++) {
-                array.put(ProductContract.buildJSON(splitProducts[i]));
+            for (String splitProduct : splitProducts) {
+                array.put(ProductContract.buildJSON(splitProduct));
             }
             return Response.status(Response.Status.OK).entity(array.toString()).build();
 
         } catch (MisComprasException ex) {
+            logger.severe(ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
 
     }  
     
     
+    
     /**
-     * Este metodo Post que guarda una lista de nombres de producto en el 
-     * fichero de diccionario.
-     *
-     * @param body
-     * @param istream
-     * @return
+     * 
+     * @param data
+     * @return 
      */
     @POST
     @Path("/diccionario")
@@ -117,7 +128,8 @@ public class TicketRest {
         Writer fileWriter = null;
         BufferedWriter bufferedWriter = null;
          try {
-            File diccionario = new File(getTargetFolder() + File.separator + ruta);
+             String path = context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.DICCIONARY_FILE_NAME;
+            File diccionario = new File(path);
             if (!diccionario.exists()) {
                 diccionario.createNewFile();
             }
@@ -150,8 +162,8 @@ public class TicketRest {
             bufferedWriter.close();
             return Response.status(Response.Status.OK).entity("OK").build();
         } catch (IOException ex) {
-            Logger.getLogger(ImageProcess.class.getName()).log(Level.SEVERE, null, ex);
-             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            logger.severe(ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
          
         
@@ -186,20 +198,8 @@ public class TicketRest {
             outpuStream.close();
             uploadedInputStream.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            logger.severe(ex.getMessage());
         }
-    }
-
-    private String getTargetFolder(){
-        File classPath = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-
-        String path = classPath.getAbsolutePath();
-         while (!path.endsWith("target")) {
-            int index;
-            index = path.lastIndexOf(File.separator);
-            path = path.substring(0, index);
-        }
-         return URLDecoder.decode(path);
     }
 }

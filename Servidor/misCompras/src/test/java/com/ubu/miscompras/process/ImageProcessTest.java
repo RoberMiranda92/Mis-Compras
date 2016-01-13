@@ -6,6 +6,7 @@
 package com.ubu.miscompras.process;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
@@ -13,23 +14,24 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda PÃ©rez</a>
  */
 public class ImageProcessTest {
-
+    
+    public final String  IMAGE_NAME="TicketPrueba2.jpg";
     public ImageProcessTest() {
     }
 
     @Test
     public void getProductsFileFromImageTest() {
-
-        File image = new File("src"+File.separator+"test" + File.separator + "resources" + File.separator + "TicketPrueba2.jpg");
-        String path = image.getAbsolutePath();
-
-        ImageProcess i = new ImageProcess(path);
+        
+        
+        URL image = this.getClass().getClassLoader().getResource(IMAGE_NAME);
+        
+        ImageProcess i = new ImageProcess(image.getPath());
         ArrayList<File> productos = i.getProductsFileFromImage();
 
-        assertThat("Error en el número de productos", productos.size(), is(8));
+        assertThat("Error en el numero de productos", productos.size(), is(8));
     }
 
 }
