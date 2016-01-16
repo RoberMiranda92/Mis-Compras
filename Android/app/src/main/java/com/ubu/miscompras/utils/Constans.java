@@ -17,7 +17,7 @@ public class Constans {
     public static final String URL_FILE_UPLOAD = "/misCompras/rest/file/upload";
     public static final String URL_DICCIONARIO_UPLOAD = "/misCompras/rest/file/diccionario";
 
-    public static int CONNECTION_TIMEOUT = 10000;
+    public static int CONNECTION_TIMEOUT = 15000;
     public static int SOCKET_TIMEOUT = 30000;
 
     public static int RESUMEN_POSITION_FRAGMENT = 0;

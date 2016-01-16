@@ -80,12 +80,12 @@ public class TicketFragmentPresenter implements IOnLoadComplete {
     }
 
     @Override
-    public void loadCompleteCategoria(List<Category> items) {
+    public void loadCompleteCategory(List<Category> items) {
         throw new UnsupportedOperationException("Metodo no soportado");
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<ProductLine> items) {
+    public void loadCompleteLine(List<ProductLine> items) {
         throw new UnsupportedOperationException("Metodo no soportado");
     }
 

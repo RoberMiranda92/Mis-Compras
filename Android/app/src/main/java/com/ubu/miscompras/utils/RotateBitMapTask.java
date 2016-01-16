@@ -66,9 +66,7 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
 
 
             is = context.getContentResolver().openInputStream(imageUri);
-            if (rotatedWidth > MAX_IMAGE_WIDTH || rotatedHeight > MAX_IMAGE_HEIGHT) {
-
-
+            if (rotatedWidth >= MAX_IMAGE_WIDTH || rotatedHeight >= MAX_IMAGE_HEIGHT) {
                 srcBitmap = resizeBitmap(BitmapFactory.decodeStream(is), MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
 
             } else {
@@ -103,7 +101,8 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
 
             if (rotation == ExifInterface.ORIENTATION_UNDEFINED)
                 return getRotationFromMediaStore(imageUri);
-            else return exifToDegrees(rotation);
+            else
+                return exifToDegrees(rotation);
         } catch (IOException e) {
             return 0;
         }
@@ -156,9 +155,10 @@ public class RotateBitMapTask extends AsyncTask<Void, Void, Bitmap> {
      * @return bitmap redimensionado
      */
     public Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
-        //Bitmap bitmap;
         int height = (bitmap.getHeight() * newHeight / bitmap.getWidth());
         Bitmap scale = Bitmap.createScaledBitmap(bitmap, newHeight, height, true);
         return scale;
+
+
     }
 }

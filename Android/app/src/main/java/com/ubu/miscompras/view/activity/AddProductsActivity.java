@@ -16,13 +16,17 @@ import android.widget.Toast;
 
 import com.ubu.miscompras.R;
 import com.ubu.miscompras.model.Category;
-import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.model.Product;
+import com.ubu.miscompras.model.ProductLine;
 import com.ubu.miscompras.presenter.AddProductsPresenter;
 import com.ubu.miscompras.utils.VerticalDividerItemDecorator;
 import com.ubu.miscompras.view.adapters.ProductAddAdapter;
 import com.ubu.miscompras.view.customViews.EditProductDialog;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +80,7 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         textView_total = (TextView) findViewById(R.id.textView_totalCompra);
 
         presenter = new AddProductsPresenter(this);
-        presenter.setResource(jsonProductos);
+        setItems(getProdcutFromJson(jsonProductos));
     }
 
     @Override
@@ -248,5 +252,41 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
 
     public void showOkMessage() {
         Toast.makeText(this, getString(R.string.saveProducts), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Este método trasforma un Json en linea de producto.
+     *
+     * @param ArrayJson json.
+     * @return lista de lineas de producto.
+     */
+    private ArrayList<ProductLine> getProdcutFromJson(String ArrayJson) {
+        ArrayList<ProductLine> lineasProducto = new ArrayList<>();
+        try {
+            JSONArray array = new JSONArray(ArrayJson);
+
+            for (int i = 0; i < array.length(); i++) {
+
+                JSONObject arrayLineasProducto = array.getJSONObject(i);
+
+                String cantidad = arrayLineasProducto.getString("cantidad");
+                String nombre = arrayLineasProducto.getString("nombre");
+                String precio = arrayLineasProducto.getString("precio");
+                String importe = arrayLineasProducto.getString("total");
+                try {
+                    Product product = new Product(nombre);
+                    ProductLine lineaDeProducto = new ProductLine(product,
+                            Integer.parseInt(cantidad), Double.parseDouble(precio),
+                            Double.parseDouble(importe));
+                    lineasProducto.add(lineaDeProducto);
+                } catch (NumberFormatException ex) {
+                    showErrorMensage();
+                }
+
+            }
+        } catch (Exception e) {
+            showErrorMensage();
+        }
+        return lineasProducto;
     }
 }

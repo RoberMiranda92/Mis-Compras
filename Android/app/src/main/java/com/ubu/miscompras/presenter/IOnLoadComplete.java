@@ -14,9 +14,9 @@ public interface IOnLoadComplete {
 
     public void showError();
 
-    public void loadCompleteCategoria(List<Category> items);
+    public void loadCompleteCategory(List<Category> items);
 
-    public void loadCompleteTicketProducto(List<ProductLine> items);
+    public void loadCompleteLine(List<ProductLine> items);
 
     public void loadCompleteTicket(List<Ticket> items);
 

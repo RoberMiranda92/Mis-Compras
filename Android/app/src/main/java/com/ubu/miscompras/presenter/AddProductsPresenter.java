@@ -1,17 +1,12 @@
 package com.ubu.miscompras.presenter;
 
 import com.ubu.miscompras.model.ProductLine;
-import com.ubu.miscompras.model.Product;
 import com.ubu.miscompras.model.Ticket;
 import com.ubu.miscompras.model.interactors.CategoryGetterInteractor;
 import com.ubu.miscompras.model.interactors.ProductInsertIterator;
 import com.ubu.miscompras.model.interactors.UploadProductLineInteractor;
 import com.ubu.miscompras.view.activity.AddProductsActivity;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,12 +33,8 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
         mainView.setDate(cal.getTime());
         getCategories();
 
-        if (!json.isEmpty()) {
-            List<ProductLine> lineas = getProdcutFromJson(json);
-            mainView.setItems(lineas);
-            mainView.showEditMessage();
+        mainView.showEditMessage();
 
-        }
 
 
     }
@@ -64,7 +55,7 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<ProductLine> items) {
+    public void loadCompleteLine(List<ProductLine> items) {
 
     }
 
@@ -80,15 +71,11 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
     }
 
     @Override
-    public void loadCompleteCategoria(List items) {
+    public void loadCompleteCategory(List items) {
         mainView.setCategories(items);
     }
 
 
-    public void setResource(String json) {
-        this.json = json;
-
-    }
 
     /**
      * Este método llama al interactor para guardar los productos en la BD.
@@ -103,42 +90,6 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
             mainView.showEmptyMessage();
         }
 
-    }
-
-    /**
-     * Este método trasforma un Json en linea de producto.
-     *
-     * @param ArrayJson json.
-     * @return lista de lineas de producto.
-     */
-    private ArrayList<ProductLine> getProdcutFromJson(String ArrayJson) {
-        ArrayList<ProductLine> lineasProducto = new ArrayList<>();
-        try {
-            JSONArray array = new JSONArray(ArrayJson);
-
-            for (int i = 0; i < array.length(); i++) {
-
-                JSONObject arrayLineasProducto = array.getJSONObject(i);
-
-                String cantidad = arrayLineasProducto.getString("cantidad");
-                String nombre = arrayLineasProducto.getString("nombre");
-                String precio = arrayLineasProducto.getString("precio");
-                String importe = arrayLineasProducto.getString("total");
-                try {
-                    Product product = new Product(nombre);
-                    ProductLine lineaDeProducto = new ProductLine(product,
-                            Integer.parseInt(cantidad), Double.parseDouble(precio),
-                            Double.parseDouble(importe));
-                    lineasProducto.add(lineaDeProducto);
-                } catch (NumberFormatException ex) {
-                    mainView.showErrorMensage();
-                }
-
-            }
-        } catch (Exception e) {
-            mainView.showErrorMensage();
-        }
-        return lineasProducto;
     }
 
 

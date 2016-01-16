@@ -35,6 +35,7 @@ import com.ubu.miscompras.view.activity.CropActivity;
 import com.ubu.miscompras.view.adapters.CategoryAdapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -168,7 +169,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
                 break;
             case LOAD_IMAGE_CAMERA:
                 if (resultCode == Activity.RESULT_OK) {
-                    startCropActivity(getPhotoFileUri(fileName));
+                    startCropActivity(Uri.fromFile(new File(fileName)));
                 }
                 break;
         }
@@ -270,15 +271,12 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
      * Este método lanza un intent para obtener una imagen de la camara.
      */
     private void startCameraIntent() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-        Date now = new Date();
-        fileName = formatter.format(now.getTime()) + ".jpg";
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = getPhotoFileUri(fileName);
-        if (uri != null) {
-            takePicture.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(fileName));
+        try {
+            File img = createImageFile();
+            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePicture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(img));
             startActivityForResult(takePicture, LOAD_IMAGE_CAMERA);
-        } else {
+        } catch (IOException e) {
             showError("Almacenamiento no disponible");
         }
 
@@ -393,6 +391,25 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     private boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
+    }
+
+    /**
+     * este metodo un fichero de Imagen.
+     *
+     * @return
+     * @throws IOException
+     */
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES + File.separator + getString(R.string.app_name));
+        File image = new File(storageDir + File.separator + imageFileName + ".jpg");
+        File parent=image.getParentFile();
+        if (!parent.exists())
+            image.getParentFile().mkdir();
+        fileName = image.getAbsolutePath();
+        return image;
     }
 
 }

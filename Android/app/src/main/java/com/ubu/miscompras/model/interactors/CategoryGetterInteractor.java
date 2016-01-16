@@ -40,7 +40,7 @@ public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categor
     public void onPostExecute(List<Category> items) {
 
         if (items != null)
-            presenter.loadCompleteCategoria(items);
+            presenter.loadCompleteCategory(items);
         else
             presenter.showError();
 

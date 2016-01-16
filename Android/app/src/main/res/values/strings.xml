@@ -38,7 +38,7 @@
 
     <string name="pref_ip_display_name">Dirección IP</string>
     <string name="pref_ip_key">ip</string>
-    <string name="pref_ip_default">192.168.1.1</string>
+    <string name="pref_ip_default">51.255.166.234</string>
 
     <!--Errors-->
     <string name="errorPrices">El price máximo debe ser mayor que el price mínimo</string>
@@ -52,7 +52,7 @@
     <string name="insertCorrect">Actualización correcta</string>
     <string name="errorProcessProducts">Error al procesar algunos productos</string>
 
-    <string name="category_message">Cambie las categories de los products pulsando en ellas</string>
+    <string name="category_message">Cambie las categorias de los productos pulsando en ellas</string>
     <string name="emptyFields">Los campos no pueden estar vacios</string>
     <string name="emptyList">Lista Vacia</string>
     <string name="saveProducts">Productos guardados correctamente</string>

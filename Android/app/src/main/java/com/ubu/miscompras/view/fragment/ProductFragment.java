@@ -75,8 +75,8 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     private boolean isDialogShowing = false;
 
     public final int DATE_FILTER_POSITION = 0;
-    private final int PRICE_FILTER_POSITION = 1;
-    private final int CATEGORY_FILTER_POSITION = 2;
+    public final int PRICE_FILTER_POSITION = 1;
+    public final int CATEGORY_FILTER_POSITION = 2;
 
 
     public ProductFragment() {

@@ -1,5 +1,8 @@
 package com.ubu.miscompras.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -10,7 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 
 @DatabaseTable(tableName = "producto")
-public class Product {
+public class Product implements Parcelable {
 
     public static final String TABLE_NAME = "producto";
     public static final String ID_FIELD_NAME = "id";
@@ -50,6 +53,24 @@ public class Product {
         this.name = name;
         this.category = category;
     }
+
+    protected Product(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        category = in.readParcelable(Category.class.getClassLoader());
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     /**
      * Este método devuelve el id del producto.
@@ -123,5 +144,17 @@ public class Product {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeParcelable(category, flags);
     }
 }

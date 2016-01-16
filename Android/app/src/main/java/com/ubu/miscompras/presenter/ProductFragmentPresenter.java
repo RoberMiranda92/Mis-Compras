@@ -96,7 +96,7 @@ public class ProductFragmentPresenter implements IOnLoadComplete {
     }
 
     @Override
-    public void loadCompleteCategoria(List<Category> items) {
+    public void loadCompleteCategory(List<Category> items) {
         if (!items.isEmpty()) {
             mView.setCategorias(items);
         } else {
@@ -106,7 +106,7 @@ public class ProductFragmentPresenter implements IOnLoadComplete {
     }
 
     @Override
-    public void loadCompleteTicketProducto(List<ProductLine> items) {
+    public void loadCompleteLine(List<ProductLine> items) {
         if (!items.isEmpty()) {
             mView.setProductLines(items);
             mView.showList();

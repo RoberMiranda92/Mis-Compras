@@ -71,12 +71,12 @@ public class CategoryGetterInteractorTest {
             }
 
             @Override
-            public void loadCompleteCategoria(List<Category> items) {
+            public void loadCompleteCategory(List<Category> items) {
                 categories=items;
             }
 
             @Override
-            public void loadCompleteTicketProducto(List<ProductLine> items) {
+            public void loadCompleteLine(List<ProductLine> items) {
 
             }
 

@@ -97,12 +97,12 @@ public class ProductGetterByPriceInteractorTest {
             }
 
             @Override
-            public void loadCompleteCategoria(List<Category> items) {
+            public void loadCompleteCategory(List<Category> items) {
 
             }
 
             @Override
-            public void loadCompleteTicketProducto(List<ProductLine> items) {
+            public void loadCompleteLine(List<ProductLine> items) {
                 productByPrice = items;
             }
 
