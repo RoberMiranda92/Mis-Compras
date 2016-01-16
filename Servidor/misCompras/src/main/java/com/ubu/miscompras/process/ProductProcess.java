@@ -50,7 +50,7 @@ public class ProductProcess {
         instance.setDatapath(System.getProperty("TESSERACT_DATA_DIR"));
         instance.setPageSegMode(PSM_SINGLE_LINE);
         instance.setOcrEngineMode(OEM_TESSERACT_ONLY);
-        instance.setTessVariable("tessedit_char_blacklist", "`?:");
+        instance.setTessVariable("tessedit_char_blacklist", "`?:’‘");
         this.csvFile=csvPath;
         
         try {
@@ -72,10 +72,7 @@ public class ProductProcess {
             Logger.getLogger(ImageProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void setDicionaryFile(String path){
-        
-    }
+   
 
     /**
      * Este metodo devuelve el texto de una lista de archivos de imagen.

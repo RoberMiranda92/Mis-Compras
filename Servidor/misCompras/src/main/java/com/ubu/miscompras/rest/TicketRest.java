@@ -92,8 +92,8 @@ public class TicketRest {
         ImageProcess image = new ImageProcess(imageFilePath);
         ArrayList<File> productos = image.getProductsFileFromImage();
         
-        String diccionarioFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.CSV_FILE_NAME;
-        String csvFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.DICCIONARY_FILE_NAME;
+        String diccionarioFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.DICCIONARY_FILE_NAME;
+        String csvFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.CSV_FILE_NAME;
       
         
         ProductProcess p = new ProductProcess(productos,diccionarioFilePath,csvFilePath);
