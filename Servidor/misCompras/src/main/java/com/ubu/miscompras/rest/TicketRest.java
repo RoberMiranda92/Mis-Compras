@@ -1,8 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.ubu.miscompras.rest;
 
 import com.sun.jersey.core.header.ContentDisposition;
@@ -23,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -41,20 +49,23 @@ import javax.ws.rs.core.Context;
 import org.json.JSONArray;
 
 /**
+ * Servlet que se emplea para pocesar la imagen, o guardar nuevos datos en el
+ * fichero de diccionario.
  *
- * @author Roberto
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  *
  */
 @Path("/file")
 public class TicketRest {
-    @Context ServletContext context;
+
+    @Context
+    ServletContext context;
     private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
     private static final String SERVER_UPLOAD_LOCATION_FOLDER = "//WEB-INF//images//";
     private static final String SERVER_DICIONARY_LOCATION_FOLDER = "//WEB-INF//diccionarios//";
     private String textoFinal;
-    Logger logger = Logger.getLogger(getClass().getName());
+    final Logger logger = Logger.getLogger(getClass().getName());
 
-    
     @GET
     @Path("/test")
     @Produces(MediaType.TEXT_PLAIN)
@@ -66,39 +77,40 @@ public class TicketRest {
      * Este metodo Post que guarda la imagen en el servidor y obtiene sus
      * productos empaquetandolo en un JSON.
      *
-     * @param body
-     * @param istream
-     * @return
+     * @param body cabecera del fichero
+     * @param istream datos del fichero
+     * @return productos encontrados empaquetados en un JSON
      */
     @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@FormDataParam("file") FormDataBodyPart body, @FormDataParam("file") InputStream istream) throws IOException {
-      
-        
 
         FormDataBodyPart filePart = body;
         ContentDisposition headerOfFilePart = filePart.getContentDisposition();
         InputStream fileInputStream = istream;
-        
+
         String file = headerOfFilePart.getFileName();
         String[] tokens = file.split("\\.(?=[^\\.]+$)");
-        
-        String imageFilePath =context.getRealPath(SERVER_UPLOAD_LOCATION_FOLDER)+File.separator+tokens[0]+File.separator + file; 
-        
+
+        String imageFilePath = context.getRealPath(SERVER_UPLOAD_LOCATION_FOLDER) + File.separator + tokens[0] + File.separator + file;
+
         saveFile(fileInputStream, imageFilePath);
         istream.close();
 
         ImageProcess image = new ImageProcess(imageFilePath);
         ArrayList<File> productos = image.getProductsFileFromImage();
-        
-        String diccionarioFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.DICCIONARY_FILE_NAME;
-        String csvFilePath= context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.CSV_FILE_NAME;
-      
-        
-        ProductProcess p = new ProductProcess(productos,diccionarioFilePath,csvFilePath);
+        try{
+        if(productos.isEmpty()){
+             throw new MisComprasException(MisComprasException.NO_SE_ENCONTRARON_PRODUCTOS);
+  
+        }
+
+        String diccionarioFilePath = context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER) + File.separator + Utils.DICCIONARY_FILE_NAME;
+        String csvFilePath = context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER) + File.separator + Utils.CSV_FILE_NAME;
+
+        ProductProcess p = new ProductProcess(productos, diccionarioFilePath, csvFilePath);
         JSONArray array = new JSONArray();
-        try {
             textoFinal = p.getText();
             String[] splitProducts = textoFinal.split("\n\n");
             for (String splitProduct : splitProducts) {
@@ -111,24 +123,23 @@ public class TicketRest {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
 
-    }  
-    
-    
-    
+    }
+
     /**
-     * 
-     * @param data
-     * @return 
+     * Metodo post que guarda en el fichero de diccionario las palabras nuevas.
+     *
+     * @param data palabras a guardar.
+     * @return respuesta del servidor.
      */
     @POST
     @Path("/diccionario")
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response saveDiccionary(String data){
-        
+    public Response saveDiccionary(String data) {
+
         Writer fileWriter = null;
         BufferedWriter bufferedWriter = null;
-         try {
-             String path = context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER)+File.separator + Utils.DICCIONARY_FILE_NAME;
+        try {
+            String path = context.getRealPath(SERVER_DICIONARY_LOCATION_FOLDER) + File.separator + Utils.DICCIONARY_FILE_NAME;
             File diccionario = new File(path);
             if (!diccionario.exists()) {
                 diccionario.createNewFile();
@@ -142,19 +153,17 @@ public class TicketRest {
                     nWords.put((temp = m.group()), nWords.containsKey(temp) ? nWords.get(temp) + 1 : 1);
                 }
             }
-            fileWriter = new FileWriter(diccionario,true);
+            fileWriter = new FileWriter(diccionario, true);
             bufferedWriter = new BufferedWriter(fileWriter);
 
-            
-            
             String[] lines = data.split(",");
-            
-            for(String line : lines){
+
+            for (String line : lines) {
                 String[] words = line.split(" ");
-                for(String word : words){
-                    
-                    if(!nWords.containsKey(word)){
-                        bufferedWriter.write(word+System.getProperty("line.separator"));
+                for (String word : words) {
+
+                    if (!nWords.containsKey(word)) {
+                        bufferedWriter.write(System.getProperty("line.separator") + word);
                     }
                 }
             }
@@ -165,9 +174,7 @@ public class TicketRest {
             logger.severe(ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
-         
-        
-      
+
     }
 
     /**
@@ -177,13 +184,14 @@ public class TicketRest {
      * @param serverLocation ruta donde se guarda el fichero
      */
     private void saveFile(InputStream uploadedInputStream, String serverLocation) {
-        
-        File f = new File (serverLocation);
-        
+
+        File f = new File(serverLocation);
+
         File parent = f.getParentFile();
-        
-        if(!parent.exists())
+
+        if (!parent.exists()) {
             parent.mkdirs();
+        }
         try {
             OutputStream outpuStream = new FileOutputStream(new File(
                     serverLocation));
@@ -201,5 +209,9 @@ public class TicketRest {
         } catch (IOException ex) {
             logger.severe(ex.getMessage());
         }
+    }
+
+    private String getName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

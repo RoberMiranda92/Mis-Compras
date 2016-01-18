@@ -1,12 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.ubu.miscompras.process;
 
 import com.ubu.miscompras.exceptions.MisComprasException;
-import com.ubu.miscompras.utils.Utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +43,7 @@ public class ProductProcess {
     private final ArrayList<File> files;
     private final HashMap<String, Integer> nWords = new HashMap<>();
     private final String csvFile;
+    final Logger logger = Logger.getLogger(getClass().getName());
  
 
     /**
@@ -42,6 +51,8 @@ public class ProductProcess {
      * imgenes para analizar el texto
      *
      * @param files lista de imagenes
+     * @param dicionaryPath path al fichero del diccionario.
+     * @param csvPath path al fichero del diccionario.
      */
     public ProductProcess(ArrayList<File> files,String dicionaryPath,String csvPath) {
 
@@ -69,7 +80,7 @@ public class ProductProcess {
             }
             in.close();
         } catch (IOException ex) {
-            Logger.getLogger(ImageProcess.class.getName()).log(Level.SEVERE, null, ex);
+           logger.severe(ex.getMessage());
         }
     }
    
@@ -111,7 +122,7 @@ public class ProductProcess {
         String result = "";
         String lineaProductoCorrecta = deleteUnnecessarySpaces(lineaProducto);
         String producto = getProduct(lineaProductoCorrecta);
-        int nSpaces = producto.length() - producto.replace(" ", "").length();;
+        int nSpaces = producto.length() - producto.replace(" ", "").length();
         int i = 0;
         do {
             if (producto.contains(" ")) {
@@ -241,10 +252,8 @@ public class ProductProcess {
 
         String[] characters = {".", ",", ":", ";",};
         String remplaceCharacter = "";
-        for (int i = 0; i < characters.length; i++) {
-
-            remplaceCharacter += characters[i];
-
+        for (String character : characters) {
+            remplaceCharacter += character;
         }
         String pattern = "(\\s*)([\\" + remplaceCharacter + "])(\\s*)";
         lineaProducto = lineaProducto.replaceAll(pattern, ".");
@@ -337,16 +346,16 @@ public class ProductProcess {
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            logger.severe(ex.getMessage());
+        } catch (IOException ex) {
+            logger.severe(ex.getMessage());
         } finally {
             if (br != null) {
                 try {
                     br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                   logger.severe(ex.getMessage());
                 }
             }
         }

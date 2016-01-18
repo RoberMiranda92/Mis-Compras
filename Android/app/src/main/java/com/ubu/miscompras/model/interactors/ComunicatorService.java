@@ -1,3 +1,17 @@
+/*
+*   Copyright (C) 2015 Roberto Miranda.
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
+*/
 package com.ubu.miscompras.model.interactors;
 
 import android.content.Context;
@@ -35,6 +49,7 @@ import java.io.IOException;
 
 
 /**
+ * Tarea que se encarga de subir un fichero al servidor, y obtener su respuesta.
  * Created by RobertoMiranda on 2/11/15.
  */
 public class ComunicatorService extends AsyncTask<Void, Integer, String> {
@@ -78,7 +93,7 @@ public class ComunicatorService extends AsyncTask<Void, Integer, String> {
             else
                 presenter.showErrorMensage(response);
         } else {
-            presenter.showErrorMensage(parseStatusCode(HttpStatus.SC_REQUEST_TIMEOUT));
+            presenter.showErrorMensage(parseStatusCode(HttpStatus.SC_REQUEST_TIMEOUT, null));
         }
     }
 
@@ -139,7 +154,7 @@ public class ComunicatorService extends AsyncTask<Void, Integer, String> {
                 responseString = EntityUtils.toString(r_entity);
             } else {
                 error = true;
-                responseString = parseStatusCode(statusCode);
+                responseString = parseStatusCode(statusCode, EntityUtils.toString(r_entity));
             }
             return responseString;
         } catch (ClientProtocolException e) {
@@ -151,15 +166,15 @@ public class ComunicatorService extends AsyncTask<Void, Integer, String> {
         }
     }
 
-    private String parseStatusCode(int statusCode) {
+    private String parseStatusCode(int statusCode, String ex) {
 
         switch (statusCode) {
             case HttpStatus.SC_REQUEST_TIMEOUT:
                 return "Tiempo de conexión agotado";
             case HttpStatus.SC_INTERNAL_SERVER_ERROR:
-                return "Error al procesar imagen";
+                return ex;
             default:
-                return "Error";
+                return "Error desconocido";
         }
     }
 
