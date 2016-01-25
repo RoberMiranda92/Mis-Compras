@@ -6,5 +6,11 @@
         android:key="@string/pref_ip_key"
         android:singleLine="true"
         android:title="@string/pref_ip_display_name" />
+    <CheckBoxPreference
+        android:defaultValue="@string/pref_enable_manual_default"
+        android:key="@string/pref_manual_key"
+        android:summaryOff="@string/pref_enable_manual_false"
+        android:summaryOn="@string/pref_enable_manual_true"
+        android:title="@string/pref_manual_display_name" />
 
 </PreferenceScreen>

@@ -31,7 +31,7 @@
     <string name="percent_sign">&#x0025;</string>
     <string name="format_importeTotal"><xliff:g id="totalImport">%.2f</xliff:g>€</string>
     <string name="format_comra">Compra Nº: <xliff:g id="numero">%d</xliff:g></string>
-    <string name="format_articulos">Número de articulos: <xliff:g id="articulos">%d</xliff:g></string>
+    <string name="format_articulos">Número de artículos: <xliff:g id="articulos">%d</xliff:g></string>
     <string name="format_date"><xliff:g id="day">%d</xliff:g>-<xliff:g id="month">%d</xliff:g>-<xliff:g id="year">%d</xliff:g></string>
     <string name="format_date2">Fecha: <xliff:g id="day">%d</xliff:g>/<xliff:g id="month">%d</xliff:g>/<xliff:g id="year">%d</xliff:g></string>
 
@@ -39,6 +39,11 @@
     <string name="pref_ip_display_name">Dirección IP</string>
     <string name="pref_ip_key">ip</string>
     <string name="pref_ip_default">51.255.166.234</string>
+    <string name="pref_manual_key">manual</string>
+    <string name="pref_enable_manual_true">Si</string>
+    <string name="pref_enable_manual_false">No</string>
+    <string name="pref_enable_manual_default" translatable="false">true</string>
+    <string name="pref_manual_display_name">Mostrar manual</string>
 
     <!--Errors-->
     <string name="errorPrices">El price máximo debe ser mayor que el price mínimo</string>
@@ -56,5 +61,16 @@
     <string name="emptyFields">Los campos no pueden estar vacios</string>
     <string name="emptyList">Lista Vacia</string>
     <string name="saveProducts">Productos guardados correctamente</string>
+
+    <!-- Manual -->
+    <string name="title_manual_3">Realiza consultas con</string>
+    <string name="subtitle_manual_3">con diferentes filtros</string>
+    <string name="title_manual_2">Modifica tus compras</string>
+    <string name="subtitle_manual_2">a tu gusto</string>
+    <string name="title_manual_1">Añade nuevos tiques</string>
+    <string name="subtitle_manual_1">desde la galería o cámara</string>
+    <string name="lestStart">Vamos a empezar</string>
+    <string name="welcome">Bienvenido</string>
+
 
 </resources>

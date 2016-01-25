@@ -63,7 +63,6 @@ public class SplashActivityPresenter implements IOnFinishedListener, IOnLoadComp
         else
             mView.showMessage();
 
-        mView.start();
     }
 
     @Override
@@ -79,6 +78,7 @@ public class SplashActivityPresenter implements IOnFinishedListener, IOnLoadComp
     @Override
     public void loadCompleteLine(List<ProductLine> items) {
         mView.setTicketProducto(items);
+        mView.start();
     }
 
     @Override

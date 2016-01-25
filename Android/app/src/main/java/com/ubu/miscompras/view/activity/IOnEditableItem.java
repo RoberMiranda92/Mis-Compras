@@ -23,8 +23,18 @@ import com.ubu.miscompras.model.ProductLine;
  */
 public interface IOnEditableItem {
 
-
+    /**
+     * Elemento de la lista a edutar.
+     *
+     * @param productLine linea de producto.
+     * @param position    posición en la lista.
+     */
     void OnEditItem(ProductLine productLine, int position);
 
+    /**
+     * Muestra un mensaje de error.
+     *
+     * @param message mensaje.
+     */
     void showOnEditItemError(String message);
 }

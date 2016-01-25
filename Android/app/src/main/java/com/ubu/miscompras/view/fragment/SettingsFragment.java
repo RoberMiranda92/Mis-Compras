@@ -15,6 +15,7 @@
 package com.ubu.miscompras.view.fragment;
 
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -37,6 +38,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             EditTextPreference campoIp = (EditTextPreference) preference;
             campoIp.setSummary(ip);
 
+
         }
         return true;
 
@@ -52,10 +54,14 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private void bindPreferenceSummaryToValue(Preference preference) {
         preference.setOnPreferenceChangeListener(this);
-        onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+        if (preference instanceof EditTextPreference) {
+            onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), ""));
+        }
+
+
     }
 
 }

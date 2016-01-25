@@ -21,19 +21,42 @@ import com.ubu.miscompras.model.Ticket;
 import java.util.List;
 
 /**
- * Created by RobertoMiranda on 17/12/15.
+ * Interfaz de callback para los presenters que acceden a la base de datos.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public interface IOnLoadComplete {
 
-
+    /**
+     * muestra un error.
+     */
     public void showError();
 
+    /**
+     * Carga de categorias completa.
+     *
+     * @param items lista de categorias
+     */
     public void loadCompleteCategory(List<Category> items);
+
+    /**
+     * Carga de lineas de producto completa.
+     *
+     * @param items lista de productos.
+     */
 
     public void loadCompleteLine(List<ProductLine> items);
 
+    /**
+     * Carga de tiques completa.
+     *
+     * @param items lista de tiques.
+     */
     public void loadCompleteTicket(List<Ticket> items);
 
+    /**
+     * Obtiene las categorias
+     */
     public void getCategories();
 
     public void onResume();

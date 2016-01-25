@@ -16,7 +16,9 @@ package com.ubu.miscompras.presenter;
 
 
 /**
- * Created by RobertoMiranda on 16/12/15.
+ * Interfaz de callback para las insercciones en la BD.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public interface IOnFinishedListener {
     void onFinished(Boolean result);

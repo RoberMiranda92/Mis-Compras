@@ -17,14 +17,31 @@ package com.ubu.miscompras.view.activity;
 import android.content.Context;
 import android.view.View;
 
-
+/**
+ * Interfaz para obtener las vistas de detalle de un tique de la lista.
+ *
+ * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
+ */
 public interface IOnItemClick {
 
-
+    /**
+     * Muestra un meansaje
+     *
+     * @param message mensaje.
+     */
     public void showMessage(String message);
 
-
+    /**
+     * Devuelve el contexto de la aplicación
+     *
+     * @return contexto.
+     */
     public Context getContext();
 
+    /**
+     * accion de click para un elemento.
+     *
+     * @param v vista sobre la que se actua.
+     */
     void onItemClick(View v);
 }
