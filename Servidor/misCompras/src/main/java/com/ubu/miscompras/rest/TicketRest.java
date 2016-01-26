@@ -61,8 +61,8 @@ public class TicketRest {
     @Context
     ServletContext context;
     private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "//WEB-INF//images//";
-    private static final String SERVER_DICIONARY_LOCATION_FOLDER = "//WEB-INF//diccionarios//";
+    private static final String SERVER_UPLOAD_LOCATION_FOLDER = File.separator+"WEB-INF"+File.separator+"images"+File.separator;
+    private static final String SERVER_DICIONARY_LOCATION_FOLDER = File.separator+"WEB-INF"+File.separator+File.separator;
     private String textoFinal;
     final Logger logger = Logger.getLogger(getClass().getName());
 
@@ -111,6 +111,7 @@ public class TicketRest {
 
         ProductProcess p = new ProductProcess(productos, diccionarioFilePath, csvFilePath);
         JSONArray array = new JSONArray();
+        
             textoFinal = p.getText();
             String[] splitProducts = textoFinal.split("\n\n");
             for (String splitProduct : splitProducts) {

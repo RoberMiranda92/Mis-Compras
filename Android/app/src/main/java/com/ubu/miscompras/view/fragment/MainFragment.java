@@ -28,7 +28,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -218,6 +217,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         barProgressDialog.setMax(100);
         barProgressDialog.setProgress(0);
         barProgressDialog.show();
+        barProgressDialog.setCancelable(false);
     }
 
     /**
@@ -380,24 +380,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     /**
-     * Este método devuelve la uri de un fichero en el directorio de imagenes, si este no existe lo crea.
-     *
-     * @param fileName nombre del fichero.
-     * @return
-     */
-    private Uri getPhotoFileUri(String fileName) {
-        if (isExternalStorageAvailable()) {
-            File mediaStorageDir = new File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getString(R.string.app_name));
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-                Log.d("exception", "failed to create directory");
-            }
-            return Uri.fromFile(new File(mediaStorageDir.getPath() + File.separator + fileName));
-        }
-        return null;
-    }
-
-    /**
      * Este método comprueba si el almacenamiento SD esta disponible
      *
      * @return true si esta disponible, falso en el caso contrario.
@@ -419,7 +401,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES + File.separator + getString(R.string.app_name));
         File image = new File(storageDir + File.separator + imageFileName + ".jpg");
-        File parent=image.getParentFile();
+        File parent = image.getParentFile();
         if (!parent.exists())
             image.getParentFile().mkdir();
         fileName = image.getAbsolutePath();

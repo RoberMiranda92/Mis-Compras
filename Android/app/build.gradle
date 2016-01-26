@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "com.ubu.miscompras"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testApplicationId "com.ubu.miscompras.test"
@@ -61,5 +61,5 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.3.1'
     compile 'com.isseiaoki:simplecropview:1.0.15'
     compile 'com.txusballesteros:FitChart:1.0'
-    compile 'com.github.bumptech.glide:glide:3.6.1'
+
 }

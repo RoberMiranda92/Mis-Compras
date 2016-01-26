@@ -107,7 +107,7 @@ public class ProductProcess {
             }
             return result;
 
-        } catch (TesseractException ex) {
+        } catch (Exception ex) {
             throw new MisComprasException(MisComprasException.ERROR_TESSERACT);
         }
     }
