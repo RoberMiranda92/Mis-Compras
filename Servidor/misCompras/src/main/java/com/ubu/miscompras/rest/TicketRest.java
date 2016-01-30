@@ -211,8 +211,4 @@ public class TicketRest {
             logger.severe(ex.getMessage());
         }
     }
-
-    private String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
