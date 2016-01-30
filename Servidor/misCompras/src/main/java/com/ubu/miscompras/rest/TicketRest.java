@@ -62,7 +62,7 @@ public class TicketRest {
     ServletContext context;
     private final HashMap<String, Integer> nWords = new HashMap<String, Integer>();
     private static final String SERVER_UPLOAD_LOCATION_FOLDER = File.separator+"WEB-INF"+File.separator+"images"+File.separator;
-    private static final String SERVER_DICIONARY_LOCATION_FOLDER = File.separator+"WEB-INF"+File.separator+File.separator;
+    private static final String SERVER_DICIONARY_LOCATION_FOLDER = File.separator+"WEB-INF"+File.separator+"diccionarios"+File.separator;
     private String textoFinal;
     final Logger logger = Logger.getLogger(getClass().getName());
 

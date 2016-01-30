@@ -107,6 +107,9 @@ public class ImageProcess {
         Mat grayImage = new Mat(src.height(), src.width(), CvType.CV_8UC1);
         Imgproc.cvtColor(src, grayImage, Imgproc.COLOR_RGB2GRAY);
 
+        /* String output = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_GRAY" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(output, grayImage);*/
         return grayImage;
 
     }
@@ -142,7 +145,9 @@ public class ImageProcess {
 
         Imgproc.threshold(src, binaryImage, 0, 255, Imgproc.THRESH_BINARY_INV | Imgproc.THRESH_OTSU);
 
-      
+        /*String fileBinario = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_BINARIZADA" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileBinario, binaryImage);*/
         double angle = getAnglefromMat(binaryImage);
 
         Point center = new Point(src.width() / 2, src.height() / 2);
@@ -155,7 +160,10 @@ public class ImageProcess {
             s = new Scalar(255, 0, 0);
         }
         Imgproc.warpAffine(src, src, rotImage, src.size(), Imgproc.INTER_CUBIC, Core.BORDER_CONSTANT, s);
-        
+
+        /*fileDesk = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_DESKEWING" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileDesk, src);*/
         return src;
 
     }
@@ -195,6 +203,11 @@ public class ImageProcess {
             angle /= lines.cols();
         }
 
+        String fileTemp = imagenOriginal.getParent() + File.separator
+                + Utils.getFileName(imagenOriginal) + "_RECTA"
+                + Utils.getFileExtension(imagenOriginal);
+        Imgcodecs.imwrite(fileTemp, original);
+
         return angle;
     }
 
@@ -215,12 +228,16 @@ public class ImageProcess {
 
         Mat binaryImage = binaryImageOriginal.clone();
 
-      
+        /*String fileBinario = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_BINARIZADA2" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileBinario, binaryImage);*/
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(binaryImage.width(), 1));
         Mat dilate = new Mat();
         Imgproc.dilate(binaryImage, dilate, element);
 
-
+        /*String fileDilate = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_DILATE" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileDilate, dilate);*/
         Mat mask = Mat.zeros(binaryImage.size(), CvType.CV_8UC1);
 
         List<MatOfPoint> contours = new ArrayList<>();
@@ -256,6 +273,10 @@ public class ImageProcess {
                 productos.add(new File(filesCrop));
             }
         }
+
+        /*String fileCrop = imagenOriginal.getParent() + File.separator + Utils.filename(imagenOriginal)
+         + "_CROP" + Utils.extension(imagenOriginal);
+         Imgcodecs.imwrite(fileCrop, binaryImageOriginal);*/
         return productos;
     }
 
@@ -283,19 +304,22 @@ public class ImageProcess {
                 Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,
                         new Size(dilation_size, dilation_size));
                 Imgproc.dilate(src, dilate, element1);
-             
+                //Imgproc.morphologyEx(binaryAdaptative, erodeAndDilate, Imgproc.MORPH_OPEN, element1);
 
-               
+                String fileDilate = imagenOriginal.getParent() + File.separator + Utils.getFileName(imagenOriginal)
+                        + "_DILATE2_" + files.indexOf(f) + Utils.getFileExtension(imagenOriginal);
+                Imgcodecs.imwrite(fileDilate, dilate);
 
                 double erode_size = 3;
                 Mat element2 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,
                         new Size(erode_size, erode_size));
                 Imgproc.erode(dilate, erode, element2);
-              
+                //Imgproc.morphologyEx(binaryAdaptative, erodeAndDilate, Imgproc.MORPH_OPEN, element1);
 
                 String fileErode = imagenOriginal.getParent() + File.separator + Utils.getFileName(imagenOriginal)
                         + "_ERODE_" + files.indexOf(f) + Utils.getFileExtension(imagenOriginal);
 
+                Imgcodecs.imwrite(fileErode, erode);
 
                 filesDilate.add(new File(fileErode));
             }
