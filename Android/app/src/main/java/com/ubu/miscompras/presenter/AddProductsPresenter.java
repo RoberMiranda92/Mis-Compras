@@ -111,6 +111,7 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
     public void onFinished(Boolean result) {
         if (result) {
             mainView.showOkMessage();
+            mainView.updateTotal();
             mainView.end();
         } else
             mainView.showMessage("Error al guardar los productos");

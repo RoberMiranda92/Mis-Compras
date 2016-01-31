@@ -15,6 +15,7 @@
 package com.ubu.miscompras.view.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -302,5 +303,20 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
             showErrorMensage();
         }
         return lineasProducto;
+    }
+
+    /**
+     * Este método actualiza el total gastado en compras.
+     *
+     */
+    public void updateTotal() {
+
+        float total = (float) calculateTotal();
+
+        SharedPreferences sharedPref = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat("importeTotal", total);
+        editor.apply();
+
     }
 }
