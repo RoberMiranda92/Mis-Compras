@@ -26,12 +26,11 @@ import android.widget.VideoView;
 import com.ubu.miscompras.R;
 
 /**
- * Cuarto fragment del manual.
+ * Tercer fragment del manual.
  *
  * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
 public class ThirdPageIntroFragment extends Fragment {
-
 
     private VideoView gifImage;
 
@@ -41,10 +40,9 @@ public class ThirdPageIntroFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_thirdpageintro, container, false);
 
-
         gifImage = (VideoView) rootView.findViewById(R.id.videoView_gif);
 
-        String uriPath = "android.resource://com.ubu.miscompras/raw/video3";
+        String uriPath = "android.resource://com.ubu.miscompras/raw/video2";
         Uri uri = Uri.parse(uriPath);
         gifImage.setVideoURI(uri);
 
@@ -57,7 +55,6 @@ public class ThirdPageIntroFragment extends Fragment {
 
 
         return rootView;
-
 
     }
 

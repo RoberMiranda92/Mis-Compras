@@ -26,7 +26,7 @@ import android.widget.VideoView;
 import com.ubu.miscompras.R;
 
 /**
- * Tercer fragment del manual.
+ * Segundo fragment del manual.
  *
  * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
@@ -40,9 +40,13 @@ public class SecondPageIntroFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_secondpageintro, container, false);
 
+
+       /* ImageView gifImage = (ImageView) rootView.findViewById(R.id.imageView_gif);
+        Glide.with(getContext()).load(R.drawable.manual1).asGif().into(gifImage);*/
+
         gifImage = (VideoView) rootView.findViewById(R.id.videoView_gif);
 
-        String uriPath = "android.resource://com.ubu.miscompras/raw/video2";
+        String uriPath = "android.resource://com.ubu.miscompras/raw/video1";
         Uri uri = Uri.parse(uriPath);
         gifImage.setVideoURI(uri);
 
@@ -66,7 +70,7 @@ public class SecondPageIntroFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
+    public void onPause(){
         gifImage.pause();
         super.onPause();
     }

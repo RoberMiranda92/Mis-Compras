@@ -31,9 +31,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ubu.miscompras.R;
-import com.ubu.miscompras.view.fragment.DefaultPageIntroFragment;
 import com.ubu.miscompras.view.fragment.FirstPageIntroFragment;
 import com.ubu.miscompras.view.fragment.SecondPageIntroFragment;
+import com.ubu.miscompras.view.fragment.FourthPageIntroFragment;
+import com.ubu.miscompras.view.fragment.FifthPageIntroFragment;
 import com.ubu.miscompras.view.fragment.ThirdPageIntroFragment;
 
 
@@ -42,9 +43,9 @@ import com.ubu.miscompras.view.fragment.ThirdPageIntroFragment;
  *
  * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class IntroActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class ManualActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
-    private static final int NUM_PAGES = 4;
+    private static final int NUM_PAGES = 5;
 
 
     private ViewPager mPager;
@@ -149,7 +150,7 @@ public class IntroActivity extends FragmentActivity implements View.OnClickListe
         editor.putBoolean(getString(R.string.pref_manual_key), false);
         editor.apply();
 
-        Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+        Intent intent = new Intent(ManualActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
@@ -167,15 +168,17 @@ public class IntroActivity extends FragmentActivity implements View.OnClickListe
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new DefaultPageIntroFragment();
+                    return new FirstPageIntroFragment();
                 case 1:
-                    return new FirstPageIntroFragment();
-                case 2:
                     return new SecondPageIntroFragment();
-                case 3:
+                case 2:
                     return new ThirdPageIntroFragment();
+                case 3:
+                    return new FourthPageIntroFragment();
+                case 4:
+                    return new FifthPageIntroFragment();
                 default:
-                    return new FirstPageIntroFragment();
+                    return new SecondPageIntroFragment();
             }
 
         }

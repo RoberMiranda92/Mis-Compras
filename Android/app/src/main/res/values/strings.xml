@@ -63,12 +63,14 @@
     <string name="saveProducts">Productos guardados correctamente</string>
 
     <!-- Manual -->
-    <string name="title_manual_3">Realiza consultas con</string>
-    <string name="subtitle_manual_3">con diferentes filtros</string>
-    <string name="title_manual_2">Modifica tus compras</string>
-    <string name="subtitle_manual_2">a tu gusto</string>
-    <string name="title_manual_1">Añade nuevos tiques</string>
-    <string name="subtitle_manual_1">desde la galería o cámara</string>
+    <string name="title_manual_5">Realiza consultas con</string>
+    <string name="subtitle_manual_5">con diferentes filtros</string>
+    <string name="title_manual_3">Recorta los productos</string>
+    <string name="subtitle_manual_3">ajustando las esquinas</string>
+    <string name="title_manual_2">Añade nuevos tiques</string>
+    <string name="subtitle_manual_2">desde la galería o cámara</string>
+    <string name="title_manual_4">Modifica tus compras</string>
+    <string name="subtitle_manual_4">a tu gusto</string>
     <string name="lestStart">Vamos a empezar</string>
     <string name="welcome">Bienvenido</string>
 

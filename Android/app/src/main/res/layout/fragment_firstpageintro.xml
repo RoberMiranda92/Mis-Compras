@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/maintextView"
@@ -9,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:text="@string/title_manual_1"
+        android:text="@string/welcome"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -18,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/maintextView"
         android:layout_centerHorizontal="true"
-        android:text="@string/subtitle_manual_1"
+        android:text="@string/lestStart"
         android:textColor="@color/white"
         android:textSize="15sp" />
 
@@ -28,13 +30,16 @@
         android:layout_height="355dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/rendersmartphone" />
+        android:layout_marginTop="20dp"
+        android:src="@drawable/rendersmartphonedos" />
 
-    <VideoView
-        android:id="@+id/videoView_gif"
-        android:layout_width="150dp"
-        android:layout_height="300dp"
+    <ImageView
+        android:id="@+id/imageView_icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/miscompras" />
+
 
 </RelativeLayout>

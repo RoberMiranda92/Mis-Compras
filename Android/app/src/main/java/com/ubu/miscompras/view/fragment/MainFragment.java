@@ -190,12 +190,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
     }
 
 
-    public void starAddProductActivity(String text) {
-        Intent i = new Intent();
-        i.setClass(getActivity(), AddProductsActivity.class);
-        i.putExtra("productos", text);
-        startActivity(i);
-    }
+
 
     /**
      * Este método muestra un mensaje de error.
@@ -327,6 +322,13 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         startActivityForResult(intent, CROP_PIC);
     }
 
+    public void starAddProductActivity(String text) {
+        Intent i = new Intent();
+        i.setClass(getActivity(), AddProductsActivity.class);
+        i.putExtra("productos", text);
+        startActivity(i);
+    }
+
     /**
      * Este método muestra la lista de catoegrias en el spinner.
      *
@@ -379,15 +381,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
 
     }
 
-    /**
-     * Este método comprueba si el almacenamiento SD esta disponible
-     *
-     * @return true si esta disponible, falso en el caso contrario.
-     */
-    private boolean isExternalStorageAvailable() {
-        String state = Environment.getExternalStorageState();
-        return state.equals(Environment.MEDIA_MOUNTED);
-    }
 
     /**
      * este metodo un fichero de Imagen.

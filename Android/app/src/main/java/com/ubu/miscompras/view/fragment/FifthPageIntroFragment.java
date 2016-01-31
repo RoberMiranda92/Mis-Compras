@@ -14,43 +14,62 @@
 */
 package com.ubu.miscompras.view.fragment;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.VideoView;
 
 import com.ubu.miscompras.R;
 
 /**
- * Primer fragment del manual.
+ * Cuarto fragment del manual.
  *
  * @author <a href="mailto:rmp0046@gmail.com">Roberto Miranda Pérez</a>
  */
-public class DefaultPageIntroFragment extends Fragment {
+public class FifthPageIntroFragment extends Fragment {
 
+
+    private VideoView gifImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_defaultpageintro, container, false);
+                R.layout.fragment_fifthpageintro, container, false);
 
-        Animation rotate =  AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
-        //Animation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
-        rotate.setDuration(3000);
-        ImageView image = (ImageView) rootView.findViewById(R.id.imageView_icon);
-        image.startAnimation(rotate);
+        gifImage = (VideoView) rootView.findViewById(R.id.videoView_gif);
+
+        String uriPath = "android.resource://com.ubu.miscompras/raw/video4";
+        Uri uri = Uri.parse(uriPath);
+        gifImage.setVideoURI(uri);
+
+        gifImage.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
 
         return rootView;
 
 
     }
 
+    @Override
+    public void onStart() {
+        gifImage.start();
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        gifImage.pause();
+        super.onPause();
+    }
 }

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:text="@string/title_manual_2"
+        android:text="@string/title_manual_5"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/maintextView"
         android:layout_centerHorizontal="true"
-        android:text="@string/subtitle_manual_2"
+        android:text="@string/subtitle_manual_5"
         android:textColor="@color/white"
         android:textSize="15sp" />
 
@@ -36,5 +36,4 @@
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
-
 </RelativeLayout>

@@ -76,7 +76,7 @@ public class SplashActivity extends AppCompatActivity {
         boolean showManual = sharedPreferences.getBoolean(getString(R.string.pref_manual_key), true);
 
         if (showManual) {
-            Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
+            Intent intent = new Intent(SplashActivity.this, ManualActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
