@@ -115,6 +115,8 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         textView_amount = (TextView) mView.findViewById(R.id.textView_Percentage);
         texView_totalImport = (TextView) mView.findViewById(R.id.textView_Total);
 
+        presenter.onResume();
+
         return mView;
 
     }
@@ -122,13 +124,16 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
 
     @Override
     public void onResume() {
-        super.onResume();
+
         getActivity().setTitle(getString(R.string.app_name));
         SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         this.position = sharedPref.getInt("spinnerPosition", 0);
-        CategorySpinner.setSelection(position);
-        presenter.onResume();
 
+        CategorySpinner.setSelection(position);
+        if (categoryAdapter != null) {
+            presenter.drawCharByCategoty(categoryAdapter.getItem(position));
+        }
+        super.onResume();
 
     }
 
@@ -164,6 +169,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         SharedPreferences sharedPref = getActivity().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("spinnerPosition", position);
+        editor.apply();
 
     }
 
@@ -188,8 +194,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Adap
         }
 
     }
-
-
 
 
     /**

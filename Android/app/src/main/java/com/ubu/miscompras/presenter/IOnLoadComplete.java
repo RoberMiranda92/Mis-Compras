@@ -28,7 +28,7 @@ import java.util.List;
 public interface IOnLoadComplete {
 
     /**
-     * muestra un error.
+     * Muestra un error.
      */
     public void showError();
 

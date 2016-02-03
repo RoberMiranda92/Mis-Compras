@@ -20,9 +20,9 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.ubu.miscompras.model.Category;
-import com.ubu.miscompras.view.activity.App;
 import com.ubu.miscompras.model.database.DataBaseHelper;
 import com.ubu.miscompras.presenter.IOnLoadComplete;
+import com.ubu.miscompras.view.activity.App;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categor
         else
             presenter.showError();
 
-        if(db.isOpen())
+        if (db.isOpen())
             db.close();
         OpenHelperManager.releaseHelper();
     }
@@ -69,10 +69,12 @@ public class CategoryGetterInteractor extends AsyncTask<Void, Void, List<Categor
 
         List<Category> items = new ArrayList<>();
         try {
-            QueryBuilder<Category,Integer> categoryQb= categoriaDao.queryBuilder();
-            items = categoryQb.orderBy(Category.NOMBRE_FIELD,true).query();
+            QueryBuilder<Category, Integer> categoryQb = categoriaDao.queryBuilder();
+            items = categoryQb.orderBy(Category.NOMBRE_FIELD, true).query();
 
         } catch (SQLException ex) {
+            return null;
+        } catch (Exception ex) {
             return null;
         }
 

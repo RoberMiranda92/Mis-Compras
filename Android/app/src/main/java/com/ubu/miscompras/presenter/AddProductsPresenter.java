@@ -65,7 +65,7 @@ public class AddProductsPresenter implements IOnFinishedListener, IOnLoadComplet
 
     @Override
     public void showError() {
-
+        mainView.showMessage("Error");
     }
 
     @Override

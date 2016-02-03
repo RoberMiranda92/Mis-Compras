@@ -307,7 +307,6 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
 
     /**
      * Este método actualiza el total gastado en compras.
-     *
      */
     public void updateTotal() {
 
@@ -318,5 +317,10 @@ public class AddProductsActivity extends AppCompatActivity implements View.OnCli
         editor.putFloat("importeTotal", total);
         editor.apply();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        end();
     }
 }

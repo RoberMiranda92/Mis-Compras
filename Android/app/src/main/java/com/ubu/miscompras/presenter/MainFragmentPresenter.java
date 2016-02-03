@@ -53,7 +53,7 @@ public class MainFragmentPresenter implements IOnLoadComplete {
      * @param imageUri uri de iamgen a subir.
      */
     public void uploadFile(Uri imageUri) {
-        ComunicatorService tars = new ComunicatorService(this,imageUri);
+        ComunicatorService tars = new ComunicatorService(this, imageUri);
         tars.execute();
     }
 
@@ -76,7 +76,7 @@ public class MainFragmentPresenter implements IOnLoadComplete {
 
     @Override
     public void showError() {
-
+       mView.showError("Error");
     }
 
     @Override
